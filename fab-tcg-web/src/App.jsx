@@ -23,9 +23,12 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 
 
+import EnvCheck from './components/EnvCheck';
+
 function App() {
   return (
     <LanguageProvider>
+      <EnvCheck />
       <AuthProvider>
         <ToastProvider>
           <Router>
