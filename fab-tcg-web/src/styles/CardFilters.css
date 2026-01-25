@@ -1,0 +1,199 @@
+/* Main Container - Matched with Decks.css .decks-filter-bar */
+.card-filters {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    backdrop-filter: blur(10px);
+    position: relative;
+    z-index: 50;
+}
+
+/* Controls Grid */
+.card-filters__controls {
+    display: grid;
+    grid-template-columns: 220px 1.5fr 1fr 1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Common Input/Select Styles */
+.card-filters__input,
+.card-filters__select {
+    width: 100%;
+    box-sizing: border-box;
+    /* CRITICAL: Prevent padding from overflowing width */
+    height: 40px;
+    /* Slightly reduced to be closer to Decks but accommodating content */
+    padding: 0 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    /* Darker background for inputs like Decks */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    /* Matching Decks input radius */
+    color: var(--color-text-main, #fff);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+/* Search Specifics */
+.card-filters__search {
+    position: relative;
+    width: 100%;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+}
+
+.card-filters__input {
+    padding-left: 2.5rem;
+}
+
+/* Select Specifics */
+.card-filters__select {
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+    padding-right: 2rem;
+}
+
+/* Focus States */
+.card-filters__input:focus,
+.card-filters__select:focus {
+    outline: none;
+    border-color: var(--color-primary-red, #dc2626);
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 0 1px var(--color-primary-red, #dc2626);
+}
+
+/* Hover States */
+.card-filters__input:hover,
+.card-filters__select:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Clear Button */
+.card-filters__clear {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+}
+
+.card-filters__clear:hover {
+    color: var(--text-primary);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .card-filters__controls {
+        grid-template-columns: 1fr 1fr;
+        /* 2 columns tablet */
+    }
+
+    .card-filters__search {
+        grid-column: 1 / -1;
+        /* Search takes full width */
+    }
+}
+
+@media (max-width: 640px) {
+    .card-filters__controls {
+        grid-template-columns: 1fr;
+        /* 1 column mobile */
+    }
+
+    .card-filters__active-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .card-filters__clear {
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+}
+
+/* Active Filters Section */
+.card-filters__active-section {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--border-color);
+    gap: 1rem;
+}
+
+.card-filters__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.card-filters__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background-color: var(--bg-tertiary, #2a2a2a);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+    animation: fadeIn 0.2s ease-out;
+}
+
+.card-filters__tag-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+}
+
+.card-filters__tag-remove:hover {
+    background-color: var(--color-pitch-red);
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

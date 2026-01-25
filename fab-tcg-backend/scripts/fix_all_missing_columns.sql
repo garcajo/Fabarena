@@ -1,0 +1,13 @@
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS clase text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS costo text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS pitch text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS poder text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS defensa text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS tipo text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS rareza text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS set_code text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS imagen text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS texto text;
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS keywords text[];
+ALTER TABLE public.cards ADD COLUMN IF NOT EXISTS artista text;
+NOTIFY pgrst, 'reload schema';

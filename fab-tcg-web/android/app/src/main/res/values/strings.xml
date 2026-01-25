@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">FabArena</string>
+    <string name="title_activity_main">FabArena</string>
+    <string name="package_name">com.fabarena.app</string>
+    <string name="custom_url_scheme">com.fabarena.app</string>
+</resources>

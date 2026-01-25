@@ -1,0 +1,16 @@
+{
+  "appId": "com.fabarena.app",
+  "appName": "FabArena",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "capacitor"
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "allowsLinkPreview": false
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}

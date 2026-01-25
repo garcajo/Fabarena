@@ -1,0 +1,63 @@
+/* Estilos para el componente de paginación */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    margin-top: 2rem;
+}
+
+.pagination__button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    color: var(--color-text);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.pagination__button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.pagination__button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.pagination__button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    background: var(--color-surface);
+}
+
+.pagination__info {
+    color: var(--color-text);
+    font-size: 1rem;
+    font-weight: 500;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .pagination {
+        gap: 1rem;
+    }
+
+    .pagination__button {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .pagination__info {
+        font-size: 0.9rem;
+        min-width: 100px;
+    }
+}

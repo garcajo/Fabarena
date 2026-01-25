@@ -1,0 +1,65 @@
+.stacked-deck-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.stacked-card-group {
+    position: relative;
+    /* Fixed width for consistent columns */
+    width: 130px;
+    flex: 0 0 auto;
+    /* Height needs to simulate the full stack height + card height */
+    /* Base card ratio about 1.4:1 */
+    /* We don't set fixed height, let content dictate, but we need space for stacks */
+    min-height: 220px;
+    aspect-ratio: 2.5/3.5;
+    transition: transform 0.2s ease, z-index 0s;
+}
+
+.stacked-card-group.menu-open {
+    z-index: 1000 !important;
+}
+
+.stacked-card-group:hover {
+    transform: translateY(-5px);
+}
+
+.stack-container {
+    position: relative;
+    width: 100%;
+    /* Aspect ratio for FAB card (63x88mm ~ 2.5x3.5in) */
+    aspect-ratio: 63/88;
+}
+
+.card-layer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    border-radius: 4.5% / 3.5%;
+    /* Card corner radius approximation */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    /* Make darker to simulate depth? */
+    filter: brightness(0.9);
+}
+
+.card-main-visual {
+    position: absolute;
+    left: 0;
+    right: 0;
+    /* The image itself */
+}
+
+.card-main-visual img {
+    width: 100%;
+    height: auto;
+    border-radius: 4.5% / 3.5%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    display: block;
+}

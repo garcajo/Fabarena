@@ -1,0 +1,508 @@
+{
+  "name": "Vengeance",
+  "format": "cc",
+  "hero": {
+    "id": "81391781-a72e-4741-9d7f-f8755d57f5cc",
+    "unique_id": "4e3fae7f-3ab6-458a-9c2c-fb0ba17eb197",
+    "name": "Ira, Scarlet Revenger",
+    "pitch": null,
+    "cost": null,
+    "power": null,
+    "defense": null,
+    "health": null,
+    "intelligence": null,
+    "card_type": "Ninja Hero",
+    "card_sub_type": null,
+    "class_type": null,
+    "rarity": null,
+    "set_id": null,
+    "set_name": null,
+    "text": null,
+    "flavor_text": null,
+    "keywords": [],
+    "granted_keywords": null,
+    "is_young": false,
+    "image_url": null,
+    "artist_name": null,
+    "functional_text": null,
+    "type_text": null,
+    "created_at": "2026-01-17T22:27:12.208048+00:00",
+    "updated_at": "2026-01-17T22:27:12.208048+00:00",
+    "artista": "Unknown",
+    "clase": "Ninja",
+    "costo": null,
+    "poder": null,
+    "defensa": null,
+    "tipo": "Ninja Hero",
+    "rareza": "Majestuosa",
+    "set_code": "ASR",
+    "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR001-RF.webp",
+    "texto": "Your second attack each turn gets +1{p}."
+  },
+  "visibility": "public",
+  "isOwner": true,
+  "id": "fdc4d2c5-fa5e-4117-ab1b-5f8c1d67f594",
+  "user_id": "f0a3006c-a92c-4db5-9fc3-a31bc561322a",
+  "equipment": [
+    {
+      "id": "f046e321-82b5-4a27-b506-94bcf3be7363",
+      "name": "Edge of Autumn",
+      "tipo": "Ninja Weapon - Sword (2H)",
+      "clase": "Ninja",
+      "costo": null,
+      "pitch": null,
+      "power": null,
+      "texto": "**Once per Turn Action** - {r}: **Attack**. **Go again**",
+      "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR002.webp",
+      "defense": null,
+      "set_code": "ASR",
+      "card_type": "Ninja Weapon - Sword (2H)"
+    },
+    {
+      "id": "8ad10822-61ef-4b44-81ed-7992231aa78b",
+      "name": "Mask of Momentum",
+      "tipo": "Ninja Equipment - Head",
+      "clase": "Ninja",
+      "costo": null,
+      "pitch": null,
+      "power": null,
+      "texto": "**Once per Turn Effect** - When an attack action card you control is the third or higher chain link in a row to hit, draw a card.\n\n**Blade Break**",
+      "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/promos/FAB005.png",
+      "defense": null,
+      "set_code": "FAB",
+      "card_type": "Ninja Equipment - Head"
+    },
+    {
+      "id": "a46e99d4-ac88-41ea-9bfd-2c09a5abe8ec",
+      "name": "Nullrune Hood",
+      "tipo": "Generic Equipment - Head",
+      "clase": "Generic",
+      "costo": null,
+      "pitch": null,
+      "power": null,
+      "texto": "**Arcane Barrier 1**",
+      "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2020-ARC/ARC155.png",
+      "defense": null,
+      "set_code": "ARC",
+      "card_type": "Generic Equipment - Head"
+    },
+    {
+      "id": "5b9be36b-dfe5-4184-b31a-7380724475ae",
+      "name": "Okana Scar Wraps",
+      "tipo": "Ninja Equipment - Arms",
+      "clase": "Ninja",
+      "costo": null,
+      "pitch": null,
+      "power": null,
+      "texto": "**Attack Reaction** - {t}, banish an Edge of Autumn you control: Target Ninja attack action card gets +1{p}.\n\nWhenever an attack you control with Vengeance in its name hits, you may equip an Edge of Autumn from your banished zone.\n\n**Blade Break**",
+      "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR005-RF.webp",
+      "defense": null,
+      "set_code": "ASR",
+      "card_type": "Ninja Equipment - Arms"
+    },
+    {
+      "id": "aa304e4e-d98b-46f6-8c4a-f72a93454107",
+      "name": "Pouncing Paws",
+      "tipo": "Ninja Equipment - Legs",
+      "clase": "Ninja",
+      "costo": null,
+      "pitch": null,
+      "power": null,
+      "texto": "**Instant** - Destroy this: Create a Crouching Tiger in your banished zone. You may play it this turn.\n\n**Battleworn**",
+      "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2023-TCC/EN/TCC082.png",
+      "defense": null,
+      "set_code": "TCC",
+      "card_type": "Ninja Equipment - Legs"
+    },
+    {
+      "id": "1106a0e4-12f7-404c-a0fd-400e239a83a1",
+      "name": "Robe of Autumn's Fall",
+      "tipo": "Ninja Equipment - Chest",
+      "clase": "Ninja",
+      "costo": null,
+      "pitch": null,
+      "power": null,
+      "texto": "When an Edge of Autumn you control hits, you may destroy this. If you do, gain {r}.\n\n**Arcane Barrier 1**",
+      "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR004-RF.webp",
+      "defense": null,
+      "set_code": "ASR",
+      "card_type": "Ninja Equipment - Chest"
+    },
+    {
+      "id": "73c8c4b5-e885-49a3-b780-bfadadcc8f58",
+      "name": "Tide Flippers",
+      "tipo": "Ninja Equipment - Legs",
+      "clase": "Ninja",
+      "costo": null,
+      "pitch": null,
+      "power": null,
+      "texto": "**Attack Reaction** - Destroy Tide Flippers: Target attack action card with 2 or less base {p} gains **go again**.\n\n**Arcane Barrier 1**",
+      "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2022-UPR/UPR159.png",
+      "defense": null,
+      "set_code": "UPR",
+      "card_type": "Ninja Equipment - Legs"
+    }
+  ],
+  "mainDeck": [
+    {
+      "card": {
+        "id": "5f95c891-d85b-491d-833a-b31c14f05a4f",
+        "name": "Bittering Thorns",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "1",
+        "pitch": 1,
+        "power": null,
+        "texto": "When this hits, your next attack this turn gets +1{p}.\n\n**Go again**",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR007.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "d750337a-cec7-4755-8dbf-4b901ebf0cf5",
+        "name": "Censor",
+        "tipo": "Generic Action - Attack",
+        "clase": "Generic",
+        "costo": "1",
+        "pitch": 1,
+        "power": null,
+        "texto": "When this hits a hero, name a card. They can't play the named card until the end of their next turn.",
+        "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2023-DTD/EN/DTD226.png",
+        "defense": null,
+        "set_code": "DTD",
+        "card_type": "Generic Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "0023c6b7-2c02-4f86-8bb6-9ac93aeeb0c5",
+        "name": "Enact Vengeance",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "2",
+        "pitch": 1,
+        "power": null,
+        "texto": "**Combo** - If Edge of Autumn or a card with Vengeance in its name was the last attack this combat chain, this gets \"When this hits a hero, destroy all cards in their arsenal.\"",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR008.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "9e7ee040-73b5-42ab-a365-6c1540f52bcc",
+        "name": "Erase Face",
+        "tipo": "Generic Action - Attack",
+        "clase": "Generic",
+        "costo": "2",
+        "pitch": 1,
+        "power": null,
+        "texto": "When this hits a hero, cards they own lose all class and talent types until the end of their next turn.",
+        "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/promos/JDG043.png",
+        "defense": null,
+        "set_code": "JDG",
+        "card_type": "Generic Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "d131940e-c33c-49e5-89c3-2edb4b200e75",
+        "name": "Fate Foreseen",
+        "tipo": "Generic Defense Reaction",
+        "clase": "GenericReaction",
+        "costo": "0",
+        "pitch": 1,
+        "power": null,
+        "texto": "**Opt 1**",
+        "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2020-ARC/ARC200.png",
+        "defense": null,
+        "set_code": "ARC",
+        "card_type": "Generic Defense Reaction"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "a4d324a3-9e81-4c9e-a4ce-a132bb195dd7",
+        "name": "Flic Flak",
+        "tipo": "Ninja Defense Reaction",
+        "clase": "NinjaReaction",
+        "costo": "0",
+        "pitch": 1,
+        "power": null,
+        "texto": "If the next card you defend with this turn is a card with combo, it gains +2{d}.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR017.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Defense Reaction"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "316d9c04-3b4a-48ce-8b58-e57d4207e602",
+        "name": "Flying Kick",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "2",
+        "pitch": 1,
+        "power": null,
+        "texto": "If this was played as chain link 3 or higher, it gets +2{p}.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR009.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "a55ba1dc-7809-4278-8e11-813f5dd6d107",
+        "name": "Scar for a Scar",
+        "tipo": "Generic Action - Attack",
+        "clase": "Generic",
+        "costo": "0",
+        "pitch": 1,
+        "power": null,
+        "texto": "When this is played, if you have less {h} than an opposing hero, it gets **go again**.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/AGB012.webp",
+        "defense": null,
+        "set_code": "AGB",
+        "card_type": "Generic Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "26848a29-8863-41dc-a4c1-7cc50cce62a2",
+        "name": "Seek Vengeance",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "0",
+        "pitch": 1,
+        "power": null,
+        "texto": "**Combo** - If Edge of Autumn was the last attack this combat chain, this gets **go again**.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR012.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "e77ecb5f-08a1-4cad-b219-f10d0ae70af0",
+        "name": "Sigil of Solace",
+        "tipo": "Generic Instant",
+        "clase": "Generic",
+        "costo": "0",
+        "pitch": 1,
+        "power": null,
+        "texto": "Gain 3{h}",
+        "imagen": "https://storage.googleapis.com/fabmaster/media/images/DRO026.width-450.png",
+        "defense": null,
+        "set_code": "DRO",
+        "card_type": "Generic Instant"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "1cd75025-251e-4211-9851-faf0ae988425",
+        "name": "Sink Below",
+        "tipo": "Generic Defense Reaction",
+        "clase": "GenericReaction",
+        "costo": "0",
+        "pitch": 1,
+        "power": null,
+        "texto": "You may put a card from your hand on the bottom of your deck. If you do, draw a card.",
+        "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2024-ARMORY-ASB/EN/ASB016.png",
+        "defense": null,
+        "set_code": "ASB",
+        "card_type": "Generic Defense Reaction"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "708e4c23-736c-41ff-a287-4f73eec33b0f",
+        "name": "Sirens of Safe Harbor",
+        "tipo": "Generic Action - Attack",
+        "clase": "Generic",
+        "costo": "2",
+        "pitch": 1,
+        "power": null,
+        "texto": "When this is put into your graveyard from anywhere, gain 1{h}.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/GEM063.webp",
+        "defense": null,
+        "set_code": "GEM",
+        "card_type": "Generic Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "d1bfe246-f93b-4398-94c7-90b48824213a",
+        "name": "Torrent of Tempo",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "1",
+        "pitch": 1,
+        "power": null,
+        "texto": "When this hits, it gets **go again**.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR015.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "e37217a3-849d-4559-b862-4224dc7d910e",
+        "name": "Wreck Havoc",
+        "tipo": "Generic Action - Attack",
+        "clase": "Generic",
+        "costo": "2",
+        "pitch": 1,
+        "power": null,
+        "texto": "Defense reactions can't be played to this chain link.\n\nWhen this hits a hero, you may turn a card in their arsenal face up, then destroy a defense reaction in their arsenal.",
+        "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2024-ARMORY-AKO/EN/AKO015.png",
+        "defense": null,
+        "set_code": "AKO",
+        "card_type": "Generic Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "833e4d94-022e-4a8d-afce-cfcbb1437351",
+        "name": "Bittering Thorns",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "1",
+        "pitch": 3,
+        "power": null,
+        "texto": "When this hits, your next attack this turn gets +1{p}.\n\n**Go again**",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR020.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "53f39cee-8d19-46e0-a209-9eca91c4a1bc",
+        "name": "Legacy of Ikaru",
+        "tipo": "Ninja Attack Reaction",
+        "clase": "NinjaReaction",
+        "costo": "0",
+        "pitch": 3,
+        "power": null,
+        "texto": "Target Ninja attack gets +1{p} and \"When this hits, if Edge of Autumn was the last attack this combat chain, draw a card.\"",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR026.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Attack Reaction"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "8bf356d0-2467-437f-aa22-4584eb8aed73",
+        "name": "Lunging Press",
+        "tipo": "Generic Attack Reaction",
+        "clase": "GenericReaction",
+        "costo": "0",
+        "pitch": 3,
+        "power": null,
+        "texto": "Target attack action card gains +1{p}.",
+        "imagen": "https://storage.googleapis.com/fabmaster/cardfaces/2023-OUT-BEN/EN/BEN026.png",
+        "defense": null,
+        "set_code": "BEN",
+        "card_type": "Generic Attack Reaction"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "24da8906-77d8-487b-a6c7-5c596ac2ba37",
+        "name": "Nip at the Heels",
+        "tipo": "Generic Attack Reaction",
+        "clase": "GenericReaction",
+        "costo": "0",
+        "pitch": 3,
+        "power": null,
+        "texto": "Target attack with 3 or less base {p} gets +1{p}.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/FAB326-RF.webp",
+        "defense": null,
+        "set_code": "FAB",
+        "card_type": "Generic Attack Reaction"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "400846f2-f7e7-4165-97a1-9a677110a7d1",
+        "name": "Seek Vengeance",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "0",
+        "pitch": 3,
+        "power": null,
+        "texto": "**Combo** - If Edge of Autumn was the last attack this combat chain, this gets **go again**.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR022.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "fe1c3f37-ec46-47b8-83ce-66a31cac5b94",
+        "name": "Torrent of Tempo",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "1",
+        "pitch": 3,
+        "power": null,
+        "texto": "When this hits, it gets **go again**.",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR024.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    },
+    {
+      "card": {
+        "id": "6a9bfb0f-6cd4-41af-b863-44c512a1286b",
+        "name": "Vengeance Never Rests",
+        "tipo": "Ninja Action - Attack",
+        "clase": "Ninja",
+        "costo": "1",
+        "pitch": 3,
+        "power": null,
+        "texto": "**Combo** - If Edge of Autumn was the last attack this combat chain, this gets **go again** and \"When this hits a hero, banish it. You may play it this turn.\"",
+        "imagen": "https://d2wlb52bya4y8z.cloudfront.net/media/cards/large/ASR025.webp",
+        "defense": null,
+        "set_code": "ASR",
+        "card_type": "Ninja Action - Attack"
+      },
+      "count": 3
+    }
+  ],
+  "sideboard": [],
+  "maybeboard": [],
+  "username": "qrtzx"
+}

@@ -1,0 +1,100 @@
+/* Ad Banner Styles */
+
+.ad-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(30, 30, 30, 0.9) 0%, rgba(20, 20, 20, 0.95) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1rem auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Horizontal banners (top/bottom) */
+.ad-banner-horizontal {
+    width: 100%;
+    max-width: 728px;
+    min-height: 90px;
+}
+
+/* Vertical/Sidebar banners */
+.ad-banner-vertical {
+    width: 300px;
+    min-height: 250px;
+}
+
+/* Inline content banners */
+.ad-banner-inline {
+    width: 100%;
+    max-width: 336px;
+    min-height: 280px;
+}
+
+/* Placeholder styling */
+.ad-placeholder {
+    position: relative;
+    background: repeating-linear-gradient(45deg,
+            rgba(30, 30, 30, 0.95),
+            rgba(30, 30, 30, 0.95) 10px,
+            rgba(25, 25, 25, 0.95) 10px,
+            rgba(25, 25, 25, 0.95) 20px);
+}
+
+.ad-placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    text-align: center;
+}
+
+.ad-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.3);
+    background: rgba(0, 0, 0, 0.3);
+    padding: 2px 8px;
+    border-radius: 3px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+}
+
+.ad-placeholder-text {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .ad-banner-horizontal {
+        max-width: 100%;
+        min-height: 60px;
+    }
+
+    .ad-banner-vertical {
+        width: 100%;
+        max-width: 300px;
+        min-height: 100px;
+    }
+
+    .ad-banner-inline {
+        max-width: 100%;
+        min-height: 100px;
+    }
+}
+
+/* Hide ads on very small screens (optional - uncomment if needed) */
+/*
+@media (max-width: 480px) {
+    .ad-banner {
+        display: none;
+    }
+}
+*/

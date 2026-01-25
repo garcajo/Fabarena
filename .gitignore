@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+.env
+dist
+coverage
+.vscode
+.idea
+*.log
+android/app/build
+android/app/release
+ios/App/App/public
+android/app/src/main/assets/public

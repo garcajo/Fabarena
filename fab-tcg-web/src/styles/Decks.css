@@ -1,0 +1,1048 @@
+.decks-page {
+    min-height: 90vh;
+    padding: var(--spacing-lg);
+    background: radial-gradient(circle at top center, rgba(62, 28, 28, 0.2) 0%, transparent 70%);
+}
+
+
+.decks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.decks-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    color: var(--color-text-main);
+    text-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.decks-title svg {
+    color: var(--color-primary-red);
+    filter: drop-shadow(0 0 8px rgba(220, 38, 38, 0.6));
+}
+
+.create-deck-btn {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    color: white;
+    padding: 1rem 2.25rem;
+    border-radius: 12px;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    position: relative;
+    overflow: hidden;
+}
+
+.create-deck-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.create-deck-btn:hover::before {
+    left: 100%;
+}
+
+.create-deck-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(220, 38, 38, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* --- New Grid & Card Styles --- */
+
+.decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding-bottom: 4rem;
+}
+
+.deck-card {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(25, 25, 25, 0.9), rgba(18, 18, 18, 0.85));
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.deck-card:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(220, 38, 38, 0.3),
+        0 0 40px rgba(220, 38, 38, 0.2);
+    border-color: rgba(220, 38, 38, 0.6);
+}
+
+/* Background Image Layer */
+.deck-card-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    /* Focus on face usually */
+    background-repeat: no-repeat;
+    transition: transform 0.8s ease;
+    z-index: 0;
+}
+
+.deck-card:hover .deck-card-bg {
+    transform: scale(1.1);
+}
+
+/* Gradient Overlay for Text Readability */
+.deck-card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 75%;
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.95) 0%,
+            rgba(0, 0, 0, 0.8) 30%,
+            rgba(0, 0, 0, 0.4) 60%,
+            transparent 100%);
+    z-index: 1;
+}
+
+/* Content Layer */
+.deck-card-content {
+    position: relative;
+    z-index: 2;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    height: 100%;
+    justify-content: flex-end;
+}
+
+.deck-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.5);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+}
+
+.deck-meta {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.format-badge {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: auto;
+    /* Push to top */
+    margin-top: 1rem;
+    /* Add some space from top edge */
+}
+
+/* Move badge to top left absolute position for cleaner layout? 
+   Actually, flex 'margin-bottom: auto' pushes it up if container is full height. 
+   Let's check .deck-card layout. flex-direction column, justify-content flex-end.
+   If I want it at top, I should make container full height.
+   .deck-card-content is height 100% now.
+*/
+
+.format-cc {
+    background: rgba(220, 38, 38, 0.85);
+    /* Solid Red */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.format-silver {
+    background: rgba(37, 99, 235, 0.85);
+    /* Solid Blue */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Create New Card Style */
+.deck-card.create-new {
+    background: rgba(255, 255, 255, 0.03);
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+}
+
+.deck-card.create-new:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-primary-red);
+    color: var(--color-primary-red);
+    transform: translateY(-5px);
+}
+
+.create-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.deck-card.create-new:hover .create-icon-wrapper {
+    background: var(--color-primary-red);
+    color: white;
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
+    border-color: transparent;
+}
+
+.create-text {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Empty State & Login - Keeping existing styles but refined if needed */
+.decks-empty-state {
+    text-align: center;
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 6rem 2rem;
+    max-width: 800px;
+    margin: 4rem auto;
+}
+
+/* Delete Deck Button & Wrapper */
+.deck-card-wrapper:hover .delete-deck-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delete-deck-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    transform: translateY(-5px);
+    backdrop-filter: blur(4px);
+}
+
+.delete-deck-btn:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.deck-card {
+    display: block;
+    /* Ensure link behaves as block */
+    width: 100%;
+    height: 100%;
+}
+
+.deck-card-wrapper {
+    aspect-ratio: 1 / 1;
+}
+
+/* Login Prompt Styling */
+.decks-login-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(15, 15, 15, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 6rem 2rem;
+    max-width: 600px;
+    margin: 4rem auto;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.login-prompt-title {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.login-prompt-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.1rem;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+    line-height: 1.6;
+}
+
+.login-prompt-actions {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.prompt-btn-primary {
+    background: var(--color-primary-red);
+    color: white;
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    border: 1px solid var(--color-primary-red);
+    min-width: 140px;
+    display: flex;
+    justify-content: center;
+}
+
+.prompt-btn-primary:hover {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.prompt-btn-secondary {
+    background: transparent;
+    color: var(--color-text-main);
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    min-width: 140px;
+    display: flex;
+    justify-content: center;
+}
+
+.heading-prompt-actions:hover {
+    border-color: white;
+    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-2px);
+}
+
+.decks-empty-message {
+    text-align: center;
+    padding: 4rem 2rem;
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+    border: none;
+    margin: 2rem 0;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+}
+
+/* Title Link - Organic Effect */
+.decks-title-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    /* Organic easing */
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    position: relative;
+    /* For pseudo-elements if needed */
+}
+
+.decks-title-link:hover {
+    color: #ffffff;
+    text-shadow: 0 0 25px rgba(220, 38, 38, 0.6), 0 0 10px rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px) scale(1.02);
+    cursor: pointer;
+    /* Optional: Subtle background highlight */
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.decks-title-link:active {
+    transform: translateY(1px) scale(0.98);
+    text-shadow: 0 0 15px rgba(220, 38, 38, 0.8);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Filter Bar Refinement - AHORA CON ESPACIO DE VERDAD */
+.decks-filter-bar {
+    display: grid;
+    /* Desktop: 1.5fr (Hero), 1.5fr (Creator), 160px (Sort), Auto (Search Button) */
+    grid-template-columns: 1.5fr 1.5fr 160px auto;
+    gap: 2rem;
+    /* SPACE: 2rem is HUGE to prevent touching */
+    align-items: end;
+    /* Align bottoms perfectly */
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 1.25rem 1.5rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    box-sizing: border-box;
+    /* SAFETY */
+    position: relative;
+    z-index: 100;
+}
+
+/* On smaller screens 1100px, stack them responsibly */
+@media (max-width: 1100px) {
+    .decks-filter-bar {
+        grid-template-columns: 1fr 1fr;
+        /* 2 cols */
+        gap: 1.5rem;
+    }
+
+    .search-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 650px) {
+    .decks-filter-bar {
+        grid-template-columns: 1fr;
+        /* Stack all */
+        gap: 1.25rem;
+    }
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    min-width: 0;
+    /* Important for grid overflow handling */
+    box-sizing: border-box;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    margin-left: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.filter-group input,
+.filter-group select {
+    width: 100%;
+    padding: 0 0.8rem;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    outline: none;
+    height: 36px;
+    /* 36px HEIGHT - Very compact as requested */
+    box-sizing: border-box;
+    /* CRITICAL: prevents width + padding overflow */
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    border-color: var(--color-primary-red);
+    background: rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 0 1px var(--color-primary-red);
+}
+
+/* Autocomplete Dropdown */
+.hero-autocomplete-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    max-height: 240px;
+    overflow-y: auto;
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    z-index: 50;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
+.hero-autocomplete-item {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    color: #e0e0e0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.15s;
+    font-size: 0.85rem;
+}
+
+.hero-autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.hero-autocomplete-item:hover {
+    background: rgba(220, 38, 38, 0.2);
+    color: white;
+}
+
+/* Search Button refinement */
+.search-btn {
+    padding: 0 1.5rem;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.85rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    height: 36px;
+    /* Match inputs */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    width: auto;
+    white-space: nowrap;
+    box-sizing: border-box;
+}
+
+.search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(220, 38, 38, 0.4);
+    filter: brightness(1.1);
+}
+
+.search-btn:active {
+    transform: translateY(1px);
+}
+
+/* --- Deck List View Styles --- */
+
+.decks-list-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.decks-list-header {
+    display: flex;
+    padding: 1rem 1.5rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* Columns */
+.list-header-cell,
+.list-cell {
+    display: flex;
+    align-items: center;
+}
+
+.cell-title {
+    flex: 3;
+    min-width: 300px;
+}
+
+.cell-format {
+    flex: 1;
+    min-width: 120px;
+}
+
+.cell-creator {
+    flex: 1.5;
+    min-width: 150px;
+}
+
+.cell-date {
+    flex: 1;
+    min-width: 120px;
+}
+
+.cell-actions {
+    flex: 0.5;
+    min-width: 60px;
+    justify-content: flex-end;
+}
+
+.decks-list-row-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.decks-list-row {
+    flex: 1;
+    display: flex;
+    padding: 1rem 1.5rem;
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--color-text-main);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    align-items: center;
+}
+
+.decks-list-row:hover {
+    background: rgba(40, 40, 40, 0.8);
+    border-color: rgba(220, 38, 38, 0.4);
+    transform: translateX(4px);
+    box-shadow: -4px 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.list-hero-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center top;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.decks-list-row:hover .list-hero-avatar {
+    border-color: var(--color-primary-red);
+}
+
+.list-deck-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.list-deck-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.list-hero-name {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.format-badge-small {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.format-cc {
+    background: rgba(220, 38, 38, 0.2);
+    border: 1px solid rgba(220, 38, 38, 0.5);
+    color: #fca5a5;
+}
+
+.format-sa {
+    background: rgba(37, 99, 235, 0.2);
+    border: 1px solid rgba(37, 99, 235, 0.5);
+    color: #93c5fd;
+}
+
+.list-delete-btn {
+    opacity: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(220, 38, 38, 0.1);
+    color: var(--color-primary-red);
+    border: none;
+    cursor: pointer;
+    margin-left: 1rem;
+    transition: all 0.2s ease;
+}
+
+.decks-list-row-wrapper:hover .list-delete-btn {
+    opacity: 1;
+}
+
+.list-delete-btn:hover {
+    background: var(--color-primary-red);
+    color: white;
+    transform: scale(1.1);
+}
+
+.create-deck-btn-small {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(220, 38, 38, 0.8);
+    color: white;
+    border-radius: 8px;
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.create-deck-btn-small:hover {
+    background: var(--color-primary-red);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Mobile responsive for list view */
+@media (max-width: 768px) {
+    .decks-list-header {
+        display: none;
+        /* Hide header on mobile */
+    }
+
+    .decks-list-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        padding: 1rem;
+    }
+
+    .list-header-cell,
+    .list-cell {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .cell-title {
+        margin-bottom: 0.5rem;
+    }
+
+    .cell-format,
+    .cell-creator,
+    .cell-date {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.7);
+        flex-direction: row;
+        display: flex;
+    }
+
+    .cell-format::before {
+        content: "Format: ";
+        margin-right: 0.5rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .cell-creator::before {
+        content: "Creator: ";
+        margin-right: 0.5rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .cell-date::before {
+        content: "Date: ";
+        margin-right: 0.5rem;
+        color: rgba(255, 255, 255, 0.4);
+    }
+
+    .cell-actions {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 0.75rem;
+    }
+
+    /* Fix overlapping buttons on mobile */
+    .decks-list-row-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        padding-bottom: 1rem;
+        position: relative;
+    }
+
+    .list-delete-btn,
+    .delete-deck-btn {
+        position: static !important;
+        /* Override absolute positioning */
+        width: 100%;
+        height: 40px;
+        border-radius: 8px;
+        margin: 0.5rem 0 0 0 !important;
+        opacity: 1 !important;
+        transform: none !important;
+        background: rgba(220, 38, 38, 0.15);
+        color: var(--color-primary-red);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Add text label for clarity on mobile */
+    .list-delete-btn::after {
+        content: " Delete Deck";
+        font-weight: 600;
+        margin-left: 0.5rem;
+    }
+
+    .delete-deck-btn::after {
+        content: " Delete";
+        font-weight: 600;
+        margin-left: 0.5rem;
+    }
+
+    .list-delete-btn:hover,
+    .delete-deck-btn:hover {
+        background: var(--color-primary-red);
+        color: white;
+    }
+}
+
+/* Sidebar Layout for My Decks */
+.decks-with-sidebar {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.decks-main-content {
+    flex: 1;
+    min-width: 0;
+}
+
+@media (max-width: 900px) {
+    .decks-with-sidebar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* --- Move Folder Modal --- */
+.move-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.move-modal-content {
+    background: #1a1a1a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.move-modal-header {
+    padding: 1.25rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.move-modal-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.move-modal-title svg {
+    color: var(--color-primary-red);
+}
+
+.move-modal-close {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.move-modal-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.move-modal-body {
+    padding: 0.75rem;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.move-modal-item {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.move-modal-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(2px);
+}
+
+.move-folder-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.move-folder-icon.default {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.move-modal-item:hover .move-folder-icon.default {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.move-folder-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.move-folder-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.move-modal-empty {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,156 @@
+.card-list {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card-list-header {
+    display: grid;
+    grid-template-columns: 3rem 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 1rem;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px 8px 0 0;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    align-items: center;
+}
+
+.card-list-row {
+    display: grid;
+    grid-template-columns: 3rem 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-bg-card);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    align-items: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    font-size: 0.95rem;
+}
+
+.card-list-row:hover {
+    transform: translateX(4px);
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-primary-red);
+}
+
+.list-image-thumb {
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+    border-radius: 2px;
+}
+
+.list-cell-name {
+    font-weight: 600;
+    color: var(--color-text-main);
+}
+
+.list-cell-set {
+    color: var(--color-primary-yellow);
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+.list-cell-rarity {
+    text-transform: capitalize;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+/* Pitch Colors */
+.pitch-1 {
+    color: var(--color-pitch-red);
+}
+
+.pitch-2 {
+    color: var(--color-pitch-yellow);
+}
+
+.pitch-3 {
+    color: var(--color-pitch-blue);
+}
+
+[data-theme='light'] .card-list-row {
+    background-color: #ffffff;
+    border-color: #e5e7eb;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .card-list-row:hover {
+    background-color: #f9fafb;
+    border-color: var(--color-primary-red);
+}
+
+[data-theme='light'] .card-list-header {
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+/* Pitch Dot Styles */
+.list-cell-pitch {
+    display: flex;
+    gap: 4px;
+    /* Space between dots */
+    align-items: center;
+}
+
+.pitch-dot {
+    display: inline-block;
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+}
+
+.pitch-bg-1 {
+    background-color: var(--color-pitch-red);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.pitch-bg-2 {
+    background-color: var(--color-pitch-yellow);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.pitch-bg-3 {
+    background-color: var(--color-pitch-blue);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .card-list-header {
+        display: none;
+    }
+
+    .card-list-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 1rem;
+        height: auto;
+    }
+
+    .list-image-thumb {
+        width: 3rem;
+        height: auto;
+    }
+
+    .list-cell-name {
+        width: 100%;
+        order: -1;
+        font-size: 1.1rem;
+        margin-bottom: 0.25rem;
+    }
+
+    /* Make other cells fit nicely */
+    .card-list-row>div {
+        font-size: 0.85rem;
+    }
+}

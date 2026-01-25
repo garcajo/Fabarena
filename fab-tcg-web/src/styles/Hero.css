@@ -1,0 +1,300 @@
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 6rem 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 800px;
+    z-index: 10;
+}
+
+.hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to right, #fff, #ef4444);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 3rem;
+    max-width: 600px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+/* Search Bar Styles */
+.hero-search {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-search-icon {
+    position: absolute;
+    left: 1.25rem;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
+.hero-search-input {
+    width: 100%;
+    padding: 1.125rem 1.25rem 1.125rem 3.25rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.hero-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.hero-search-input:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.06));
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.hero-search-input:focus {
+    outline: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    border-color: rgba(220, 38, 38, 0.6);
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.hero-search-button {
+    position: absolute;
+    right: 0.5rem;
+    padding: 0.625rem 1.75rem;
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+    border: none;
+    border-radius: 999px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+.hero-search-button:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #7f1d1d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.6);
+}
+
+[data-theme='light'] .hero-search-button {
+    color: #000000;
+    font-weight: 700;
+    /* User requested black text. To ensure contrast, we might want a lighter background, 
+       or if we keep red, black text is what they asked for. 
+       Let's keep the brand red but ensure the text is black as explicitly requested. */
+    background-color: var(--color-primary-yellow);
+    /* Yellow bg with black text = high visibility/contrast "Pitch Yellow" style? Or just standard Red? */
+    /* Let's stick to Red bg with Black text if they insisted, but Yellow is a FAB color too. 
+       Actually, let's just follow instructions: Text Black. */
+    background-color: var(--color-primary-red);
+    /* Warning: Red bg + Black text might be weird, but I'll add a border to define it */
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 2rem;
+    }
+}
+
+/* Light Mode Overrides for Hero */
+[data-theme='light'] .hero-title {
+    background: none !important;
+    /* Force removal of gradient */
+    -webkit-text-fill-color: #111 !important;
+    /* Force solid dark color */
+    color: #111;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle depth */
+}
+
+[data-theme='light'] .hero-title .text-red {
+    color: var(--color-primary-red);
+    -webkit-text-fill-color: var(--color-primary-red) !important;
+}
+
+[data-theme='light'] .hero-subtitle {
+    color: #4b5563;
+    /* Slate-600 equivalent for good readability */
+    font-weight: 500;
+}
+
+[data-theme='light'] .hero-search-input {
+    background-color: #ffffff;
+    /* pure white background */
+    border: 1px solid #e5e7eb;
+    /* Subtle border */
+    color: #111;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    /* Soft shadow for lift */
+}
+
+[data-theme='light'] .hero-search-input:focus {
+    border-color: var(--color-primary-red);
+    box-shadow: 0 0 0 4px rgba(197, 34, 34, 0.1);
+    /* Red glow, very soft */
+}
+
+[data-theme='light'] .hero-search-icon {
+    color: #6b7280;
+    /* Neutral grey icon */
+}
+
+/* Search Mode Toggles */
+.hero-search-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    gap: 1.25rem;
+}
+
+.search-mode-toggles {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mode-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.5rem 1.25rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.mode-toggle:hover {
+    color: var(--text-primary);
+}
+
+.mode-toggle.active {
+    background: var(--color-primary-red);
+    color: white;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+}
+
+[data-theme='light'] .search-mode-toggles {
+    background: #f3f4f6;
+    border-color: #e5e7eb;
+}
+
+[data-theme='light'] .mode-toggle {
+    color: #6b7280;
+}
+
+[data-theme='light'] .mode-toggle:hover {
+    color: #111;
+}
+
+[data-theme='light'] .mode-toggle.active {
+    background: var(--color-primary-red);
+    color: white;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+}
+
+.hero-search {
+    width: 100%;
+    /* Ensure it fills wrapper */
+}
+
+/* Hero Search Suboptions Buttons */
+.hero-search-suboptions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 0;
+    /* Removed margin to rely solely on flex gap (1.25rem) for perfect symmetry */
+    width: 100%;
+    /* Ensure full width for centering */
+}
+
+.hero-sub-filter-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    /* Standardized to match mode toggles */
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(5px);
+    letter-spacing: 0.5px;
+}
+
+.hero-sub-filter-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: white;
+    transform: translateY(-2px);
+}
+
+.hero-sub-filter-btn.active {
+    background: var(--color-primary-red);
+    color: white;
+    border-color: var(--color-primary-red);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.5);
+    font-weight: 700;
+}
+
+[data-theme='light'] .hero-sub-filter-btn {
+    border-color: #d1d5db;
+    color: #4b5563;
+}
+
+[data-theme='light'] .hero-sub-filter-btn:hover {
+    color: #111;
+    border-color: #111;
+    background: transparent;
+}
+
+[data-theme='light'] .hero-sub-filter-btn.active {
+    background: var(--color-primary-red);
+    color: white;
+    border-color: var(--color-primary-red);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
