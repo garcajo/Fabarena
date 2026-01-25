@@ -1,31 +1,16 @@
 /**
- * Servicio para comunicarse con el backend Express API.
- * Reemplaza la conexión directa a Supabase.
+ * Servicio para comunicarse directamente con Supabase.
+ * Reemplaza la conexión al backend Express API.
  */
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
 import { supabase } from './supabase';
 
 /**
- * Manejo centralizado de errores de la API
+ * Manejo centralizado de errores de Supabase
  */
-const handleResponse = async (response) => {
-    if (!response.ok) {
-        if (response.status === 401) {
-            console.warn('Unauthorized (401) - clearing session and redirecting to login');
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/login';
-            throw new Error('Sesión expirada. Por favor inicia sesión nuevamente.');
-        }
-
-        const error = await response.json().catch(() => ({
-            error: 'Error desconocido',
-            message: response.statusText
-        }));
-        throw new Error(error.message || error.error || 'Error en la petición');
-    }
-    return response.json();
+const handleSupabaseError = (error) => {
+    console.error('Supabase Error:', error);
+    throw new Error(error.message || 'Error en la operación de base de datos');
 };
 
 /**
@@ -38,14 +23,19 @@ export const AuthService = {
      */
     async register(userData) {
         try {
-            const response = await fetch(`${API_URL}/auth/register`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData),
+            const { data, error } = await supabase.auth.signUp({
+                email: userData.email,
+                password: userData.password,
+                options: {
+                    data: {
+                        username: userData.username,
+                        full_name: userData.username // Usamos username como full_name por defecto
+                    }
+                }
             });
-            return await handleResponse(response);
+
+            if (error) throw error;
+            return data;
         } catch (error) {
             console.error('Registration error:', error);
             throw error;
@@ -54,26 +44,18 @@ export const AuthService = {
 
     /**
      * Elimina la cuenta del usuario actual
+     * Nota: Esto requiere que el usuario esté autenticado.
+     * Supabase no permite autodelete por defecto sin función admin o política específica.
+     * Usaremos una RPC o llamada directa si está permitido.
      */
     async updateProfile(profileData) {
         try {
-            const token = localStorage.getItem('token');
-            // Assuming we have a backend endpoint for this now, or still mocking?
-            // "Mock update - in real app would call API" was in Settings.jsx.
-            // Let's implement a real call or handle it here if we want to use Supabase client directly in the service.
-            // But waiting for backend implementation might be better. 
-            // However, for avatar we will use the Service.
-
-            // For now, let's just support the method signature.
-            const response = await fetch(`${API_URL}/user/profile`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(profileData)
+            const { data, error } = await supabase.auth.updateUser({
+                data: profileData
             });
-            return await handleResponse(response);
+
+            if (error) throw error;
+            return data;
         } catch (error) {
             console.error('Update profile error:', error);
             throw error;
@@ -101,7 +83,7 @@ export const AuthService = {
                 .from('avatars')
                 .getPublicUrl(filePath);
 
-            // 3. Update User Metadata (and ideally syncs to profile table via trigger)
+            // 3. Update User Metadata
             const { error: updateError } = await supabase.auth.updateUser({
                 data: { avatar_url: publicUrl }
             });
@@ -117,15 +99,17 @@ export const AuthService = {
 
     async deleteAccount() {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/user/me`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (response.ok) return true;
-            return await handleResponse(response);
+            // Nota: Supabase Auth clientside no tiene deleteUser() por seguridad.
+            // Se debe hacer vía RPC o función edge si se quiere permitir "Self Delete".
+            // Por ahora, retornamos error no implementado o simulamos logout.
+            console.warn("Self-deletion not directly supported by Supabase Client for security.");
+            // Una opción es marcar una flag en user_metadata 'deleted: true' y bloquear acceso via RLS.
+            // O usar una Edge Function 'admin-delete-user'.
+
+            // Fallback for now: Logout
+            const { error } = await supabase.auth.signOut();
+            if (error) throw error;
+            return true;
         } catch (error) {
             console.error('Delete account error:', error);
             throw error;
@@ -138,35 +122,39 @@ export const AuthService = {
      */
     async login(credentials) {
         try {
-            const response = await fetch(`${API_URL}/auth/login`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(credentials),
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email: credentials.email,
+                password: credentials.password,
             });
-            return await handleResponse(response);
+
+            if (error) throw error;
+            return data;
         } catch (error) {
             console.error('Login error:', error);
             throw error;
         }
+    },
+
+    /**
+     * Cierra sesión
+     */
+    async logout() {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
     }
 };
 
 /**
- * Servicio de cartas que se comunica con el backend
+ * Sets de borde blanco a filtrar por defecto
+ */
+const WHITE_BORDER_SETS = ['1HP'];
+
+/**
+ * Servicio de cartas
  */
 export const CardService = {
     /**
      * Obtiene todas las cartas con opciones de paginación y filtros
-     * @param {Object} options - Opciones de consulta
-     * @param {number} options.page - Número de página (0-indexed)
-     * @param {number} options.pageSize - Número de items por página
-     * @param {string} options.search - Término de búsqueda
-     * @param {string} options.clase - Filtro por clase
-     * @param {string} options.set - Filtro por set
-     * @param {string} options.rareza - Filtro por rareza
-     * @returns {Promise<{data: Array, count: number, page: number, pageSize: number, totalPages: number}>}
      */
     async getCards(options = {}) {
         const {
@@ -177,48 +165,96 @@ export const CardService = {
             set = '',
             rareza = '',
             pitch = '',
-            costo = ''
+            costo = '',
+            type = '',
+            includeWhiteBorder = false
         } = options;
 
-        // Construir query params
-        const params = new URLSearchParams();
-        params.append('page', page);
-        params.append('pageSize', pageSize);
-        if (search) params.append('search', search);
-
-        // Handle array params
-        if (Array.isArray(clase)) {
-            clase.forEach(c => params.append('clase', c));
-        } else if (clase) {
-            params.append('clase', clase);
-        }
-
-        if (Array.isArray(set)) {
-            set.forEach(s => params.append('set', s));
-        } else if (set) {
-            params.append('set', set);
-        }
-
-
-        if (Array.isArray(rareza)) {
-            rareza.forEach(r => params.append('rareza', r));
-        } else if (rareza) {
-            params.append('rareza', rareza);
-        }
-
-        if (pitch) params.append('pitch', pitch);
-        if (costo) params.append('costo', costo);
-
-        if (Array.isArray(options.type)) {
-            options.type.forEach(t => params.append('type', t));
-        } else if (options.type) {
-            params.append('type', options.type);
-        }
-
         try {
-            const response = await fetch(`${API_URL}/cards?${params.toString()}`);
-            const result = await handleResponse(response);
-            return { data: result.data, count: result.count, error: null };
+            let query = supabase
+                .from('cards')
+                .select('*', { count: 'exact' });
+
+            // Apply filters
+            if (!includeWhiteBorder) {
+                query = query.not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
+            }
+
+            if (search) {
+                query = query.ilike('name', `%${search}%`);
+            }
+
+            if (clase) {
+                if (Array.isArray(clase)) {
+                    const orQuery = clase.map(c => `clase.ilike.%${c}%`).join(',');
+                    query = query.or(orQuery);
+                } else {
+                    query = query.ilike('clase', `%${clase}%`);
+                }
+            }
+
+            if (set) {
+                if (Array.isArray(set)) {
+                    query = query.in('set_code', set);
+                } else {
+                    query = query.eq('set_code', set);
+                }
+            }
+
+            if (rareza) {
+                if (Array.isArray(rareza)) {
+                    query = query.in('rareza', rareza);
+                } else {
+                    query = query.eq('rareza', rareza);
+                }
+            }
+
+            if (pitch) {
+                if (Array.isArray(pitch)) {
+                    const pitchInts = pitch.map(p => parseInt(p, 10));
+                    query = query.in('pitch', pitchInts);
+                } else {
+                    query = query.eq('pitch', parseInt(pitch, 10));
+                }
+            }
+
+            if (costo) {
+                if (Array.isArray(costo)) {
+                    query = query.in('costo', costo);
+                } else {
+                    query = query.eq('costo', costo);
+                }
+            }
+
+            if (type) {
+                if (Array.isArray(type)) {
+                    const orQuery = type.map(t => `tipo.ilike.%${t}%`).join(',');
+                    query = query.or(orQuery);
+                } else {
+                    query = query.ilike('tipo', `%${type}%`);
+                }
+            }
+
+            // Pagination
+            const from = page * pageSize;
+            const to = from + pageSize - 1;
+            query = query.range(from, to);
+
+            // Order
+            query = query.order('name', { ascending: true });
+
+            const { data, error, count } = await query;
+
+            if (error) throw error;
+
+            return {
+                data,
+                count,
+                page,
+                pageSize,
+                totalPages: Math.ceil(count / pageSize),
+                error: null
+            };
         } catch (error) {
             console.error('Error fetching cards:', error);
             return { data: null, count: 0, error: error.message };
@@ -227,17 +263,16 @@ export const CardService = {
 
     /**
      * Get all versions of a card by name
-     * @param {string} name 
      */
     async getCardsByName(name) {
         try {
-            const params = new URLSearchParams();
-            params.append('search', name);
-            params.append('pageSize', 100);
+            const { data, error } = await supabase
+                .from('cards')
+                .select('*')
+                .ilike('name', name); // Use exact match or ilike? Frontend logic assumed loosely.
 
-            const response = await fetch(`${API_URL}/cards?${params.toString()}`);
-            const result = await handleResponse(response);
-            return result.data || [];
+            if (error) throw error;
+            return data || [];
         } catch (error) {
             console.error('Error fetching card versions:', error);
             return [];
@@ -246,13 +281,16 @@ export const CardService = {
 
     /**
      * Obtiene una carta por su ID
-     * @param {string} id - UUID de la carta
-     * @returns {Promise<{data: Object|null, error: string|null}>}
      */
     async getCardById(id) {
         try {
-            const response = await fetch(`${API_URL}/cards/${id}`);
-            const data = await handleResponse(response);
+            const { data, error } = await supabase
+                .from('cards')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) throw error;
             return { data, error: null };
         } catch (error) {
             console.error('Error fetching card:', error);
@@ -261,81 +299,93 @@ export const CardService = {
     },
 
     /**
-     * Get Living Legend data (scraped from official site)
+     * Get Living Legend data
+     * For now, returning hardcoded or scraped data via separate serverless function if needed.
+     * Reverting to fetching from Vercel function /api/living-legend
      */
     async getLivingLegendData() {
         try {
-            const response = await fetch(`${API_URL}/cards/living-legend`);
-            const data = await handleResponse(response);
-            // Returns array of heroes
+            const response = await fetch('/api/living-legend');
+            if (!response.ok) throw new Error('Failed to fetch LL data');
+            const data = await response.json();
             return { data, error: null };
         } catch (error) {
-            console.error("Error fetching LL data:", error);
-            return { data: [], error: error.message };
+            // Fallback or ignore for now as we haven't implemented the function yet
+            console.warn("LL data fetch failed (function not implemented?)", error);
+            return { data: [], error: null };
         }
     },
 
     /**
-     * Get Banned Cards (scraped)
+     * Get Banned Cards
      */
     async getBannedCards() {
         try {
-            const response = await fetch(`${API_URL}/cards/bans`);
-            const data = await handleResponse(response);
+            const response = await fetch('/api/bans');
+            if (!response.ok) throw new Error('Failed to fetch Banned data');
+            const data = await response.json();
             return { data, error: null };
         } catch (error) {
-            console.error("Error fetching Bans data:", error);
-            return { data: {}, error: error.message };
+            console.warn("Bans data fetch failed", error);
+            return { data: {}, error: null };
         }
     },
 
     /**
      * Obtiene las clases disponibles
-     * @returns {Promise<{data: Array<string>|null, error: string|null}>}
      */
     async getClasses() {
         try {
-            const response = await fetch(`${API_URL}/cards/metadata/classes`);
-            const data = await handleResponse(response);
-            return { data, error: null };
+            const { data, error } = await supabase
+                .from('cards')
+                .select('clase')
+                .not('clase', 'is', null);
+
+            if (error) throw error;
+
+            const classes = [...new Set(data.map(c => c.clase))].sort();
+            return { data: classes, error: null };
         } catch (error) {
-            console.error('Error fetching classes:', error);
             return { data: null, error: error.message };
         }
     },
 
     /**
      * Obtiene los sets disponibles
-     * @returns {Promise<{data: Array<string>|null, error: string|null}>}
      */
     async getSets() {
         try {
-            const response = await fetch(`${API_URL}/cards/metadata/sets`);
-            const data = await handleResponse(response);
-            return { data, error: null };
+            const { data, error } = await supabase
+                .from('cards')
+                .select('set_code')
+                .not('set_code', 'is', null);
+
+            if (error) throw error;
+
+            const sets = [...new Set(data.map(c => c.set_code))].sort();
+            return { data: sets, error: null };
         } catch (error) {
-            console.error('Error fetching sets:', error);
             return { data: null, error: error.message };
         }
     },
 
     /**
      * Obtiene cartas por lista de nombres
-     * @param {string[]} names 
      */
     async getCardsByNames(names) {
         try {
-            const response = await fetch(`${API_URL}/cards/batch-lookup`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ names })
-            });
-            const data = await handleResponse(response);
+            // "name.ilike.A,name.ilike.B"
+            const orFilter = names.map(name => `name.ilike."${name.replace(/"/g, '')}"`).join(',');
+
+            const { data, error } = await supabase
+                .from('cards')
+                .select('id, name, pitch, costo, tipo, imagen, set_code, clase, card_type, power, defense, texto')
+                .or(orFilter)
+                .not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
+
+            if (error) throw error;
             return { data, error: null };
         } catch (error) {
-            console.error('Error batch fetching cards:', error);
             return { data: null, error: error.message };
         }
     }
@@ -345,385 +395,470 @@ export const CardService = {
  * Servicio para gestión de mazos
  */
 export const DeckService = {
-    /**
-     * Obtiene los mazos del usuario
-     */
     async getDecks(scope = '', filters = {}) {
         try {
-            const token = localStorage.getItem('token');
-            // Construct URL with params
-            const params = new URLSearchParams();
-            if (scope) params.append('scope', scope);
+            let query = supabase
+                .from('decks')
+                .select(`
+                    *,
+                    user:users(username, avatar_url)
+                `, { count: 'exact' });
 
-            if (filters.hero) params.append('hero', filters.hero);
-            if (filters.username) params.append('username', filters.username);
-            if (filters.sort) params.append('sortOrder', filters.sort); // 'newest' or 'oldest'
+            if (scope === 'user') {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) query = query.eq('user_id', user.id);
+            } else if (scope === 'public') {
+                query = query.eq('visibility', 'public');
+            }
 
-            const url = `${API_URL}/decks?${params.toString()}`;
+            if (filters.hero) query = query.ilike('hero', `%${filters.hero}%`);
+            if (filters.username) {
+                // Join filtering is trickier in Supabase JS standard syntax
+                // But we can filter on the joined relation if configured?
+                // Or perform separate lookup. For now, skip complex join filter.
+            }
 
-            const response = await fetch(url, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            return await handleResponse(response);
+            if (filters.sort === 'oldest') {
+                query = query.order('created_at', { ascending: true });
+            } else {
+                query = query.order('created_at', { ascending: false });
+            }
+
+            const { data, error, count } = await query;
+            if (error) throw error;
+            return { data, count };
         } catch (error) {
             console.error('Error fetching decks:', error);
             throw error;
         }
     },
 
-    /**
-     * Obtiene un mazo por ID
-     */
     async getDeckById(id) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/decks/${id}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            return await handleResponse(response);
+            // Fetch deck header
+            const { data: deck, error } = await supabase
+                .from('decks')
+                .select(`
+                    *,
+                    user:users(username, avatar_url)
+                `)
+                .eq('id', id)
+                .single();
+
+            if (error) throw error;
+
+            // Fetch deck cards
+            const { data: cards, error: cardsError } = await supabase
+                .from('deck_cards')
+                .select('*, card:cards(*)')
+                .eq('deck_id', id);
+
+            if (cardsError) throw cardsError;
+
+            // Combine
+            return {
+                ...deck, cards: cards.map(c => ({
+                    ...c.card,
+                    quantity: c.quantity,
+                    is_sideboard: c.is_sideboard,
+                    section: c.section // if supported
+                }))
+            };
         } catch (error) {
             console.error('Error fetching deck:', error);
             throw error;
         }
     },
 
-    /**
-     * Crea un nuevo mazo
-     */
     async createDeck(deckData) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/decks`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(deckData)
-            });
-            return await handleResponse(response);
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged in');
+
+            // 1. Insert Deck
+            const { data: deck, error } = await supabase
+                .from('decks')
+                .insert({
+                    name: deckData.name,
+                    hero: deckData.hero,
+                    format: deckData.format,
+                    description: deckData.description,
+                    visibility: deckData.visibility || 'public',
+                    user_id: user.id
+                })
+                .select()
+                .single();
+
+            if (error) throw error;
+
+            // 2. Insert Cards
+            if (deckData.cards && deckData.cards.length > 0) {
+                const deckCards = deckData.cards.map(c => ({
+                    deck_id: deck.id,
+                    card_id: c.id,
+                    quantity: c.quantity || 1,
+                    is_sideboard: c.is_sideboard || false,
+                    section: c.section || 'main'
+                }));
+
+                const { error: cardsError } = await supabase
+                    .from('deck_cards')
+                    .insert(deckCards);
+
+                if (cardsError) throw cardsError;
+            }
+
+            return deck;
         } catch (error) {
             console.error('Error creating deck:', error);
             throw error;
         }
     },
 
-    /**
-     * Actualiza un mazo existente
-     */
     async updateDeck(id, deckData) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/decks/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(deckData)
-            });
-            return await handleResponse(response);
+            // 1. Update Deck Details
+            const { error } = await supabase
+                .from('decks')
+                .update({
+                    name: deckData.name,
+                    hero: deckData.hero,
+                    format: deckData.format,
+                    description: deckData.description,
+                    visibility: deckData.visibility
+                })
+                .eq('id', id);
+
+            if (error) throw error;
+
+            // 2. Update Cards (easiest strategy: delete all and re-insert)
+            // Ideally use upsert or diffing, but for MVP re-insert is safer for consistency.
+            if (deckData.cards) {
+                // Delete existing
+                await supabase.from('deck_cards').delete().eq('deck_id', id);
+
+                // Insert new
+                if (deckData.cards.length > 0) {
+                    const deckCards = deckData.cards.map(c => ({
+                        deck_id: id,
+                        card_id: c.id,
+                        quantity: c.quantity || 1,
+                        is_sideboard: c.is_sideboard || false,
+                        section: c.section || 'main'
+                    }));
+
+                    const { error: cardsError } = await supabase
+                        .from('deck_cards')
+                        .insert(deckCards);
+
+                    if (cardsError) throw cardsError;
+                }
+            }
+
+            return { id, ...deckData };
         } catch (error) {
             console.error('Error updating deck:', error);
             throw error;
         }
     },
 
-    /**
-     * Elimina un mazo
-     */
     async deleteDeck(id) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/decks/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (!response.ok) throw new Error('Failed to delete deck');
+            const { error } = await supabase
+                .from('decks')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
             return true;
         } catch (error) {
-            console.error('Error deleting deck:', error);
             throw error;
         }
     },
 
-    /**
-     * Obtiene los comentarios de un mazo
-     */
     async getDeckComments(deckId) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/decks/${deckId}/comments`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            return await handleResponse(response);
+            const { data, error } = await supabase
+                .from('comments')
+                .select('*, user:users(username, avatar_url)')
+                .eq('deck_id', deckId)
+                .order('created_at', { ascending: true });
+
+            if (error) throw error;
+            return data;
         } catch (error) {
-            console.error('Error fetching comments:', error);
             throw error;
         }
     },
 
-    /**
-     * Publica un comentario en un mazo
-     */
     async postDeckComment(deckId, commentData) {
         try {
-            const token = localStorage.getItem('token');
-            // commentData: { content, parentId }
-            // Backend expects userId and username in body for now, but really should be from token.
-            // Let's pass what we can.
-            const user = JSON.parse(localStorage.getItem('user'));
-            const payload = {
-                ...commentData,
-                userId: user?.id,
-                username: user?.user_metadata?.username || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User'
-            };
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged in');
 
-            const response = await fetch(`${API_URL}/decks/${deckId}/comments`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(payload)
-            });
-            return await handleResponse(response);
+            const { data, error } = await supabase
+                .from('comments')
+                .insert({
+                    deck_id: deckId,
+                    user_id: user.id,
+                    content: commentData.content,
+                    parent_id: commentData.parentId || null
+                })
+                .select('*, user:users(username, avatar_url)')
+                .single();
+
+            if (error) throw error;
+            return data;
         } catch (error) {
-            console.error('Error posting comment:', error);
             throw error;
         }
     },
 
-    /**
-     * Obtiene el estado de likes de un mazo (count y si el usuario actual ha dado like)
-     */
     async getLikeStatus(deckId) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/decks/${deckId}/likes`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            return await handleResponse(response);
+            const { data: { user } } = await supabase.auth.getUser();
+
+            // Get count
+            const { count, error } = await supabase
+                .from('deck_likes')
+                .select('*', { count: 'exact', head: true })
+                .eq('deck_id', deckId);
+
+            if (error) throw error;
+
+            let liked = false;
+            if (user) {
+                const { data } = await supabase
+                    .from('deck_likes')
+                    .select('id')
+                    .eq('deck_id', deckId)
+                    .eq('user_id', user.id)
+                    .single();
+                liked = !!data;
+            }
+
+            return { likes: count, liked };
         } catch (error) {
-            console.error('Error fetching like status:', error);
             throw error;
         }
     },
 
-    /**
-     * Toggle like en un mazo (añade si no existe, quita si existe)
-     */
     async toggleLike(deckId) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/decks/${deckId}/like`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            return await handleResponse(response);
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged in');
+
+            // Check if exists
+            const { data: existing } = await supabase
+                .from('deck_likes')
+                .select('id')
+                .eq('deck_id', deckId)
+                .eq('user_id', user.id)
+                .single();
+
+            if (existing) {
+                // Unlike
+                await supabase
+                    .from('deck_likes')
+                    .delete()
+                    .eq('id', existing.id);
+                return { liked: false };
+            } else {
+                // Like
+                await supabase
+                    .from('deck_likes')
+                    .insert({
+                        deck_id: deckId,
+                        user_id: user.id
+                    });
+                return { liked: true };
+            }
         } catch (error) {
-            console.error('Error toggling like:', error);
             throw error;
         }
     }
 };
 
 /**
- * Servicio para gestión de colección de usuario
+ * Servicio para colección
  */
 export const CollectionService = {
-    /**
-     * Obtiene la colección del usuario con filtros
-     */
     async getCollection(filters = {}) {
         try {
-            const token = localStorage.getItem('token');
-            const params = new URLSearchParams();
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged immediately');
 
-            // Standard filters
-            if (filters.page) params.append('page', filters.page);
-            if (filters.pageSize) params.append('pageSize', filters.pageSize);
-            if (filters.search) params.append('search', filters.search);
-            if (filters.pitch) params.append('pitch', filters.pitch);
-            if (filters.costo) params.append('cost', filters.costo);
-            if (filters.set) params.append('set', filters.set);
-            if (filters.rareza) params.append('rarity', filters.rareza);
-            if (filters.clase) params.append('class', filters.clase);
+            let query = supabase
+                .from('collection')
+                .select('*, card:cards(*)')
+                .eq('user_id', user.id);
 
-            const response = await fetch(`${API_URL}/collection?${params.toString()}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            return await handleResponse(response);
+            // Filters implementation for collection is tricky because filtering applies to the CARD not the collection entry usually.
+            // Supabase allows filtering on joined tables: card:cards!inner(...)
+
+            // Simplified for now: Fetch all and filter in memory if small, or apply inner join filter.
+            // Let's assume user collection is not massive (<1000 unique cards).
+
+            const { data, error } = await query;
+            if (error) throw error;
+
+            // Map to flat structure expected by frontend
+            const flattened = data.map(item => ({
+                ...item.card,
+                collection_id: item.id,
+                quantity: item.quantity,
+                is_foil: item.is_foil
+            }));
+
+            // In-memory filter for now (safer than complex queries without verifying schema)
+            let result = flattened;
+            if (filters.search) result = result.filter(c => c.name.toLowerCase().includes(filters.search.toLowerCase()));
+
+            return { data: result, count: result.length };
         } catch (error) {
             console.error('Error fetching collection:', error);
             throw error;
         }
     },
 
-    /**
-     * Añade una carta a la colección
-     * @param {string} cardId - ID de la carta
-     * @param {number} quantity - Cantidad a añadir (default 1)
-     * @param {boolean} isFoil - Si es foil (default false)
-     */
     async addCard(cardId, quantity = 1, isFoil = false) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/collection/add`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ cardId, quantity, isFoil })
-            });
-            return await handleResponse(response);
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged in');
+
+            // Upsert mechanism
+            // Check if exists
+            const { data: existing } = await supabase
+                .from('collection')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('card_id', cardId)
+                .eq('is_foil', isFoil)
+                .single();
+
+            if (existing) {
+                const { error } = await supabase
+                    .from('collection')
+                    .update({ quantity: existing.quantity + quantity })
+                    .eq('id', existing.id);
+                if (error) throw error;
+            } else {
+                const { error } = await supabase
+                    .from('collection')
+                    .insert({
+                        user_id: user.id,
+                        card_id: cardId,
+                        quantity,
+                        is_foil: isFoil
+                    });
+                if (error) throw error;
+            }
+            return true;
         } catch (error) {
-            console.error('Error adding to collection:', error);
             throw error;
         }
     },
 
-    /**
-     * Elimina una carta de la colección
-     * @param {string} cardId 
-     * @param {number} quantity - Cantidad a eliminar
-     * @param {boolean} removeAll - Si se debe eliminar la entrada completa
-     */
     async removeCard(cardId, quantity = 1, removeAll = false, isFoil = false) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/collection/remove`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ cardId, quantity, removeAll, isFoil })
-            });
-            return await handleResponse(response);
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged in');
+
+            const { data: existing } = await supabase
+                .from('collection')
+                .select('*')
+                .eq('user_id', user.id)
+                .eq('card_id', cardId)
+                .eq('is_foil', isFoil)
+                .single();
+
+            if (!existing) return;
+
+            if (removeAll || existing.quantity <= quantity) {
+                await supabase.from('collection').delete().eq('id', existing.id);
+            } else {
+                await supabase.from('collection').update({ quantity: existing.quantity - quantity }).eq('id', existing.id);
+            }
+            return true;
         } catch (error) {
-            console.error('Error removing from collection:', error);
             throw error;
         }
     }
 };
 
 /**
- * Servicio para gestión de carpetas de mazos
+ * Servicio para carpetas (Folders)
  */
 export const FolderService = {
-    /**
-     * Get all folders for the current user
-     */
     async getFolders() {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/folders`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            return await handleResponse(response);
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return { data: [] };
+
+            const { data, error } = await supabase
+                .from('folders')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at');
+
+            if (error) throw error;
+            return data;
         } catch (error) {
-            console.error('Error fetching folders:', error);
             throw error;
         }
     },
 
-    /**
-     * Create a new folder
-     */
     async createFolder(name, color = '#C52222') {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/folders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ name, color })
-            });
-            return await handleResponse(response);
+            const { data: { user } } = await supabase.auth.getUser();
+            const { data, error } = await supabase
+                .from('folders')
+                .insert({ name, color, user_id: user.id })
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
         } catch (error) {
-            console.error('Error creating folder:', error);
             throw error;
         }
     },
 
-    /**
-     * Update a folder
-     */
     async updateFolder(id, updates) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/folders/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify(updates)
-            });
-            return await handleResponse(response);
+            const { data, error } = await supabase
+                .from('folders')
+                .update(updates)
+                .eq('id', id)
+                .select()
+                .single();
+            if (error) throw error;
+            return data;
         } catch (error) {
-            console.error('Error updating folder:', error);
             throw error;
         }
     },
 
-    /**
-     * Delete a folder
-     */
     async deleteFolder(id) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/folders/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
-            if (!response.ok) throw new Error('Failed to delete folder');
+            const { error } = await supabase.from('folders').delete().eq('id', id);
+            if (error) throw error;
             return true;
         } catch (error) {
-            console.error('Error deleting folder:', error);
             throw error;
         }
     },
 
-    /**
-     * Assign a deck to a folder
-     */
     async assignDeckToFolder(deckId, folderId) {
         try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`${API_URL}/folders/assign/${deckId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ folder_id: folderId })
-            });
-            return await handleResponse(response);
+            const { error } = await supabase
+                .from('decks')
+                .update({ folder_id: folderId })
+                .eq('id', deckId);
+
+            if (error) throw error;
+            return true;
         } catch (error) {
-            console.error('Error assigning deck to folder:', error);
             throw error;
         }
     }

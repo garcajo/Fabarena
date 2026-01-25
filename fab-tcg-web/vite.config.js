@@ -36,14 +36,11 @@ export default defineConfig(({ mode }) => ({
     })
   ],
   // Proxy only in development - in production, VITE_API_URL points to backend
+  // Proxy config removed as backend is deprecated in favor of direct Supabase connection + Serverless functions
+  // Use 'vercel dev' to test serverless functions locally
   server: mode === 'development' ? {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-        secure: false,
-      },
-    },
+    // No proxy needed for Supabase. 
+    // API routes for scraping are served by Vercel Dev.
   } : undefined,
   build: {
     // Optimize for production
