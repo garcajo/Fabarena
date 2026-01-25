@@ -1,16 +1,24 @@
 {
   "name": "fab-tcg-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "FAB Arena Backend API",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "seed": "node scripts/seed_supabase.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "fab",
+    "tcg",
+    "arena",
+    "api"
+  ],
+  "author": "FAB Arena Team",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
@@ -19,9 +27,14 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "express-rate-limit": "^7.5.0",
+    "express-validator": "^7.2.1",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "node-fetch": "^2.7.0",
-    "nodemon": "^3.1.11",
     "pg": "^8.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
   }
 }

@@ -173,11 +173,6 @@ exports.updateDeck = async (req, res) => {
         if (updates.maybeboard) safeUpdates.maybeboard = updates.maybeboard;
         console.log(`[updateDeck] Updating deck ${id}. Updates received:`, Object.keys(updates));
 
-        // DEBUG: Write payload to file
-        const fs = require('fs');
-        const path = require('path');
-        fs.writeFileSync(path.join(__dirname, '../../debug_update_deck.json'), JSON.stringify(updates, null, 2));
-
         if (updates.guide) {
             console.log(`[updateDeck] Guide update found. Length: ${Array.isArray(updates.guide) ? updates.guide.length : 'Not Array'}`);
             safeUpdates.guide = updates.guide;
