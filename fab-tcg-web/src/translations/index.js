@@ -219,7 +219,7 @@ export const translations = {
             of: 'of',
             cards: 'cards',
             error_loading: 'Error loading cards:',
-            backend_check: 'Verify that the backend is running at http://localhost:3000'
+            backend_check: 'Please check your internet connection or try again later.'
         },
         deckBuilder: {
             deckName: 'Deck Name',
@@ -440,7 +440,7 @@ export const translations = {
             of: 'de',
             cards: 'cartas',
             error_loading: 'Error al cargar las cartas:',
-            backend_check: 'Verifica que el backend esté ejecutándose en http://localhost:3000'
+            backend_check: 'Por favor verifica tu conexión a internet o intenta más tarde.'
         },
         hero: {
             title_prefix: 'Fab',
