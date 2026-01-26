@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
 import AdBanner from './AdBanner';
-import BuyMeCoffee from './BuyMeCoffee';
 import '../styles/Layout.css';
 
 /**
@@ -26,8 +25,6 @@ const Layout = ({ children }) => {
                     </p>
                 </div>
             </footer>
-            {/* Mobile Floating BMC Button */}
-            <BuyMeCoffee type="mobile" />
         </div>
     );
 };

@@ -3,7 +3,6 @@ import { Menu, X, Layers, Box, Layout as LayoutIcon, LogOut, Search, Package, Pl
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
-import BuyMeCoffee from './BuyMeCoffee';
 import '../styles/Navbar.css';
 
 
@@ -160,9 +159,8 @@ const Navbar = () => {
         <div className="navbar-start">
           <Link to="/" className="navbar-logo">
             <span className="logo-text desktop-only">FabArena</span>
-            {/* Desktop BMC Button */}
-            <BuyMeCoffee type="desktop" />
           </Link>
+
           {/* Mobile Home Button */}
           <Link
             to="/"
