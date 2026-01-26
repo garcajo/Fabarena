@@ -152,6 +152,12 @@ const WHITE_BORDER_SETS = ['1HP'];
 /**
  * Servicio de cartas
  */
+// Import static data
+import staticCards from '../data/cards.json';
+
+/**
+ * Servicio de cartas (Updated to use Static JSON)
+ */
 export const CardService = {
     /**
      * Obtiene todas las cartas con opciones de paginación y filtros
@@ -171,88 +177,90 @@ export const CardService = {
         } = options;
 
         try {
-            let query = supabase
-                .from('cards')
-                .select('*', { count: 'exact' });
+            // Start with all cards from JSON
+            let filtered = staticCards;
 
             // Apply filters
             if (!includeWhiteBorder) {
-                query = query.not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
+                // Filter strings; ensure WHITE_BORDER_SETS is available or hardcoded
+                filtered = filtered.filter(c => !WHITE_BORDER_SETS.includes(c.set_code));
             }
 
             if (search) {
-                query = query.ilike('name', `%${search}%`);
+                const searchLower = search.toLowerCase();
+                filtered = filtered.filter(c => c.name.toLowerCase().includes(searchLower));
             }
 
             if (clase) {
                 if (Array.isArray(clase)) {
-                    const orQuery = clase.map(c => `clase.ilike.%${c}%`).join(',');
-                    query = query.or(orQuery);
+                    // Check if card class contains ANY of the requested classes
+                    // Assuming c.clase is a string like "Warrior" or "Runeblade"
+                    filtered = filtered.filter(c => {
+                        return clase.some(cls => c.clase.toLowerCase().includes(cls.toLowerCase()));
+                    });
                 } else {
-                    query = query.ilike('clase', `%${clase}%`);
+                    filtered = filtered.filter(c => c.clase.toLowerCase().includes(clase.toLowerCase()));
                 }
             }
 
             if (set) {
                 if (Array.isArray(set)) {
-                    query = query.in('set_code', set);
+                    filtered = filtered.filter(c => set.includes(c.set_code));
                 } else {
-                    query = query.eq('set_code', set);
+                    filtered = filtered.filter(c => c.set_code === set);
                 }
             }
 
             if (rareza) {
                 if (Array.isArray(rareza)) {
-                    query = query.in('rareza', rareza);
+                    filtered = filtered.filter(c => rareza.includes(c.rareza));
                 } else {
-                    query = query.eq('rareza', rareza);
+                    filtered = filtered.filter(c => c.rareza === rareza);
                 }
             }
 
             if (pitch) {
                 if (Array.isArray(pitch)) {
                     const pitchInts = pitch.map(p => parseInt(p, 10));
-                    query = query.in('pitch', pitchInts);
+                    filtered = filtered.filter(c => pitchInts.includes(c.pitch));
                 } else {
-                    query = query.eq('pitch', parseInt(pitch, 10));
+                    const pInt = parseInt(pitch, 10);
+                    filtered = filtered.filter(c => c.pitch === pInt);
                 }
             }
 
             if (costo) {
-                if (Array.isArray(costo)) {
-                    query = query.in('costo', costo);
-                } else {
-                    query = query.eq('costo', costo);
-                }
+                // Costo can be string or int in JSON? Usually int based on our script.
+                // handle array or single
+                const costoArr = Array.isArray(costo) ? costo : [costo];
+                // Loose comparison if string vs int mismatch
+                filtered = filtered.filter(c => costoArr.some(desired => c.costo == desired));
             }
 
             if (type) {
                 if (Array.isArray(type)) {
-                    const orQuery = type.map(t => `tipo.ilike.%${t}%`).join(',');
-                    query = query.or(orQuery);
+                    filtered = filtered.filter(c => type.some(t => c.tipo.toLowerCase().includes(t.toLowerCase())));
                 } else {
-                    query = query.ilike('tipo', `%${type}%`);
+                    filtered = filtered.filter(c => c.tipo.toLowerCase().includes(type.toLowerCase()));
                 }
             }
 
+            // Order by name
+            filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+            const totalCount = filtered.length;
+
             // Pagination
             const from = page * pageSize;
-            const to = from + pageSize - 1;
-            query = query.range(from, to);
-
-            // Order
-            query = query.order('name', { ascending: true });
-
-            const { data, error, count } = await query;
-
-            if (error) throw error;
+            const to = from + pageSize;
+            const paginatedData = filtered.slice(from, to);
 
             return {
-                data,
-                count,
+                data: paginatedData,
+                count: totalCount,
                 page,
                 pageSize,
-                totalPages: Math.ceil(count / pageSize),
+                totalPages: Math.ceil(totalCount / pageSize),
                 error: null
             };
         } catch (error) {
@@ -266,13 +274,12 @@ export const CardService = {
      */
     async getCardsByName(name) {
         try {
-            const { data, error } = await supabase
-                .from('cards')
-                .select('*')
-                .ilike('name', name); // Use exact match or ilike? Frontend logic assumed loosely.
-
-            if (error) throw error;
-            return data || [];
+            if (!name) return [];
+            const nameLower = name.toLowerCase();
+            // Exact match or contains? ilike usually implies contains or loose match.
+            // Let's do loose match
+            const found = staticCards.filter(c => c.name.toLowerCase().includes(nameLower));
+            return found;
         } catch (error) {
             console.error('Error fetching card versions:', error);
             return [];
@@ -284,14 +291,8 @@ export const CardService = {
      */
     async getCardById(id) {
         try {
-            const { data, error } = await supabase
-                .from('cards')
-                .select('*')
-                .eq('id', id)
-                .single();
-
-            if (error) throw error;
-            return { data, error: null };
+            const found = staticCards.find(c => c.id === id);
+            return { data: found || null, error: null };
         } catch (error) {
             console.error('Error fetching card:', error);
             return { data: null, error: error.message };
@@ -300,8 +301,6 @@ export const CardService = {
 
     /**
      * Get Living Legend data
-     * For now, returning hardcoded or scraped data via separate serverless function if needed.
-     * Reverting to fetching from Vercel function /api/living-legend
      */
     async getLivingLegendData() {
         try {
@@ -310,8 +309,7 @@ export const CardService = {
             const data = await response.json();
             return { data, error: null };
         } catch (error) {
-            // Fallback or ignore for now as we haven't implemented the function yet
-            console.warn("LL data fetch failed (function not implemented?)", error);
+            console.warn("LL data fetch failed", error);
             return { data: [], error: null };
         }
     },
@@ -336,14 +334,7 @@ export const CardService = {
      */
     async getClasses() {
         try {
-            const { data, error } = await supabase
-                .from('cards')
-                .select('clase')
-                .not('clase', 'is', null);
-
-            if (error) throw error;
-
-            const classes = [...new Set(data.map(c => c.clase))].sort();
+            const classes = [...new Set(staticCards.map(c => c.clase).filter(Boolean))].sort();
             return { data: classes, error: null };
         } catch (error) {
             return { data: null, error: error.message };
@@ -355,14 +346,7 @@ export const CardService = {
      */
     async getSets() {
         try {
-            const { data, error } = await supabase
-                .from('cards')
-                .select('set_code')
-                .not('set_code', 'is', null);
-
-            if (error) throw error;
-
-            const sets = [...new Set(data.map(c => c.set_code))].sort();
+            const sets = [...new Set(staticCards.map(c => c.set_code).filter(Boolean))].sort();
             return { data: sets, error: null };
         } catch (error) {
             return { data: null, error: error.message };
@@ -374,17 +358,12 @@ export const CardService = {
      */
     async getCardsByNames(names) {
         try {
-            // "name.ilike.A,name.ilike.B"
-            const orFilter = names.map(name => `name.ilike."${name.replace(/"/g, '')}"`).join(',');
+            // names is array of strings
+            // Case insensitive match
+            const lowerNames = names.map(n => n.toLowerCase());
+            const found = staticCards.filter(c => lowerNames.includes(c.name.toLowerCase()) && !WHITE_BORDER_SETS.includes(c.set_code));
 
-            const { data, error } = await supabase
-                .from('cards')
-                .select('id, name, pitch, costo, tipo, imagen, set_code, clase, card_type, power, defense, texto')
-                .or(orFilter)
-                .not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
-
-            if (error) throw error;
-            return { data, error: null };
+            return { data: found, error: null };
         } catch (error) {
             return { data: null, error: error.message };
         }
