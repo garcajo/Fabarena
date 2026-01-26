@@ -11,7 +11,11 @@ import '../styles/AdBanner.css';
  * @param {string} adSlot - Your AdSense ad slot ID (when ready)
  * @param {string} adClient - Your AdSense client ID (when ready)
  */
-const AdBanner = ({ position = 'top', adSlot = '', adClient = '' }) => {
+const AdBanner = ({
+    position = 'top',
+    adSlot = import.meta.env.VITE_ADSENSE_SLOT_ID || '',
+    adClient = import.meta.env.VITE_ADSENSE_CLIENT_ID || 'ca-pub-5842541392737931'
+}) => {
     const adRef = useRef(null);
     const isAdSenseEnabled = adSlot && adClient;
 

@@ -1,0 +1,78 @@
+
+/* Buy Me a Coffee - General */
+.bmc-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFDD00; /* Official BMC Yellow */
+  color: #000000 !important;
+  border-radius: 8px; /* Rounded rect for desktop */
+  font-family: 'Cookie', cursive, sans-serif; /* BMC standard font mimic or fallback */
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  z-index: 999;
+}
+
+.bmc-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.bmc-icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+/* Desktop Version: Below Logo */
+.bmc-desktop {
+  margin-top: 4px;
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  width: fit-content;
+  border-radius: 6px;
+  display: none; /* Hidden by default, shown by query */
+}
+
+@media (min-width: 769px) {
+  .bmc-desktop {
+    display: flex;
+  }
+}
+
+/* Mobile Version: Floating Bubble */
+.bmc-mobile {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  padding: 0;
+  display: none; /* Hidden by default */
+  animation: bounceIn 0.5s ease;
+}
+
+@media (max-width: 768px) {
+  .bmc-mobile {
+    display: flex; /* Shown only on mobile */
+  }
+  
+  .bmc-mobile .bmc-icon {
+    margin-right: 0;
+    width: 28px;
+    height: 28px;
+  }
+
+  .bmc-mobile span {
+    display: none; /* Hide text on mobile bubble */
+  }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
