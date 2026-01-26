@@ -177,90 +177,95 @@ export const CardService = {
         } = options;
 
         try {
-            // Start with all cards from JSON
-            let filtered = staticCards;
+            let query = supabase
+                .from('cards')
+                .select('*', { count: 'exact' });
 
             // Apply filters
             if (!includeWhiteBorder) {
-                // Filter strings; ensure WHITE_BORDER_SETS is available or hardcoded
-                filtered = filtered.filter(c => !WHITE_BORDER_SETS.includes(c.set_code));
+                // Filter out white border sets
+                // Using .not('set_code', 'in', '(' + WHITE_BORDER_SETS.join(',') + ')') if supported, or multiple neq
+                // Simpler: Use a stored list or just ignore for now if not critical, 
+                // but best effort: 
+                if (WHITE_BORDER_SETS.length > 0) {
+                    query = query.not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
+                }
             }
 
             if (search) {
-                const searchLower = search.toLowerCase();
-                filtered = filtered.filter(c => c.name.toLowerCase().includes(searchLower));
+                query = query.ilike('name', `%${search}%`);
             }
 
             if (clase) {
-                if (Array.isArray(clase)) {
-                    // Check if card class contains ANY of the requested classes
-                    // Assuming c.clase is a string like "Warrior" or "Runeblade"
-                    filtered = filtered.filter(c => {
-                        return clase.some(cls => c.clase.toLowerCase().includes(cls.toLowerCase()));
-                    });
-                } else {
-                    filtered = filtered.filter(c => c.clase.toLowerCase().includes(clase.toLowerCase()));
+                if (Array.isArray(clase) && clase.length > 0) {
+                    // Create OR string: "clase.ilike.%A%,clase.ilike.%B%"
+                    const orCondition = clase.map(c => `clase.ilike.%${c}%`).join(',');
+                    query = query.or(orCondition);
+                } else if (typeof clase === 'string' && clase) {
+                    query = query.ilike('clase', `%${clase}%`);
                 }
             }
 
             if (set) {
                 if (Array.isArray(set)) {
-                    filtered = filtered.filter(c => set.includes(c.set_code));
-                } else {
-                    filtered = filtered.filter(c => c.set_code === set);
+                    query = query.in('set_code', set);
+                } else if (set) {
+                    query = query.eq('set_code', set);
                 }
             }
 
             if (rareza) {
                 if (Array.isArray(rareza)) {
-                    filtered = filtered.filter(c => rareza.includes(c.rareza));
-                } else {
-                    filtered = filtered.filter(c => c.rareza === rareza);
+                    query = query.in('rareza', rareza);
+                } else if (rareza) {
+                    query = query.eq('rareza', rareza);
                 }
             }
 
-            if (pitch) {
+            if (pitch !== '') { // check defined, pitch can be 0 through 3
                 if (Array.isArray(pitch)) {
-                    const pitchInts = pitch.map(p => parseInt(p, 10));
-                    filtered = filtered.filter(c => pitchInts.includes(c.pitch));
+                    query = query.in('pitch', pitch);
                 } else {
-                    const pInt = parseInt(pitch, 10);
-                    filtered = filtered.filter(c => c.pitch === pInt);
+                    query = query.eq('pitch', pitch);
                 }
             }
 
-            if (costo) {
-                // Costo can be string or int in JSON? Usually int based on our script.
-                // handle array or single
-                const costoArr = Array.isArray(costo) ? costo : [costo];
-                // Loose comparison if string vs int mismatch
-                filtered = filtered.filter(c => costoArr.some(desired => c.costo == desired));
+            if (costo !== '') {
+                if (Array.isArray(costo)) {
+                    // exact match for array vs single value?
+                    // Usually user selects multiple costs.
+                    query = query.in('costo', costo);
+                } else {
+                    query = query.eq('costo', costo);
+                }
             }
 
             if (type) {
                 if (Array.isArray(type)) {
-                    filtered = filtered.filter(c => type.some(t => c.tipo.toLowerCase().includes(t.toLowerCase())));
-                } else {
-                    filtered = filtered.filter(c => c.tipo.toLowerCase().includes(type.toLowerCase()));
+                    const typeOr = type.map(t => `tipo.ilike.%${t}%`).join(',');
+                    query = query.or(typeOr);
+                } else if (type) {
+                    query = query.ilike('tipo', `%${type}%`);
                 }
             }
 
             // Order by name
-            filtered.sort((a, b) => a.name.localeCompare(b.name));
-
-            const totalCount = filtered.length;
+            query = query.order('name', { ascending: true });
 
             // Pagination
             const from = page * pageSize;
-            const to = from + pageSize;
-            const paginatedData = filtered.slice(from, to);
+            const to = from + pageSize - 1;
+
+            const { data, count, error } = await query.range(from, to);
+
+            if (error) throw error;
 
             return {
-                data: paginatedData,
-                count: totalCount,
+                data: data,
+                count: count,
                 page,
                 pageSize,
-                totalPages: Math.ceil(totalCount / pageSize),
+                totalPages: Math.ceil(count / pageSize),
                 error: null
             };
         } catch (error) {
@@ -275,11 +280,13 @@ export const CardService = {
     async getCardsByName(name) {
         try {
             if (!name) return [];
-            const nameLower = name.toLowerCase();
-            // Exact match or contains? ilike usually implies contains or loose match.
-            // Let's do loose match
-            const found = staticCards.filter(c => c.name.toLowerCase().includes(nameLower));
-            return found;
+            const { data, error } = await supabase
+                .from('cards')
+                .select('*')
+                .ilike('name', `%${name}%`);
+
+            if (error) throw error;
+            return data;
         } catch (error) {
             console.error('Error fetching card versions:', error);
             return [];
@@ -291,8 +298,12 @@ export const CardService = {
      */
     async getCardById(id) {
         try {
-            const found = staticCards.find(c => c.id === id);
-            return { data: found || null, error: null };
+            const { data, error } = await supabase
+                .from('cards')
+                .select('*')
+                .eq('id', id)
+                .single();
+            return { data, error };
         } catch (error) {
             console.error('Error fetching card:', error);
             return { data: null, error: error.message };
@@ -332,9 +343,21 @@ export const CardService = {
     /**
      * Obtiene las clases disponibles
      */
+    /**
+     * Obtiene las clases disponibles
+     */
     async getClasses() {
         try {
-            const classes = [...new Set(staticCards.map(c => c.clase).filter(Boolean))].sort();
+            // Retrieve all classes from DB (lightweight distinct if possible, else fetch all claa)
+            // Supabase doesn't support .distinct() directly in query builder. 
+            // We fetch all non-null classes.
+            const { data, error } = await supabase
+                .from('cards')
+                .select('clase');
+
+            if (error) throw error;
+
+            const classes = [...new Set(data.map(c => c.clase).filter(Boolean))].sort();
             return { data: classes, error: null };
         } catch (error) {
             return { data: null, error: error.message };
@@ -346,7 +369,13 @@ export const CardService = {
      */
     async getSets() {
         try {
-            const sets = [...new Set(staticCards.map(c => c.set_code).filter(Boolean))].sort();
+            const { data, error } = await supabase
+                .from('cards')
+                .select('set_code');
+
+            if (error) throw error;
+
+            const sets = [...new Set(data.map(c => c.set_code).filter(Boolean))].sort();
             return { data: sets, error: null };
         } catch (error) {
             return { data: null, error: error.message };
@@ -359,11 +388,23 @@ export const CardService = {
     async getCardsByNames(names) {
         try {
             // names is array of strings
-            // Case insensitive match
-            const lowerNames = names.map(n => n.toLowerCase());
-            const found = staticCards.filter(c => lowerNames.includes(c.name.toLowerCase()) && !WHITE_BORDER_SETS.includes(c.set_code));
+            // Case insensitive match is hard for array.
+            // But usually names come from the DB itself (e.g. deck list).
+            // We can use .in('name', names) if they match exactly.
+            // Or we iterate? No.
+            // Let's assume exact match for now, or use textSearch if names are space separated strings?
+            // Safer: fetch cards where name is in the list.
+            const { data, error } = await supabase
+                .from('cards')
+                .select('*')
+                .in('name', names);
 
-            return { data: found, error: null };
+            if (error) throw error;
+
+            // Filter sets if needed (white border)
+            const filtered = data.filter(c => !WHITE_BORDER_SETS.includes(c.set_code));
+
+            return { data: filtered, error: null };
         } catch (error) {
             return { data: null, error: error.message };
         }
