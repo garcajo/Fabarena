@@ -1224,7 +1224,7 @@ const DeckBuilder = () => {
                                 {isSearchDropdownOpen && searchResults.length > 0 && (
                                     <div className="search-results-dropdown-large">
                                         {searchResults.map(card => {
-                                            const banned = isCardBanned(card.name, deckData.format);
+                                            const banned = isCardBanned(card, deckData.format);
                                             const currentCount =
                                                 (deckData.mainDeck.find(c => c.card.id === card.id)?.count || 0) +
                                                 (deckData.sideboard.find(c => c.card.id === card.id)?.count || 0) +

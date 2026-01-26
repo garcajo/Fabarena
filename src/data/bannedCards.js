@@ -7,7 +7,7 @@ export const BANNED_CARDS = {
         "Berserk",
         "Bloodsheath Skeleta",
         "Bonds of Agony",
-        "Bonds of Ancestry",
+        { name: "Bonds of Ancestry", pitch: [2, 3] }, // Yellow, Blue
         "Brand with Cinderclaw",
         "Cash In",
         "Chart the High Seas",
@@ -15,30 +15,32 @@ export const BANNED_CARDS = {
         "Crown of Seeds",
         "Drone of Brutality",
         "Duskblade",
-        "Golden Tipple",
+        { name: "Golden Tipple", pitch: [1, 2] }, // Red, Yellow
         "High Octane",
-        "Orb-Weaver Spinneret",
+        { name: "Orb-Weaver Spinneret", pitch: [2, 3] }, // Yellow, Blue
         "Orihon of Mystic Tenets",
         "Plume of Evergrowth",
         "Plunder Run",
-        "Pulse of Isenloft",
         "Rootbound Carapace",
         "Scepter of Pain",
         "Stubby Hammerers",
         "Talk a Big Game",
         "Tome of Aetherwind",
         "Tome of Divinity",
-        "Tome of Firebrand",
         "Tome of Fyendal",
-        "Withstand",
-        "Wrath of Retribution"
+        "Tome of Firebrand",
+        "Wrath of Retribution",
+        "Zephyr Needle"
     ],
     silver: [
-        // Official Silver Age banned list (as of August 19, 2025)
-        // Source: Legend Story Studios official announcement
+        // Official Silver Age banned list
         "Aether Flare",
         "Aether Ironweave",
         "Amulet of Ice",
+        // ... (keep existing silver list if not asked to change, but user only provided CC)
+        // I will keep the previous silver list or assume user provided ONLY CC updates?
+        // User request: "voy a dejarte la lista de baneos de Classic constructed para que lo corrijas"
+        // So I only touch CC. I'll preserve Silver.
         "Ball Lightning",
         "Belittle",
         "Bonds of Ancestry",
@@ -74,10 +76,44 @@ export const BANNED_CARDS = {
     ]
 };
 
-export const isCardBanned = (cardName, format) => {
+export const isCardBanned = (cardOrName, format) => {
     if (!format || !BANNED_CARDS[format]) return false;
 
-    // Normalize checks
+    const cardName = typeof cardOrName === 'string' ? cardOrName : cardOrName.name;
+    const cardPitch = typeof cardOrName === 'string' ? null : (cardOrName.pitch !== undefined ? cardOrName.pitch : null);
+
     const bannedList = BANNED_CARDS[format];
-    return bannedList.includes(cardName);
+
+    // Find entry
+    const entry = bannedList.find(item => {
+        if (typeof item === 'string') return item === cardName;
+        return item.name === cardName;
+    });
+
+    if (!entry) return false;
+
+    // If string match, it's fully banned
+    if (typeof entry === 'string') return true;
+
+    // If object match, check pitch
+    if (entry.pitch && cardPitch !== null) {
+        // FAB Pitch: 1 (Red), 2 (Yellow), 3 (Blue). Sometimes 0 works for some logic but usually 1-3.
+        return entry.pitch.includes(cardPitch);
+    }
+
+    // If we rely on name only but it's a specific pitch ban, strictly speaking we can't be sure.
+    // However, usually `isCardBanned` is called with the full card object in the new code.
+    // If called with name only, we return true (conservative) OR false?
+    // "Golden Tipple" (no pitch info) -> Is it banned? Yes, some versions are.
+    // But legal version exists (Blue). 
+    // If we flag it as banned, user can't pick Blue.
+    // Better to return FALSE if data is insufficient?
+    // Or return 'partial'?
+    // Let's default to FALSE if pitch is missing for a pitch-specific ban, 
+    // because it means "Is the abstract card banned?", no, only copies.
+    if (entry.pitch && cardPitch === null) {
+        return false;
+    }
+
+    return true;
 };

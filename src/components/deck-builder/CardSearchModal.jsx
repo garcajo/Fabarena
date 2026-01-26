@@ -220,7 +220,7 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                     )}
 
                     {currentResults.map(card => {
-                        const banned = isCardBanned(card.name, format);
+                        const banned = isCardBanned(card, format);
                         let equipmentClass = 'Generic';
                         let isHeroEquipment = false;
 
