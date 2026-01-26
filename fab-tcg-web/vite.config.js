@@ -43,9 +43,9 @@ export default defineConfig(({ mode }) => ({
     // API routes for scraping are served by Vercel Dev.
   } : undefined,
   build: {
-    // Optimize for production
-    minify: 'terser',
-    sourcemap: false,
+    // Optimize for production (Disabled for debugging)
+    minify: false, // WAS: 'terser'
+    sourcemap: true, // WAS: false
     rollupOptions: {
       output: {
         manualChunks: {
