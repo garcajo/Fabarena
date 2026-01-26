@@ -7,10 +7,19 @@ const EnvCheck = () => {
 
     useEffect(() => {
         const check = async () => {
-            const url = 'https://jvgchegzcicnwwsrzahz.supabase.co';
-            // Hardcoded check - skip variable verification
+            const url = import.meta.env.VITE_SUPABASE_URL;
+            const key = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-            let infoMsg = `URL: ${url ? url.substring(0, 15) + '...' : 'MISSING'} | Key: HARDCODED`;
+            let infoMsg = `URL: ${url ? url.substring(0, 15) + '...' : 'MISSING'} | Key: ${key ? 'PRESENT' : 'MISSING'}`;
+
+            if (!url || url.includes('your-project') || !key || key.includes('your-anon')) {
+                setStatus({
+                    loading: false,
+                    error: "CRITICAL: Environment Variables missing or default. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Vercel.",
+                    info: infoMsg
+                });
+                return;
+            }
 
             try {
                 const { data, error } = await supabase.from('cards').select('count').limit(1).single();
