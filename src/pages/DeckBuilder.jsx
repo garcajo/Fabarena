@@ -354,6 +354,11 @@ const DeckBuilder = () => {
             setShowToast(true);
             // Exit Edit Mode on successful save
             setIsEditMode(false);
+
+            // Redirect to My Decks after successful save
+            setTimeout(() => {
+                navigate('/my-decks');
+            }, 1500); // Small delay to show the success toast
         } catch (error) {
             console.error('Error saving deck:', error);
             setToastMessage(`${t('deckBuilder.deckError') || 'Error saving deck'}: ${error.message}`);
@@ -489,6 +494,8 @@ const DeckBuilder = () => {
     };
 
     const addCardToDeck = (card, target = activeSection, sourceSection = null) => {
+        console.log("[DeckBuilder] addCardToDeck called", { cardName: card.name, target, sourceSection, currentDeckSize: deckData.mainDeck.length });
+
         // If moving between active sections (Main/Side/Equip), limits don't block (swapping zones).
         // If coming from null (Search) or Maybeboard, limits apply.
         const isInternalActiveMove =
@@ -1205,7 +1212,7 @@ const DeckBuilder = () => {
                                     onChange={(e) => {
                                         setSearchTerm(e.target.value);
                                         if (e.target.value.length >= 2) {
-                                            handleSearch(e.target.value);
+                                            // Handle search via useEffect
                                             setSearching(true);
                                             setIsSearchDropdownOpen(true);
                                         } else {

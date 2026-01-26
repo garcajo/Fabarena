@@ -107,10 +107,10 @@ const DeckList = ({ mode }) => {
         setLoading(true);
         try {
             // Pass mode as scope ('public' or 'mine')
-            const data = await DeckService.getDecks(mode, currentFilters);
-            if (data) {
-                console.log("[Decks] Loaded decks:", data);
-                setDecks(data);
+            const result = await DeckService.getDecks(mode, currentFilters);
+            if (result && result.data) {
+                console.log("[Decks] Loaded decks:", result);
+                setDecks(result.data); // Use result.data (the array), not the whole object
             }
         } catch (err) {
             console.error(err);
@@ -148,18 +148,24 @@ const DeckList = ({ mode }) => {
         }
     };
 
-    const handleDeleteDeck = async (e, deckId) => {
+    // Opens delete confirmation modal
+    const handleDeleteDeck = (e, deckId, deckName) => {
         e.preventDefault();
         e.stopPropagation();
+        setDeleteModal({ show: true, deckId, deckName: deckName || 'this deck' });
+    };
 
-        if (window.confirm(t('decks.confirm_delete'))) {
-            try {
-                await DeckService.deleteDeck(deckId);
-                setDecks(prev => prev.filter(d => d.id !== deckId));
-            } catch (err) {
-                console.error("Failed to delete deck:", err);
-                alert("Failed to delete deck. Please try again.");
-            }
+    // Actually performs the delete after modal confirmation
+    const confirmDelete = async () => {
+        if (!deleteModal.deckId) return;
+        try {
+            await DeckService.deleteDeck(deleteModal.deckId);
+            setDecks(prev => prev.filter(d => d.id !== deleteModal.deckId));
+            setDeleteModal({ show: false, deckId: null, deckName: '' });
+        } catch (err) {
+            console.error("Failed to delete deck:", err);
+            alert("Failed to delete deck. Please try again.");
+            setDeleteModal({ show: false, deckId: null, deckName: '' });
         }
     };
 
@@ -182,6 +188,13 @@ const DeckList = ({ mode }) => {
         show: false,
         deckId: null,
         folders: []
+    });
+
+    // Delete confirmation modal state (replaces window.confirm which gets dismissed by re-renders)
+    const [deleteModal, setDeleteModal] = React.useState({
+        show: false,
+        deckId: null,
+        deckName: ''
     });
 
     // Handler to open move modal
@@ -272,6 +285,7 @@ const DeckList = ({ mode }) => {
                 <CustomSelect
                     options={[
                         { value: 'newest', label: t('filters.sort_newest') },
+                        { value: 'likes', label: t('filters.sort_likes') || 'Most Liked' },
                         { value: 'oldest', label: t('filters.sort_oldest') }
                     ]}
                     value={tempFilters.sort}
@@ -383,7 +397,7 @@ const DeckList = ({ mode }) => {
                                     </button>
                                     <button
                                         className="list-delete-btn"
-                                        onClick={(e) => handleDeleteDeck(e, deck.id)}
+                                        onClick={(e) => handleDeleteDeck(e, deck.id, deck.name)}
                                         title={t('common.delete') || "Delete"}
                                     >
                                         <Trash2 size={18} />
@@ -492,6 +506,66 @@ const DeckList = ({ mode }) => {
                                     {t('folders.noFolders') || 'No folders created yet'}
                                 </p>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            {deleteModal.show && (
+                <div className="move-modal-overlay" onClick={() => setDeleteModal({ show: false, deckId: null, deckName: '' })}>
+                    <div
+                        className="move-modal-content"
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="move-modal-header">
+                            <h3 className="move-modal-title">
+                                <Trash2 size={20} />
+                                {t('decks.confirm_delete_title') || 'Delete Deck'}
+                            </h3>
+                            <button
+                                onClick={() => setDeleteModal({ show: false, deckId: null, deckName: '' })}
+                                className="move-modal-close"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <div className="move-modal-body" style={{ padding: '1.5rem' }}>
+                            <p style={{ color: 'rgba(255, 255, 255, 0.8)', marginBottom: '1.5rem', textAlign: 'center' }}>
+                                {t('decks.confirm_delete') || 'Are you sure you want to delete'} <strong>"{deleteModal.deckName}"</strong>?
+                            </p>
+                            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                                <button
+                                    onClick={() => setDeleteModal({ show: false, deckId: null, deckName: '' })}
+                                    style={{
+                                        padding: '0.75rem 1.5rem',
+                                        background: 'rgba(255, 255, 255, 0.1)',
+                                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                                        borderRadius: '8px',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                >
+                                    {t('common.cancel') || 'Cancel'}
+                                </button>
+                                <button
+                                    onClick={confirmDelete}
+                                    style={{
+                                        padding: '0.75rem 1.5rem',
+                                        background: 'var(--color-primary-red)',
+                                        border: 'none',
+                                        borderRadius: '8px',
+                                        color: 'white',
+                                        cursor: 'pointer',
+                                        fontWeight: '600',
+                                        transition: 'all 0.2s ease'
+                                    }}
+                                >
+                                    {t('common.delete') || 'Delete'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

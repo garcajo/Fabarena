@@ -417,12 +417,11 @@ export const CardService = {
 export const DeckService = {
     async getDecks(scope = '', filters = {}) {
         try {
+            // Simplified query: We no longer join to 'users' table (which may not exist).
+            // 'username' is stored directly on 'decks' now.
             let query = supabase
                 .from('decks')
-                .select(`
-                    *,
-                    user:users(username, avatar_url)
-                `, { count: 'exact' });
+                .select('*', { count: 'exact' });
 
             if (scope === 'user') {
                 const { data: { user } } = await supabase.auth.getUser();
@@ -433,13 +432,13 @@ export const DeckService = {
 
             if (filters.hero) query = query.ilike('hero', `%${filters.hero}%`);
             if (filters.username) {
-                // Join filtering is trickier in Supabase JS standard syntax
-                // But we can filter on the joined relation if configured?
-                // Or perform separate lookup. For now, skip complex join filter.
+                query = query.ilike('username', `%${filters.username}%`);
             }
 
             if (filters.sort === 'oldest') {
                 query = query.order('created_at', { ascending: true });
+            } else if (filters.sort === 'likes') {
+                query = query.order('likes_count', { ascending: false });
             } else {
                 query = query.order('created_at', { ascending: false });
             }
@@ -455,13 +454,10 @@ export const DeckService = {
 
     async getDeckById(id) {
         try {
-            // Fetch deck header
+            // Fetch deck header (simplified: no join to users table)
             const { data: deck, error } = await supabase
                 .from('decks')
-                .select(`
-                    *,
-                    user:users(username, avatar_url)
-                `)
+                .select('*')
                 .eq('id', id)
                 .single();
 
@@ -492,6 +488,7 @@ export const DeckService = {
 
     async createDeck(deckData) {
         try {
+            console.log("[api.js] createDeck called with:", deckData);
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) throw new Error('Must be logged in');
 
@@ -504,16 +501,60 @@ export const DeckService = {
                     format: deckData.format,
                     description: deckData.description,
                     visibility: deckData.visibility || 'public',
-                    user_id: user.id
+                    user_id: user.id,
+                    username: deckData.username || user.user_metadata?.username || 'Unknown'
                 })
                 .select()
                 .single();
 
             if (error) throw error;
+            console.log("[api.js] Deck created:", deck.id);
 
             // 2. Insert Cards
-            if (deckData.cards && deckData.cards.length > 0) {
-                const deckCards = deckData.cards.map(c => ({
+            // Normalize cards from different sections if not provided as 'cards'
+            let cardsToInsert = deckData.cards || [];
+            if (!cardsToInsert.length) {
+                if (deckData.mainDeck) {
+                    const main = deckData.mainDeck.map(item => ({
+                        id: item.card.id,
+                        quantity: item.count,
+                        is_sideboard: false,
+                        section: 'main'
+                    }));
+                    cardsToInsert = [...cardsToInsert, ...main];
+                }
+                if (deckData.sideboard) {
+                    const side = deckData.sideboard.map(item => ({
+                        id: item.card.id,
+                        quantity: item.count,
+                        is_sideboard: true,
+                        section: 'sideboard'
+                    }));
+                    cardsToInsert = [...cardsToInsert, ...side];
+                }
+                if (deckData.equipment) {
+                    const equipMap = new Map();
+                    deckData.equipment.forEach(card => {
+                        const existing = equipMap.get(card.id) || 0;
+                        equipMap.set(card.id, existing + 1);
+                    });
+
+                    for (const [id, qty] of equipMap.entries()) {
+                        cardsToInsert.push({
+                            id: id,
+                            quantity: qty,
+                            is_sideboard: false,
+                            section: 'equipment'
+                        });
+                    }
+                }
+            }
+
+            console.log("[api.js] Final cardsToInsert:", cardsToInsert);
+
+
+            if (cardsToInsert.length > 0) {
+                const deckCards = cardsToInsert.map(c => ({
                     deck_id: deck.id,
                     card_id: c.id,
                     quantity: c.quantity || 1,
@@ -537,29 +578,85 @@ export const DeckService = {
 
     async updateDeck(id, deckData) {
         try {
+            console.log("[api.js] updateDeck called with:", id, deckData);
             // 1. Update Deck Details
+            const updatePayload = {
+                name: deckData.name,
+                hero: deckData.hero,
+                format: deckData.format,
+                description: deckData.description,
+                visibility: deckData.visibility
+            };
+
+            if (deckData.username) {
+                updatePayload.username = deckData.username;
+            }
+
             const { error } = await supabase
                 .from('decks')
-                .update({
-                    name: deckData.name,
-                    hero: deckData.hero,
-                    format: deckData.format,
-                    description: deckData.description,
-                    visibility: deckData.visibility
-                })
+                .update(updatePayload)
                 .eq('id', id);
 
             if (error) throw error;
+            console.log("[api.js] Deck details updated");
 
             // 2. Update Cards (easiest strategy: delete all and re-insert)
-            // Ideally use upsert or diffing, but for MVP re-insert is safer for consistency.
-            if (deckData.cards) {
+
+            // Normalize cards from different sections
+            let cardsToInsert = deckData.cards || [];
+            if (!cardsToInsert.length) {
+                if (deckData.mainDeck) {
+                    cardsToInsert = [
+                        ...cardsToInsert,
+                        ...deckData.mainDeck.map(item => ({
+                            id: item.card.id,
+                            quantity: item.count,
+                            is_sideboard: false,
+                            section: 'main'
+                        }))
+                    ];
+                }
+                if (deckData.sideboard) {
+                    cardsToInsert = [
+                        ...cardsToInsert,
+                        ...deckData.sideboard.map(item => ({
+                            id: item.card.id,
+                            quantity: item.count,
+                            is_sideboard: true,
+                            section: 'sideboard'
+                        }))
+                    ];
+                }
+                if (deckData.equipment) {
+                    const equipMap = new Map();
+                    deckData.equipment.forEach(card => {
+                        const existing = equipMap.get(card.id) || 0;
+                        equipMap.set(card.id, existing + 1);
+                    });
+
+                    for (const [eid, qty] of equipMap.entries()) {
+                        cardsToInsert.push({
+                            id: eid,
+                            quantity: qty,
+                            is_sideboard: false,
+                            section: 'equipment'
+                        });
+                    }
+                }
+            }
+
+            console.log("[api.js] updateDeck cardsToInsert:", cardsToInsert);
+
+            if (cardsToInsert.length > 0 || (deckData.mainDeck && deckData.mainDeck.length === 0)) {
+                // Only delete/re-insert if we actually have new data or explicitly clearing.
+                // Assuming if deckData comes in, we want to replace the deck contents.
+
                 // Delete existing
                 await supabase.from('deck_cards').delete().eq('deck_id', id);
 
                 // Insert new
-                if (deckData.cards.length > 0) {
-                    const deckCards = deckData.cards.map(c => ({
+                if (cardsToInsert.length > 0) {
+                    const deckCards = cardsToInsert.map(c => ({
                         deck_id: id,
                         card_id: c.id,
                         quantity: c.quantity || 1,

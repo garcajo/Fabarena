@@ -731,7 +731,8 @@
 }
 
 .list-delete-btn {
-    opacity: 0;
+    opacity: 1;
+    /* Always visible - hover-only was causing usability issues */
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -746,8 +747,9 @@
     transition: all 0.2s ease;
 }
 
+/* Hover state no longer controls visibility */
 .decks-list-row-wrapper:hover .list-delete-btn {
-    opacity: 1;
+    /* keep visible (opacity already 1) */
 }
 
 .list-delete-btn:hover {

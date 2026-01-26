@@ -105,7 +105,9 @@ export const translations = {
             no_results: 'No cards found.',
             close: 'Close',
             add: 'Add',
-            remove: 'Remove'
+            remove: 'Remove',
+            cancel: 'Cancel',
+            delete: 'Delete'
         },
         auth: {
             register_title: 'Create Account',
@@ -129,7 +131,8 @@ export const translations = {
             empty_title: 'Your Armory is Empty',
             empty_desc: 'Forge your first deck and prepare for battle.',
             start_button: 'Start Building',
-            confirm_delete: 'Do you wish to delete the deck?',
+            confirm_delete: 'Are you sure you want to delete this deck?',
+            confirm_delete_title: 'Delete Deck',
             no_public_decks: 'No public decks found yet. Be the first to share one!',
             view_comments: 'View Comments',
             created_by: 'Deck Created by:',
@@ -508,7 +511,9 @@ export const translations = {
             no_results: 'No se encontraron cartas.',
             close: 'Cerrar',
             add: 'Añadir',
-            remove: 'Eliminar'
+            remove: 'Eliminar',
+            cancel: 'Cancelar',
+            delete: 'Eliminar'
         },
         auth: {
             register_title: 'Crear Cuenta',
@@ -532,7 +537,8 @@ export const translations = {
             empty_title: 'Tu Armería está Vacía',
             empty_desc: 'Forge your first deck and prepare for battle.',
             start_button: 'Start Building',
-            confirm_delete: 'Do you wish to delete the deck?',
+            confirm_delete: '¿Estás seguro de que deseas eliminar este mazo?',
+            confirm_delete_title: 'Eliminar Mazo',
             no_public_decks: 'No hay mazos públicos para mostrar.',
             view_comments: 'Ver Comentarios',
             created_by: 'Mazo Creado por:',
