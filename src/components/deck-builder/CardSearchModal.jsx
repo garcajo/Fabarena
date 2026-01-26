@@ -81,8 +81,22 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                     params.type = 'Hero';
                 } else if (type === 'equipment') {
                     // Equipment can be "Weapon", "Equipment", "Head", "Chest", "Arms", "Legs"
-                    params.type = ['Equipment', 'Weapon', 'Head', 'Chest', 'Arms', 'Legs', 'Off-Hand'];
-                    console.log('🔍 Equipment filter params:', { heroClass, type: params.type });
+                    // Add Spanish translations to ensure we catch everything in DB
+                    params.type = [
+                        'Equipment', 'Weapon', 'Head', 'Chest', 'Arms', 'Legs', 'Off-Hand',
+                        'Equipamiento', 'Arma', 'Cabeza', 'Pecho', 'Brazos', 'Piernas', 'Mano-secundaria'
+                    ];
+
+                    // Server-side Class Filtering:
+                    // If we have a hero class, pass it to the backend so we don't fetch 500 irrelevant cards
+                    // and filter them out client-side (which might result in empty lists).
+                    if (heroClass) {
+                        // "Royal Draconic Ninja" -> ['royal', 'draconic', 'ninja', 'generic']
+                        const traits = heroClass.toLowerCase().split(/\s+/).filter(Boolean);
+                        params.clase = [...traits, 'generic'];
+                    }
+
+                    console.log('🔍 Equipment filter params:', { heroClass, type: params.type, classFilter: params.clase });
                 }
 
                 // Silver Age format restriction
@@ -119,19 +133,15 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                 } else if (type === 'equipment') {
                     processingResults.forEach(card => {
                         const key = card.name;
+                        // For equipment, we want to ensure we don't duplicate names
                         if (!uniqueMap.has(key)) uniqueMap.set(key, card);
                     });
                     processingResults = Array.from(uniqueMap.values());
 
-                    // Equipment Filter for Hero Class
+                    // Equipment Filter for Hero Class (Double check client side just in case)
                     if (heroClass) {
-                        // Split hero class specifically by spaces to get individual keywords (e.g. "Royal Draconic Ninja" -> ["royal", "draconic", "ninja"])
-                        const heroClassWords = heroClass.toLowerCase().split(/\s+/);
-
                         processingResults = processingResults.filter(card => {
-                            // Use the reliable 'clase' column from backend (fixed in DB)
                             const cardClassVal = card.clase || 'Generic';
-                            // Use shared validation logic
                             return isCardLegalForHero(cardClassVal, heroClass);
                         });
 

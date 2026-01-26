@@ -147,20 +147,19 @@
     color: white;
 }
 
-/* Context Menu */
+/* Context Menu - Overlays properly */
 .folder-context-menu {
-    position: absolute;
-    top: calc(100% + 4px);
-    right: 0;
+    position: fixed;
+    z-index: 9999;
     background: linear-gradient(135deg, rgba(25, 25, 25, 0.98), rgba(18, 18, 18, 0.95));
     backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 12px;
     padding: 0.5rem;
-    z-index: 2000;
     min-width: 140px;
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
-    animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+    animation: folderMenuFadeIn 0.15s ease-out;
 }
 
 @keyframes fadeIn {

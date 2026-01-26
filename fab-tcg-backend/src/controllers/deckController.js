@@ -107,6 +107,9 @@ exports.getDecks = async (req, res) => {
 
         if (sortOrder === 'oldest') {
             query = query.order('created_at', { ascending: true });
+        } else if (sortOrder === 'likes') {
+            // Sort by likes_count (descending)
+            query = query.order('likes_count', { ascending: false });
         } else {
             // Default newest
             query = query.order('created_at', { ascending: false });

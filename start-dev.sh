@@ -20,10 +20,9 @@ cd ..
 
 # Start Frontend
 echo "💻 Starting Frontend..."
-cd fab-tcg-web
-npm run dev &
+# Running from root as package.json is here
+npm run dev -- --open &
 FRONTEND_PID=$!
-cd ..
 
 echo "✅ Both servers are running!"
 echo "Press Ctrl+C to stop both servers."

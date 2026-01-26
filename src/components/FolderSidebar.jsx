@@ -20,6 +20,7 @@ const FolderSidebar = ({ selectedFolderId, onFolderSelect, onAssignDeck }) => {
     const [editingFolder, setEditingFolder] = useState(null);
     const [editName, setEditName] = useState('');
     const [menuOpenId, setMenuOpenId] = useState(null);
+    const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
     const [dragOverFolderId, setDragOverFolderId] = useState(null);
 
     // Fetch folders on mount
@@ -181,6 +182,8 @@ const FolderSidebar = ({ selectedFolderId, onFolderSelect, onAssignDeck }) => {
                                     className="folder-menu-btn"
                                     onClick={(e) => {
                                         e.stopPropagation();
+                                        const rect = e.currentTarget.getBoundingClientRect();
+                                        setMenuPosition({ top: rect.bottom + 4, left: rect.left - 100 });
                                         setMenuOpenId(menuOpenId === folder.id ? null : folder.id);
                                     }}
                                 >
@@ -189,7 +192,11 @@ const FolderSidebar = ({ selectedFolderId, onFolderSelect, onAssignDeck }) => {
 
                                 {/* Context Menu */}
                                 {menuOpenId === folder.id && (
-                                    <div className="folder-context-menu" onClick={(e) => e.stopPropagation()}>
+                                    <div
+                                        className="folder-context-menu"
+                                        style={{ top: menuPosition.top, left: menuPosition.left }}
+                                        onClick={(e) => e.stopPropagation()}
+                                    >
                                         <button onClick={() => {
                                             setEditingFolder(folder.id);
                                             setEditName(folder.name);

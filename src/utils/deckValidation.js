@@ -25,16 +25,21 @@ export const isCardLegalForHero = (cardClass, heroClass) => {
     if (cardClassLower.includes('generic')) return true;
 
     // 2. Split Hero traits (e.g. "royal draconic ninja" -> [royal, draconic, ninja])
-    const heroTraits = heroClassLower.split(/\s+/);
+    const heroTraits = heroClassLower.split(/\s+/).filter(Boolean);
 
-    // 3. Handle "/" in card class as OR. (e.g. "Assassin / Ninja" -> ["Assassin", "Ninja"])
-    // Split by slash first
-    const cardOptions = cardClassLower.split('/').map(s => s.trim());
+    // 3. Cleanse and Split by Slash (OR options)
+    // Slashes represent dual-class or alternative requirements (Hero must match at least one option).
+    const options = cardClassLower.split('/').map(s => s.trim());
+    const nonTraitWords = ['equipment', 'weapon', 'hero', 'arma', 'equipamiento', 'héroe', 'token'];
 
-    // 4. Check if AT LEAST ONE option is valid
-    // An option is valid if ALL its words are found in the hero's traits.
-    return cardOptions.some(optionStr => {
-        const optionTraits = optionStr.split(/\s+/);
-        return optionTraits.every(trait => heroTraits.includes(trait));
+    return options.some(optionStr => {
+        // Split each option by Space (AND traits)
+        // Spaces represent combined requirements like Talent + Class (Hero must match ALL traits in the option).
+        const traits = optionStr.split(/\s+/)
+            .filter(s => s && s !== 'generic' && !nonTraitWords.includes(s));
+
+        if (traits.length === 0) return true; // Effectively generic or just meta-words
+
+        return traits.every(t => heroTraits.includes(t));
     });
 };

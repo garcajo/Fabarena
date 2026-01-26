@@ -175,7 +175,29 @@ const DeckBuilder = () => {
                         return data;
                     };
 
-                    const heroData = safeParse(deck.hero);
+                    let heroData = safeParse(deck.hero);
+
+                    // SELF-HEALING: If hero exists but missing 'clase' (Legacy Data Issue), re-fetch it
+                    if (heroData && !heroData.clase && heroData.name) {
+                        try {
+                            console.log('Detected stale hero data (missing class), repairing...', heroData.name);
+                            const { data: heroResults } = await CardService.getCards({
+                                search: heroData.name,
+                                type: 'Hero',
+                                pageSize: 5
+                            });
+
+                            // Find exact match if possible, or take first
+                            const freshHero = heroResults?.find(h => h.name === heroData.name) || heroResults?.[0];
+                            if (freshHero) {
+                                console.log('Hero data repaired:', freshHero);
+                                heroData = freshHero;
+                            }
+                        } catch (repairErr) {
+                            console.error('Failed to repair hero data:', repairErr);
+                        }
+                    }
+
                     const equipmentData = safeParse(deck.equipment);
                     const mainDeckData = safeParse(deck.main_deck);
                     const sideboardData = safeParse(deck.sideboard);
@@ -397,7 +419,12 @@ const DeckBuilder = () => {
                 const seen = new Set();
 
                 (data || []).forEach(card => {
-                    // Filter out Equipment and Weapons (they have their own specific section)
+                    // 1. Strict Legality Check (especially for multi-trait like Draconic Ninja)
+                    if (deckData.hero && !isCardLegalForHero(card.clase, deckData.hero.clase)) {
+                        return;
+                    }
+
+                    // 2. Filter out Equipment and Weapons (they have their own specific section)
                     // Common types: Weapon, Head, Chest, Arms, Legs, Off-Hand
                     const type = (card.tipo || '').toLowerCase();
                     const excludedTypes = ['weapon', 'arma', 'head', 'cabeza', 'chest', 'pecho', 'arms', 'brazos', 'legs', 'piernas', 'off-hand', 'mano-secundaria', 'equipment', 'equipamiento'];
@@ -408,7 +435,6 @@ const DeckBuilder = () => {
 
                     // Use a key that combines name and pitch (if pitch exists)
                     // FAB cards are unique by Name + Pitch.
-                    // We must use `card.name` (not `card.nombre`) as that matches the database/backend schema.
                     const pitchSuffix = card.pitch !== undefined && card.pitch !== null ? `-${card.pitch}` : '';
                     const key = `${card.name}${pitchSuffix}`;
 
@@ -705,9 +731,9 @@ const DeckBuilder = () => {
         return (
             <div
                 key={`${card.id}-${index}`}
-                draggable={deckData.isOwner || !deckId}
+                draggable={canEdit}
                 onDragStart={(e) => {
-                    if (deckData.isOwner || !deckId) handleDragStart(e, card, section);
+                    if (canEdit) handleDragStart(e, card, section);
                 }}
                 className={`deck-card-wrapper-dnd ${isVisual ? 'visual-wrapper' : 'text-wrapper'}`}
                 style={{ display: 'contents' }} // Use contents so the inner div controls layout
@@ -720,7 +746,7 @@ const DeckBuilder = () => {
                             if (window.innerWidth < 768) {
                                 setPreviewCard({ item, section });
                             } else {
-                                if (deckData.isOwner || !deckId) {
+                                if (canEdit) {
                                     setActiveCardMenu(isMenuOpen ? null : menuKey);
                                 }
                             }
@@ -764,7 +790,7 @@ const DeckBuilder = () => {
                             if (window.innerWidth < 768) {
                                 setPreviewCard({ item, section });
                             } else {
-                                if (deckData.isOwner || !deckId) {
+                                if (canEdit) {
                                     setActiveCardMenu(isMenuOpen ? null : menuKey);
                                 }
                             }
@@ -891,7 +917,7 @@ const DeckBuilder = () => {
                         }
                     }}
                     onDragStart={(e, card) => handleDragStart(e, card, sectionName)}
-                    isOwner={deckData.isOwner || !deckId}
+                    isOwner={canEdit}
                     activeCardMenu={activeCardMenu}
                     setActiveCardMenu={setActiveCardMenu}
                     section={sectionName}
@@ -1361,7 +1387,7 @@ const DeckBuilder = () => {
                                             )}
 
                                             {/* Overlay Actions (Click) - Shared for both modes to maintain aesthetic consistency */}
-                                            {(deckData.isOwner || !deckId) && (
+                                            {canEdit && (
                                                 <div className={`hero-overlay-actions ${showHeroActions ? 'visible' : ''}`}>
                                                     <button className="change-hero-btn" onClick={(e) => {
                                                         e.stopPropagation();
@@ -1380,7 +1406,7 @@ const DeckBuilder = () => {
 
                             <div className="equipment-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
                                 <h3 style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1.2rem' }}>{t('deckBuilder.equipment') || "EQUIPMENT"}</h3>
-                                {(deckData.isOwner || !deckId) && (
+                                {canEdit && (
                                     <button
                                         className="add-slot-button-small"
                                         onClick={openEquipmentModal}
@@ -1396,7 +1422,7 @@ const DeckBuilder = () => {
                             >
                                 {/* Equipment always renders as list/grid, never "Stacked" piles */}
                                 {deckData.equipment.length === 0 ? (
-                                    (deckData.isOwner || !deckId) ? (
+                                    canEdit ? (
                                         <div className="empty-equip-slot" onClick={openEquipmentModal}>
                                             <Plus size={32} style={{ opacity: 0.3 }} />
                                         </div>
@@ -1427,7 +1453,7 @@ const DeckBuilder = () => {
                                                         cards={groupedEquipment}
                                                         onCardClick={(item) => { }}
                                                         onDragStart={(e, card) => handleDragStart(e, card, 'equipment')}
-                                                        isOwner={deckData.isOwner || !deckId}
+                                                        isOwner={canEdit}
                                                         activeCardMenu={activeCardMenu}
                                                         setActiveCardMenu={setActiveCardMenu}
                                                         section="equipment"
@@ -1461,7 +1487,7 @@ const DeckBuilder = () => {
                             >
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                     <h2>{t('deckBuilder.mainDeck') || 'MAIN DECK'} ({totalCards})</h2>
-                                    {(deckData.isOwner || !deckId) && (
+                                    {canEdit && (
                                         <button
                                             className="add-slot-button-small"
                                             onClick={() => handleSectionAdd('main')}
@@ -1482,7 +1508,7 @@ const DeckBuilder = () => {
                             >
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                     <h2>{t('deckBuilder.sideboard') || 'SIDEBOARD'} ({sideboardCards}/{deckData.format === 'cc' ? 15 : 12})</h2>
-                                    {(deckData.isOwner || !deckId) && (
+                                    {canEdit && (
                                         <button
                                             className="add-slot-button-small"
                                             onClick={() => handleSectionAdd('sideboard')}
@@ -1503,7 +1529,7 @@ const DeckBuilder = () => {
                             >
                                 <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                     <h2>{t('deckBuilder.maybeboard') || 'MAYBEBOARD'} ({maybeboardCards})</h2>
-                                    {(deckData.isOwner || !deckId) && (
+                                    {canEdit && (
                                         <button
                                             className="add-slot-button-small"
                                             onClick={() => handleSectionAdd('maybeboard')}

@@ -177,100 +177,123 @@ export const CardService = {
         } = options;
 
         try {
-            let query = supabase
-                .from('cards')
-                .select('*', { count: 'exact' });
+            // Internal function to perform a single query with explicit range
+            const fetchPage = async (from, to) => {
+                let query = supabase
+                    .from('cards')
+                    .select('*', { count: 'exact' });
 
-            // Apply filters
-            if (!includeWhiteBorder) {
-                // Filter out white border sets
-                // Using .not('set_code', 'in', '(' + WHITE_BORDER_SETS.join(',') + ')') if supported, or multiple neq
-                // Simpler: Use a stored list or just ignore for now if not critical, 
-                // but best effort: 
-                if (WHITE_BORDER_SETS.length > 0) {
+                // 1. Filter out White Border sets if requested
+                if (!includeWhiteBorder && WHITE_BORDER_SETS.length > 0) {
                     query = query.not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
                 }
-            }
 
-            if (search) {
-                query = query.ilike('name', `%${search}%`);
-            }
-
-            if (clase) {
-                if (Array.isArray(clase) && clase.length > 0) {
-                    // Create OR string: "clase.ilike.%A%,clase.ilike.%B%"
-                    const orCondition = clase.map(c => `clase.ilike.%${c}%`).join(',');
-                    query = query.or(orCondition);
-                } else if (typeof clase === 'string' && clase) {
-                    query = query.ilike('clase', `%${clase}%`);
+                // 2. Search by name
+                if (search) {
+                    query = query.ilike('name', `%${search}%`);
                 }
-            }
 
-            if (set) {
-                if (Array.isArray(set)) {
-                    query = query.in('set_code', set);
-                } else if (set) {
-                    query = query.eq('set_code', set);
+                // 3. Filter by Class (can be array or string)
+                if (clase) {
+                    if (Array.isArray(clase) && clase.length > 0) {
+                        const orCondition = clase.map(c => `clase.ilike.%${c}%`).join(',');
+                        query = query.or(orCondition);
+                    } else if (typeof clase === 'string' && clase) {
+                        query = query.ilike('clase', `%${clase}%`);
+                    }
                 }
-            }
 
-            if (rareza) {
-                if (Array.isArray(rareza)) {
-                    query = query.in('rareza', rareza);
-                } else if (rareza) {
-                    query = query.eq('rareza', rareza);
+                // 4. Filter by Set
+                if (set) {
+                    if (Array.isArray(set)) query = query.in('set_code', set);
+                    else query = query.eq('set_code', set);
                 }
-            }
 
-            if (pitch !== '') { // check defined, pitch can be 0 through 3
-                if (Array.isArray(pitch)) {
-                    query = query.in('pitch', pitch);
-                } else {
-                    query = query.eq('pitch', pitch);
+                // 5. Filter by Rarity
+                if (rareza) {
+                    if (Array.isArray(rareza)) query = query.in('rareza', rareza);
+                    else query = query.eq('rareza', rareza);
                 }
-            }
 
-            if (costo !== '') {
-                if (Array.isArray(costo)) {
-                    // exact match for array vs single value?
-                    // Usually user selects multiple costs.
-                    query = query.in('costo', costo);
-                } else {
-                    query = query.eq('costo', costo);
+                // 6. Filter by Pitch
+                if (pitch !== '') {
+                    if (Array.isArray(pitch)) query = query.in('pitch', pitch);
+                    else query = query.eq('pitch', pitch);
                 }
-            }
 
-            if (type) {
-                if (Array.isArray(type)) {
-                    const typeOr = type.map(t => `tipo.ilike.%${t}%`).join(',');
-                    query = query.or(typeOr);
-                } else if (type) {
-                    query = query.ilike('tipo', `%${type}%`);
+                // 7. Filter by Cost
+                if (costo !== '') {
+                    if (Array.isArray(costo)) query = query.in('costo', costo);
+                    else query = query.eq('costo', costo);
                 }
-            }
 
-            // Order by name
-            query = query.order('name', { ascending: true });
+                // 8. Filter by Type (e.g. Weapon, Action)
+                if (type) {
+                    if (Array.isArray(type)) {
+                        const typeOr = type.map(t => `tipo.ilike.%${t}%`).join(',');
+                        query = query.or(typeOr);
+                    } else if (type) {
+                        query = query.ilike('tipo', `%${type}%`);
+                    }
+                }
 
-            // Pagination
-            const from = page * pageSize;
-            const to = from + pageSize - 1;
-
-            const { data, count, error } = await query.range(from, to);
-
-            if (error) throw error;
-
-            return {
-                data: data,
-                count: count,
-                page,
-                pageSize,
-                totalPages: Math.ceil(count / pageSize),
-                error: null
+                query = query.order('name', { ascending: true });
+                return await query.range(from, to);
             };
+
+            // Postgrest limit is typically 1000 cards. If we want more, we need to loop.
+            const MAX_SUPABASE_PAGE = 1000;
+
+            if (pageSize > MAX_SUPABASE_PAGE) {
+                let allData = [];
+                let currentOffset = 0;
+                let totalCount = 0;
+                let hasMore = true;
+
+                while (hasMore && allData.length < pageSize) {
+                    const nextBatchSize = Math.min(pageSize - allData.length, MAX_SUPABASE_PAGE);
+                    const from = currentOffset;
+                    const to = from + nextBatchSize - 1;
+
+                    const { data, count, error } = await fetchPage(from, to);
+
+                    if (error) throw error;
+                    if (!data || data.length === 0) break;
+
+                    allData = [...allData, ...data];
+                    totalCount = count;
+                    currentOffset += data.length;
+
+                    if (data.length < nextBatchSize || allData.length >= totalCount) {
+                        hasMore = false;
+                    }
+                }
+
+                return {
+                    data: allData,
+                    count: totalCount,
+                    page,
+                    pageSize,
+                    totalPages: Math.ceil(totalCount / pageSize),
+                    error: null
+                };
+            } else {
+                // Normal single page fetch
+                const from = page * pageSize;
+                const to = from + pageSize - 1;
+                const { data, count, error } = await fetchPage(from, to);
+                if (error) throw error;
+                return {
+                    data,
+                    count,
+                    page,
+                    pageSize,
+                    totalPages: Math.ceil(count / pageSize),
+                    error: null
+                };
+            }
         } catch (error) {
-            console.error('Error fetching cards:', error);
-            return { data: null, count: 0, error: error.message };
+            return handleSupabaseError(error);
         }
     },
 
@@ -454,7 +477,10 @@ export const DeckService = {
 
     async getDeckById(id) {
         try {
-            // Fetch deck header (simplified: no join to users table)
+            // Get current user for ownership check
+            const { data: { user } } = await supabase.auth.getUser();
+
+            // Fetch deck header
             const { data: deck, error } = await supabase
                 .from('decks')
                 .select('*')
@@ -471,13 +497,18 @@ export const DeckService = {
 
             if (cardsError) throw cardsError;
 
-            // Combine
+            // Determine ownership
+            const isOwner = user && deck.user_id === user.id;
+
+            // Combine and return with isOwner flag
             return {
-                ...deck, cards: cards.map(c => ({
+                ...deck,
+                isOwner,
+                cards: cards.map(c => ({
                     ...c.card,
                     quantity: c.quantity,
                     is_sideboard: c.is_sideboard,
-                    section: c.section // if supported
+                    section: c.section
                 }))
             };
         } catch (error) {
@@ -803,10 +834,10 @@ export const CollectionService = {
     async getCollection(filters = {}) {
         try {
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) throw new Error('Must be logged immediately');
+            if (!user) throw new Error('Must be logged in');
 
             let query = supabase
-                .from('collection')
+                .from('collections')
                 .select('*, card:cards(*)')
                 .eq('user_id', user.id);
 
@@ -838,66 +869,66 @@ export const CollectionService = {
         }
     },
 
-    async addCard(cardId, quantity = 1, isFoil = false) {
+    async addCard(cardId, quantity = 1) {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) throw new Error('Must be logged in');
 
-            // Upsert mechanism
-            // Check if exists
+            // Check if card already exists in collection
             const { data: existing } = await supabase
-                .from('collection')
+                .from('collections')
                 .select('*')
                 .eq('user_id', user.id)
                 .eq('card_id', cardId)
-                .eq('is_foil', isFoil)
                 .single();
 
             if (existing) {
+                // Update quantity
                 const { error } = await supabase
-                    .from('collection')
+                    .from('collections')
                     .update({ quantity: existing.quantity + quantity })
                     .eq('id', existing.id);
                 if (error) throw error;
             } else {
+                // Insert new entry
                 const { error } = await supabase
-                    .from('collection')
+                    .from('collections')
                     .insert({
                         user_id: user.id,
                         card_id: cardId,
-                        quantity,
-                        is_foil: isFoil
+                        quantity
                     });
                 if (error) throw error;
             }
             return true;
         } catch (error) {
+            console.error('Error adding card to collection:', error);
             throw error;
         }
     },
 
-    async removeCard(cardId, quantity = 1, removeAll = false, isFoil = false) {
+    async removeCard(cardId, quantity = 1, removeAll = false) {
         try {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) throw new Error('Must be logged in');
 
             const { data: existing } = await supabase
-                .from('collection')
+                .from('collections')
                 .select('*')
                 .eq('user_id', user.id)
                 .eq('card_id', cardId)
-                .eq('is_foil', isFoil)
                 .single();
 
             if (!existing) return;
 
             if (removeAll || existing.quantity <= quantity) {
-                await supabase.from('collection').delete().eq('id', existing.id);
+                await supabase.from('collections').delete().eq('id', existing.id);
             } else {
-                await supabase.from('collection').update({ quantity: existing.quantity - quantity }).eq('id', existing.id);
+                await supabase.from('collections').update({ quantity: existing.quantity - quantity }).eq('id', existing.id);
             }
             return true;
         } catch (error) {
+            console.error('Error removing card from collection:', error);
             throw error;
         }
     }
@@ -910,10 +941,10 @@ export const FolderService = {
     async getFolders() {
         try {
             const { data: { user } } = await supabase.auth.getUser();
-            if (!user) return { data: [] };
+            if (!user) return [];
 
             const { data, error } = await supabase
-                .from('folders')
+                .from('deck_folders')
                 .select('*')
                 .eq('user_id', user.id)
                 .order('created_at');
@@ -921,6 +952,7 @@ export const FolderService = {
             if (error) throw error;
             return data;
         } catch (error) {
+            console.error('Error fetching folders:', error);
             throw error;
         }
     },
@@ -928,8 +960,10 @@ export const FolderService = {
     async createFolder(name, color = '#C52222') {
         try {
             const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged in');
+
             const { data, error } = await supabase
-                .from('folders')
+                .from('deck_folders')
                 .insert({ name, color, user_id: user.id })
                 .select()
                 .single();
@@ -937,6 +971,7 @@ export const FolderService = {
             if (error) throw error;
             return data;
         } catch (error) {
+            console.error('Error creating folder:', error);
             throw error;
         }
     },
@@ -944,7 +979,7 @@ export const FolderService = {
     async updateFolder(id, updates) {
         try {
             const { data, error } = await supabase
-                .from('folders')
+                .from('deck_folders')
                 .update(updates)
                 .eq('id', id)
                 .select()
@@ -952,16 +987,18 @@ export const FolderService = {
             if (error) throw error;
             return data;
         } catch (error) {
+            console.error('Error updating folder:', error);
             throw error;
         }
     },
 
     async deleteFolder(id) {
         try {
-            const { error } = await supabase.from('folders').delete().eq('id', id);
+            const { error } = await supabase.from('deck_folders').delete().eq('id', id);
             if (error) throw error;
             return true;
         } catch (error) {
+            console.error('Error deleting folder:', error);
             throw error;
         }
     },
