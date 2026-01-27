@@ -101,15 +101,17 @@ const DeckBuilder = () => {
     // Redirect to home if user logs out while viewing a private deck OR if they were editing (isOwner)
     useEffect(() => {
         if (!authLoading && !user) {
-            // For existing decks (deckId present), we must wait until data is LOADED (deckData.id exists)
-            // before checking visibility. The default state is 'private', which causes premature redirect.
+            // Wait until deck data is loaded to decide on redirection
             if (deckId && !deckData.id) return;
 
-            // Logic: 
-            // 1. If deck is private, guest cannot view -> Redirect
-            // 2. If user WAS owner (editing), they are now ghost -> Redirect
-            if ((deckData.visibility === 'private' && deckId) || deckData.isOwner) {
-                console.log("[DeckBuilder] Session ended during protected view. Redirecting.");
+            // Redirect if:
+            // 1. We are viewing an existing deck that is explicitly private
+            // 2. We were the owner (editing) but our session ended
+            const isPrivateAccess = deckId && deckData.visibility === 'private';
+            const wasOwnerNowLoggedOut = deckData.isOwner;
+
+            if (isPrivateAccess || wasOwnerNowLoggedOut) {
+                console.log("[DeckBuilder] Unauthorized guest access or session expired. Redirecting to home.");
                 navigate('/');
             }
         }
