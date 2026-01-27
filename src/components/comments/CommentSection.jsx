@@ -83,6 +83,7 @@ const CommentSection = ({ deckId }) => {
             fetchComments();
         } catch (err) {
             console.error("Failed to post comment", err);
+            alert("Failed to post comment: " + err.message); // Temporary for debug
         }
     };
 

@@ -79,13 +79,13 @@ function App() {
                   }
                 />
                 <Route
-                  path="/decks/:deckId"
-                  element={<DeckBuilder />}
+                  path="/decks/:deckId/guide"
+                  element={<DeckGuide />}
                 />
 
                 <Route
-                  path="/decks/:deckId/guide"
-                  element={<DeckGuide />}
+                  path="/decks/:deckId"
+                  element={<DeckBuilder />}
                 />
               </Routes>
             </Layout>

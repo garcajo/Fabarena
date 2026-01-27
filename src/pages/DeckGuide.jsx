@@ -34,9 +34,10 @@ const DeckGuide = () => {
             setLoading(true);
             const data = await DeckService.getDeckById(deckId);
             setDeck(data);
-            // Check ownership
-            const isOwnerCheck = user && (data.user_id === user.id);
-            setIsOwner(isOwnerCheck);
+            // Check ownership - Use service flag if available, otherwise strict comparison
+            const isOwnerCheck = data.isOwner || (user && user.id && data.user_id && data.user_id === user.id);
+            console.log('[DeckGuide] Ownership check:', { serviceFlag: data.isOwner, user: user?.id, deckOwner: data.user_id, result: isOwnerCheck });
+            setIsOwner(!!isOwnerCheck);
 
             // Parse guide if exists
             let guideData = [];

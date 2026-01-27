@@ -33,14 +33,9 @@ export const BANNED_CARDS = {
         "Zephyr Needle"
     ],
     silver: [
-        // Official Silver Age banned list
         "Aether Flare",
         "Aether Ironweave",
         "Amulet of Ice",
-        // ... (keep existing silver list if not asked to change, but user only provided CC)
-        // I will keep the previous silver list or assume user provided ONLY CC updates?
-        // User request: "voy a dejarte la lista de baneos de Classic constructed para que lo corrijas"
-        // So I only touch CC. I'll preserve Silver.
         "Ball Lightning",
         "Belittle",
         "Bonds of Ancestry",

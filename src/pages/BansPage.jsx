@@ -47,7 +47,11 @@ const BansPage = () => {
                     const response = await CardService.getCardsByNames(Array.from(allNames));
                     const details = {};
                     (response.data || []).forEach(card => {
-                        details[card.name] = card;
+                        // Store all versions for a given name
+                        if (!details[card.name]) {
+                            details[card.name] = [];
+                        }
+                        details[card.name].push(card);
                     });
                     setCardDetails(details);
                 }
@@ -115,9 +119,48 @@ const BansPage = () => {
                     }}>
                         {currentList.length > 0 ? (
                             currentList.map(cardName => {
-                                // Clean name (remove extra text in parens for matching)
-                                const cleanName = cardName.split('(')[0].trim();
-                                const card = cardDetails[cardName] || cardDetails[cleanName];
+                                // 1. Determine target pitch from name suffix
+                                let targetPitch = null; // Default to null (try Red/1 first)
+                                let cleanName = cardName;
+
+                                if (cardName.includes('(Red)')) {
+                                    targetPitch = '1';
+                                    cleanName = cardName.replace('(Red)', '').trim();
+                                } else if (cardName.includes('(Yellow)')) {
+                                    targetPitch = '2';
+                                    cleanName = cardName.replace('(Yellow)', '').trim();
+                                } else if (cardName.includes('(Blue)')) {
+                                    targetPitch = '3';
+                                    cleanName = cardName.replace('(Blue)', '').trim();
+                                } else {
+                                    // Remove any other parens just in case
+                                    cleanName = cardName.split('(')[0].trim();
+                                }
+
+                                // 2. Find matching card
+                                // cardDetails[cleanName] is now expected to be an Array of versions
+                                const versions = cardDetails[cleanName] || [];
+                                let card = null;
+
+                                if (Array.isArray(versions) && versions.length > 0) {
+                                    // a) Try to find exact pitch match
+                                    if (targetPitch) {
+                                        card = versions.find(v => v.pitch === targetPitch);
+                                    }
+
+                                    // b) If no target pitch or not found, try Pitch 1 (Red)
+                                    if (!card) {
+                                        card = versions.find(v => v.pitch === '1');
+                                    }
+
+                                    // c) Fallback to any version
+                                    if (!card) {
+                                        card = versions[0];
+                                    }
+                                } else if (versions && !Array.isArray(versions)) {
+                                    // Fallback for legacy object structure if service returns object
+                                    card = versions;
+                                }
 
                                 return (
                                     <div
@@ -154,9 +197,25 @@ const BansPage = () => {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                background: 'rgba(0,0,0,0.4)'
+                                                background: 'rgba(0,0,0,0.4)',
+                                                flexDirection: 'column',
+                                                gap: '8px'
                                             }}>
                                                 <ShieldBan size={48} color="#ff4444" strokeWidth={1.5} />
+                                                {/* Show specific Pitch if requested */}
+                                                {targetPitch && (
+                                                    <span style={{
+                                                        color: targetPitch === '1' ? '#ff4444' : targetPitch === '2' ? '#ffff44' : '#4444ff',
+                                                        fontWeight: 'bold',
+                                                        textShadow: '0 2px 4px black',
+                                                        background: 'rgba(0,0,0,0.8)',
+                                                        padding: '2px 8px',
+                                                        borderRadius: '4px',
+                                                        fontSize: '0.8rem'
+                                                    }}>
+                                                        {targetPitch === '1' ? 'RED' : targetPitch === '2' ? 'YELLOW' : 'BLUE'}
+                                                    </span>
+                                                )}
                                             </div>
                                         </div>
 

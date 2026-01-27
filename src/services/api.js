@@ -154,6 +154,7 @@ const WHITE_BORDER_SETS = ['1HP'];
  */
 // Import static data
 import staticCards from '../data/cards.json';
+import { BANNED_LISTS } from '../data/bans';
 
 /**
  * Servicio de cartas (Updated to use Static JSON)
@@ -338,7 +339,7 @@ export const CardService = {
      */
     async getLivingLegendData() {
         try {
-            const response = await fetch('/api/living-legend');
+            const response = await fetch('/api/cards/living-legend');
             if (!response.ok) throw new Error('Failed to fetch LL data');
             const data = await response.json();
             return { data, error: null };
@@ -353,10 +354,8 @@ export const CardService = {
      */
     async getBannedCards() {
         try {
-            const response = await fetch('/api/bans');
-            if (!response.ok) throw new Error('Failed to fetch Banned data');
-            const data = await response.json();
-            return { data, error: null };
+            // Return local static data immediately
+            return { data: BANNED_LISTS, error: null };
         } catch (error) {
             console.warn("Bans data fetch failed", error);
             return { data: {}, error: null };
@@ -424,8 +423,13 @@ export const CardService = {
 
             if (error) throw error;
 
+            console.log(`[api.js] getCardsByNames looked for ${names.length} names. Found raw: ${data?.length}`);
+            if (names.length < 5) console.log("[api.js] Names:", names); // inspect names if few
+            if (data?.length === 0) console.warn("[api.js] WARNING: No cards found for names:", names);
+
             // Filter sets if needed (white border)
             const filtered = data.filter(c => !WHITE_BORDER_SETS.includes(c.set_code));
+            console.log(`[api.js] After WB filter: ${filtered.length}`);
 
             return { data: filtered, error: null };
         } catch (error) {
@@ -546,26 +550,57 @@ export const DeckService = {
             let cardsToInsert = deckData.cards || [];
             if (!cardsToInsert.length) {
                 if (deckData.mainDeck) {
-                    const main = deckData.mainDeck.map(item => ({
-                        id: item.card.id,
-                        quantity: item.count,
-                        is_sideboard: false,
-                        section: 'main'
-                    }));
+                    const main = deckData.mainDeck.map(item => {
+                        if (!item || !item.card || !item.card.id) {
+                            console.warn("[api.js] Invalid mainDeck item:", item);
+                            return null;
+                        }
+                        return {
+                            id: item.card.id,
+                            quantity: item.count,
+                            is_sideboard: false,
+                            section: 'main'
+                        };
+                    }).filter(Boolean);
                     cardsToInsert = [...cardsToInsert, ...main];
                 }
                 if (deckData.sideboard) {
-                    const side = deckData.sideboard.map(item => ({
-                        id: item.card.id,
-                        quantity: item.count,
-                        is_sideboard: true,
-                        section: 'sideboard'
-                    }));
+                    const side = deckData.sideboard.map(item => {
+                        if (!item || !item.card || !item.card.id) {
+                            console.warn("[api.js] Invalid sideboard item:", item);
+                            return null;
+                        }
+                        return {
+                            id: item.card.id,
+                            quantity: item.count,
+                            is_sideboard: true,
+                            section: 'sideboard'
+                        };
+                    }).filter(Boolean);
                     cardsToInsert = [...cardsToInsert, ...side];
+                }
+                if (deckData.maybeboard) {
+                    const maybe = deckData.maybeboard.map(item => {
+                        if (!item || !item.card || !item.card.id) {
+                            console.warn("[api.js] Invalid maybeboard item:", item);
+                            return null;
+                        }
+                        return {
+                            id: item.card.id,
+                            quantity: item.count,
+                            is_sideboard: false,
+                            section: 'maybeboard'
+                        };
+                    }).filter(Boolean);
+                    cardsToInsert = [...cardsToInsert, ...maybe];
                 }
                 if (deckData.equipment) {
                     const equipMap = new Map();
                     deckData.equipment.forEach(card => {
+                        if (!card || !card.id) {
+                            console.warn("[api.js] Invalid equipment item:", card);
+                            return;
+                        }
                         const existing = equipMap.get(card.id) || 0;
                         equipMap.set(card.id, existing + 1);
                     });
@@ -581,7 +616,7 @@ export const DeckService = {
                 }
             }
 
-            console.log("[api.js] Final cardsToInsert:", cardsToInsert);
+            console.log("[api.js] Final cardsToInsert:", JSON.stringify(cardsToInsert, null, 2));
 
 
             if (cardsToInsert.length > 0) {
@@ -593,11 +628,19 @@ export const DeckService = {
                     section: c.section || 'main'
                 }));
 
+                console.log("[api.js] Inserting deck_cards rows:", JSON.stringify(deckCards, null, 2));
+
                 const { error: cardsError } = await supabase
                     .from('deck_cards')
                     .insert(deckCards);
 
-                if (cardsError) throw cardsError;
+                if (cardsError) {
+                    console.error("[api.js] Deck cards insert ERROR:", cardsError);
+                    throw cardsError;
+                }
+                console.log("[api.js] Deck cards joined successfully");
+            } else {
+                console.warn("[api.js] WARN: cardsToInsert is empty! Deck created without cards.");
             }
 
             return deck;
@@ -611,13 +654,15 @@ export const DeckService = {
         try {
             console.log("[api.js] updateDeck called with:", id, deckData);
             // 1. Update Deck Details
-            const updatePayload = {
-                name: deckData.name,
-                hero: deckData.hero,
-                format: deckData.format,
-                description: deckData.description,
-                visibility: deckData.visibility
-            };
+            // 1. Update Deck Details
+            const updatePayload = {};
+            const allowedFields = ['name', 'hero', 'format', 'description', 'visibility', 'guide'];
+
+            allowedFields.forEach(field => {
+                if (deckData[field] !== undefined) {
+                    updatePayload[field] = deckData[field];
+                }
+            });
 
             if (deckData.username) {
                 updatePayload.username = deckData.username;
@@ -639,28 +684,61 @@ export const DeckService = {
                 if (deckData.mainDeck) {
                     cardsToInsert = [
                         ...cardsToInsert,
-                        ...deckData.mainDeck.map(item => ({
-                            id: item.card.id,
-                            quantity: item.count,
-                            is_sideboard: false,
-                            section: 'main'
-                        }))
+                        ...deckData.mainDeck.map(item => {
+                            if (!item || !item.card || !item.card.id) {
+                                console.warn("[api.js] updateDeck: Invalid mainDeck item:", item);
+                                return null;
+                            }
+                            return {
+                                id: item.card.id,
+                                quantity: item.count,
+                                is_sideboard: false,
+                                section: 'main'
+                            };
+                        }).filter(Boolean)
                     ];
                 }
                 if (deckData.sideboard) {
                     cardsToInsert = [
                         ...cardsToInsert,
-                        ...deckData.sideboard.map(item => ({
-                            id: item.card.id,
-                            quantity: item.count,
-                            is_sideboard: true,
-                            section: 'sideboard'
-                        }))
+                        ...deckData.sideboard.map(item => {
+                            if (!item || !item.card || !item.card.id) {
+                                console.warn("[api.js] updateDeck: Invalid sideboard item:", item);
+                                return null;
+                            }
+                            return {
+                                id: item.card.id,
+                                quantity: item.count,
+                                is_sideboard: true,
+                                section: 'sideboard'
+                            };
+                        }).filter(Boolean)
+                    ];
+                }
+                if (deckData.maybeboard) {
+                    cardsToInsert = [
+                        ...cardsToInsert,
+                        ...deckData.maybeboard.map(item => {
+                            if (!item || !item.card || !item.card.id) {
+                                console.warn("[api.js] updateDeck: Invalid maybeboard item:", item);
+                                return null;
+                            }
+                            return {
+                                id: item.card.id,
+                                quantity: item.count,
+                                is_sideboard: false,
+                                section: 'maybeboard'
+                            };
+                        }).filter(Boolean)
                     ];
                 }
                 if (deckData.equipment) {
                     const equipMap = new Map();
                     deckData.equipment.forEach(card => {
+                        if (!card || !card.id) {
+                            console.warn("[api.js] updateDeck: Invalid equipment item:", card);
+                            return;
+                        }
                         const existing = equipMap.get(card.id) || 0;
                         equipMap.set(card.id, existing + 1);
                     });
@@ -726,15 +804,21 @@ export const DeckService = {
 
     async getDeckComments(deckId) {
         try {
+            // Check if 'users' table exists or if we should use 'profiles'
+            // For now, let's keep the join but Log the error.
             const { data, error } = await supabase
-                .from('comments')
-                .select('*, user:users(username, avatar_url)')
+                .from('deck_comments')
+                .select('*') // Simplify: Drop the join if it's causing issues. We stored username on the comment record.
                 .eq('deck_id', deckId)
                 .order('created_at', { ascending: true });
 
-            if (error) throw error;
+            if (error) {
+                console.error("getDeckComments API Error:", error);
+                throw error;
+            }
             return data;
         } catch (error) {
+            console.error("getDeckComments Catch:", error);
             throw error;
         }
     },
@@ -744,20 +828,35 @@ export const DeckService = {
             const { data: { user } } = await supabase.auth.getUser();
             if (!user) throw new Error('Must be logged in');
 
+            console.log("[api.js] Posting comment:", { deckId, userId: user.id, content: commentData.content });
+
             const { data, error } = await supabase
-                .from('comments')
+                .from('deck_comments')
                 .insert({
                     deck_id: deckId,
                     user_id: user.id,
                     content: commentData.content,
-                    parent_id: commentData.parentId || null
+                    parent_id: commentData.parentId || null,
+                    username: user.user_metadata?.username || user.email?.split('@')[0] || 'User'
                 })
-                .select('*, user:users(username, avatar_url)')
+                .select()
                 .single();
 
-            if (error) throw error;
-            return data;
+            if (error) {
+                console.error("postDeckComment API Error:", error);
+                throw error;
+            }
+
+            // Return with injected user object
+            return {
+                ...data,
+                user: {
+                    username: user.user_metadata?.username || user.email?.split('@')[0] || 'User',
+                    avatar_url: user.user_metadata?.avatar_url
+                }
+            };
         } catch (error) {
+            console.error("postDeckComment Catch:", error);
             throw error;
         }
     },

@@ -68,16 +68,35 @@ const Settings = () => {
     const handleBackupExport = async () => {
         try {
             // Fetch all data
-            const [collection, decks] = await Promise.all([
-                CollectionService.getCollection({ pageSize: 10000 }),
-                DeckService.getDecks()
-            ]);
+            addToast('Preparing backup... (Fetching fully detailed decks)', 'info');
+
+            // 1. Start Collection Fetch
+            const collectionPromise = CollectionService.getCollection({ pageSize: 10000 });
+
+            // 2. Fetch User's Decks (Metadata)
+            const decksResponse = await DeckService.getDecks('user');
+            const decksList = decksResponse.data || [];
+
+            // 3. Fetch Full Details (Cards) for each deck
+            const fullDecks = await Promise.all(
+                decksList.map(async (deck) => {
+                    try {
+                        // getDeckById returns { ...deck, cards: [...] }
+                        return await DeckService.getDeckById(deck.id);
+                    } catch (err) {
+                        console.warn(`Failed to fetch detailed cards for deck ${deck.id}`, err);
+                        return deck; // Fallback to metadata
+                    }
+                })
+            );
+
+            const collection = await collectionPromise;
 
             const backupData = {
                 timestamp: new Date().toISOString(),
                 user: { id: user.id, email: user.email },
                 collection: collection.data,
-                decks: decks.data
+                decks: fullDecks
             };
 
             const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });

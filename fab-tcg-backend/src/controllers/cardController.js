@@ -180,8 +180,13 @@ const getLivingLegendData = async (req, res) => {
                 .replace(/&gt;/g, '>')
                 .replace(/&quot;/g, '"')
                 .replace(/&#039;/g, "'")
-                .replace(/&#8211;/g, '-')
                 .replace(/&#x27;/g, "'")
+                .replace(/&#8216;/g, "'") // Left single quote
+                .replace(/&#8217;/g, "'") // Right single quote (apostrophe)
+                .replace(/&#8220;/g, '"') // Left double quote
+                .replace(/&#8221;/g, '"') // Right double quote
+                .replace(/&#8211;/g, '-') // En dash
+                .replace(/&#8212;/g, '-') // Em dash
                 .replace(/&ndash;/g, '-')
                 .replace(/&mdash;/g, '-')
                 .replace(/\s+/g, ' ') // Normalize whitespace
