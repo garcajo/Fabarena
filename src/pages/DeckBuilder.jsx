@@ -64,8 +64,8 @@ const DeckBuilder = () => {
             if (!deckId) return;
             try {
                 const status = await DeckService.getLikeStatus(deckId);
-                setLikesCount(status.count || 0);
-                setUserHasLiked(status.userHasLiked || false);
+                setLikesCount(status.likes || 0);
+                setUserHasLiked(status.liked || false);
             } catch (err) {
                 console.error('Error fetching like status:', err);
             }

@@ -965,7 +965,7 @@ export const DeckService = {
                     .select('id')
                     .eq('deck_id', deckId)
                     .eq('user_id', user.id)
-                    .single();
+                    .maybeSingle();
                 liked = !!data;
             }
 
@@ -986,7 +986,7 @@ export const DeckService = {
                 .select('id')
                 .eq('deck_id', deckId)
                 .eq('user_id', user.id)
-                .single();
+                .maybeSingle();
 
             if (existing) {
                 // Unlike
