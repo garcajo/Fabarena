@@ -158,6 +158,7 @@
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.5);
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     letter-spacing: 0.5px;
@@ -636,19 +637,13 @@
 }
 
 .cell-creator {
-    flex: 1.5;
-    min-width: 150px;
+    flex: 2;
+    min-width: 200px;
 }
 
 .cell-date {
     flex: 1;
     min-width: 120px;
-}
-
-.cell-stats {
-    flex: 0.8;
-    min-width: 100px;
-    justify-content: center;
 }
 
 .cell-actions {
@@ -716,6 +711,60 @@
     color: rgba(255, 255, 255, 0.6);
 }
 
+/* Engagement Stats in List View */
+.creator-info-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
+}
+
+.creator-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 120px;
+    /* Prevent long names from pushing stats out */
+}
+
+.deck-engagement-stats {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all 0.2s ease;
+}
+
+.stat-item span {
+    font-weight: 500;
+}
+
+.stat-item .text-red {
+    color: #ef4444;
+}
+
+.stat-item .fill-red {
+    fill: #ef4444;
+}
+
+.stat-item .text-blue {
+    color: #3b82f6;
+}
+
+.stat-item .opacity-50 {
+    opacity: 0.4;
+}
+
 .format-badge-small {
     padding: 2px 8px;
     border-radius: 4px;
@@ -754,9 +803,6 @@
 }
 
 /* Hover state no longer controls visibility */
-.decks-list-row-wrapper:hover .list-delete-btn {
-    /* keep visible (opacity already 1) */
-}
 
 .list-delete-btn:hover {
     background: var(--color-primary-red);
