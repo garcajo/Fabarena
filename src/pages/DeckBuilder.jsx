@@ -1206,7 +1206,7 @@ const DeckBuilder = () => {
                                     onClick={handleToggleLike}
                                     disabled={isLiking}
                                     className={`like-button ${userHasLiked ? 'liked' : ''}`}
-                                    title={user ? (userHasLiked ? 'Remove like' : 'Like this deck') : 'Login to like'}
+                                    title={user ? (userHasLiked ? t('deckBuilder.removeLike') : t('deckBuilder.addLike')) : t('deckBuilder.loginToLikeHint')}
                                     style={{
                                         display: 'flex',
                                         alignItems: 'center',
