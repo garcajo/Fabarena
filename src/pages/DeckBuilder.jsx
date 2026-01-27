@@ -45,8 +45,8 @@ const DeckBuilder = () => {
         user_id: null // Add user_id to state
     });
 
-    // Robust Owner Check: Trust backend OR client-side match
-    const isOwner = deckData.isOwner || (user && deckData.user_id === user.id);
+    // Secure Owner Check: Must be logged in AND (backend confirmed ownership OR IDs match)
+    const isOwner = !!user && (!!deckData.isOwner || (deckData.user_id === user.id));
 
     const [error, setError] = useState(null);
 
@@ -55,8 +55,10 @@ const DeckBuilder = () => {
     const [userHasLiked, setUserHasLiked] = useState(false);
     const [isLiking, setIsLiking] = useState(false);
 
-    // Derived: User can edit if it's a new deck OR they own it AND are in edit mode
-    const canEdit = !deckId || (isOwner && isEditMode);
+    // Derived: User can edit if:
+    // 1. It's a new deck (!deckId) AND they are logged in
+    // 2. They own the deck (isOwner) AND are in edit mode
+    const canEdit = (!deckId && !!user) || (isOwner && isEditMode);
 
     // Fetch like status when deck loads
     useEffect(() => {
