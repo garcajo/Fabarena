@@ -280,7 +280,7 @@ const DeckList = ({ mode }) => {
             {/* Sort Filter */}
             <div className="filter-group">
                 <label>
-                    {(t('filters.sort_newest').split(' ')[0] || 'Sort')}
+                    {t('filters.label_sort') || 'Sort'}
                 </label>
                 <CustomSelect
                     options={[
