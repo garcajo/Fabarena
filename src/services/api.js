@@ -990,19 +990,23 @@ export const DeckService = {
 
             if (existing) {
                 // Unlike
-                await supabase
+                const { error } = await supabase
                     .from('deck_likes')
                     .delete()
                     .eq('id', existing.id);
+
+                if (error) throw error;
                 return { liked: false };
             } else {
                 // Like
-                await supabase
+                const { error } = await supabase
                     .from('deck_likes')
                     .insert({
                         deck_id: deckId,
                         user_id: user.id
                     });
+
+                if (error) throw error;
                 return { liked: true };
             }
         } catch (error) {
