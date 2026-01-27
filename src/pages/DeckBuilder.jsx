@@ -37,7 +37,7 @@ const DeckBuilder = () => {
         name: '',
         format: 'cc', // Default to Classic Constructed
         hero: null,
-        visibility: 'private',
+        visibility: null,
         equipment: [],
         mainDeck: [],
         sideboard: [],
@@ -100,22 +100,27 @@ const DeckBuilder = () => {
 
     // Redirect to home if user logs out while viewing a private deck OR if they were editing (isOwner)
     useEffect(() => {
-        if (!authLoading && !user) {
-            // Wait until deck data is loaded to decide on redirection
+        // Only run redirection check once auth is ready AND we aren't currently loading deck data
+        if (!authLoading && !user && !loading) {
+            // Wait until deck data ID is present before checking visibility
             if (deckId && !deckData.id) return;
 
             // Redirect if:
             // 1. We are viewing an existing deck that is explicitly private
-            // 2. We were the owner (editing) but our session ended
+            // 2. We were the owner (editing) but our session ended (this prevents "ghost" editing)
             const isPrivateAccess = deckId && deckData.visibility === 'private';
             const wasOwnerNowLoggedOut = deckData.isOwner;
 
             if (isPrivateAccess || wasOwnerNowLoggedOut) {
-                console.log("[DeckBuilder] Unauthorized guest access or session expired. Redirecting to home.");
+                console.log("[DeckBuilder] Unauthorized access. Redirecting to home.", {
+                    deckId: deckData.id,
+                    visibility: deckData.visibility,
+                    wasOwner: wasOwnerNowLoggedOut
+                });
                 navigate('/');
             }
         }
-    }, [user, authLoading, deckData.visibility, deckData.isOwner, deckData.id, deckId, navigate]);
+    }, [user, authLoading, loading, deckData.visibility, deckData.isOwner, deckData.id, deckId, navigate]);
 
     useEffect(() => {
         if (paramDeckId) {
@@ -244,7 +249,7 @@ const DeckBuilder = () => {
                         name: deck.name,
                         format: deck.format,
                         hero: heroData,
-                        visibility: deck.visibility || 'private',
+                        visibility: deck.visibility,
                         isOwner: !!deck.isOwner,
                         id: deck.id,
                         user_id: deck.user_id, // Map user_id
