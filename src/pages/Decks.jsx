@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Plus, Layers, Sword, Calendar, Trash2, FolderInput, X, Heart, MessageSquare } from 'lucide-react';
+import { Plus, Layers, Sword, Calendar, Trash2, FolderInput, X, Heart, MessageSquare, Eye } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { DeckService, CardService, FolderService } from '../services/api'; // Import DeckService, CardService, and FolderService
@@ -381,6 +381,10 @@ const DeckList = ({ mode }) => {
                                     <div className="creator-info-wrapper">
                                         <span className="creator-name">{deck.username || 'Unknown'}</span>
                                         <div className="deck-engagement-stats">
+                                            <div className="engagement-stat-item" title={t('deckBuilder.views') || 'Views'}>
+                                                <Eye size={14} className="opacity-50" />
+                                                <span>{deck.views_count || 0}</span>
+                                            </div>
                                             <div className="engagement-stat-item" title={t('deckBuilder.addLike') || 'Likes'}>
                                                 <Heart size={14} className={deck.likes_count > 0 ? 'text-red fill-red' : 'opacity-50'} />
                                                 <span>{deck.likes_count || 0}</span>

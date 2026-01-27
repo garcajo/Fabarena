@@ -1012,6 +1012,20 @@ export const DeckService = {
         } catch (error) {
             throw error;
         }
+    },
+
+    async incrementViews(deckId) {
+        try {
+            const { error } = await supabase.rpc('increment_deck_views', {
+                target_deck_id: deckId
+            });
+            if (error) throw error;
+            return true;
+        } catch (error) {
+            console.error('Error incrementing views:', error);
+            // Non-blocking, so we don't throw
+            return false;
+        }
     }
 };
 

@@ -52,6 +52,7 @@ const DeckBuilder = () => {
 
     // Like state
     const [likesCount, setLikesCount] = useState(0);
+    const [viewsCount, setViewsCount] = useState(0);
     const [userHasLiked, setUserHasLiked] = useState(false);
     const [isLiking, setIsLiking] = useState(false);
 
@@ -259,6 +260,11 @@ const DeckBuilder = () => {
                         sideboard: sideboardData || [],
                         maybeboard: maybeboardData || []
                     });
+                    setLikesCount(deck.likes_count || 0);
+                    setViewsCount(deck.views_count || 0);
+
+                    // Increment views (non-blocking)
+                    DeckService.incrementViews(deck.id);
                 } catch (error) {
                     console.error("Error loading deck:", error);
                     setError('load_error');
@@ -1241,34 +1247,52 @@ const DeckBuilder = () => {
 
                             {/* Like Button - Only show for existing decks */}
                             {deckId && (
-                                <button
-                                    onClick={handleToggleLike}
-                                    disabled={isLiking}
-                                    className={`like-button ${userHasLiked ? 'liked' : ''}`}
-                                    title={user ? (userHasLiked ? t('deckBuilder.removeLike') : t('deckBuilder.addLike')) : t('deckBuilder.loginToLikeHint')}
-                                    style={{
+                                <>
+                                    <button
+                                        onClick={handleToggleLike}
+                                        disabled={isLiking}
+                                        className={`like-button ${userHasLiked ? 'liked' : ''}`}
+                                        title={user ? (userHasLiked ? t('deckBuilder.removeLike') : t('deckBuilder.addLike')) : t('deckBuilder.loginToLikeHint')}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '6px',
+                                            background: userHasLiked ? 'rgba(239, 68, 68, 0.15)' : 'rgba(255,255,255,0.05)',
+                                            border: `1px solid ${userHasLiked ? 'rgba(239, 68, 68, 0.4)' : 'rgba(255,255,255,0.1)'}`,
+                                            borderRadius: '8px',
+                                            padding: '8px 14px',
+                                            color: userHasLiked ? '#ef4444' : 'rgba(255,255,255,0.7)',
+                                            cursor: user ? 'pointer' : 'not-allowed',
+                                            fontSize: '0.9rem',
+                                            fontWeight: '500',
+                                            transition: 'all 0.2s ease',
+                                            opacity: isLiking ? 0.6 : 1
+                                        }}
+                                    >
+                                        <Heart
+                                            size={18}
+                                            fill={userHasLiked ? '#ef4444' : 'none'}
+                                            strokeWidth={2}
+                                        />
+                                        <span>{likesCount}</span>
+                                    </button>
+
+                                    <div className="deck-stat-pill" style={{
                                         display: 'flex',
                                         alignItems: 'center',
                                         gap: '6px',
-                                        background: userHasLiked ? 'rgba(239, 68, 68, 0.15)' : 'rgba(255,255,255,0.05)',
-                                        border: `1px solid ${userHasLiked ? 'rgba(239, 68, 68, 0.4)' : 'rgba(255,255,255,0.1)'}`,
+                                        background: 'rgba(255,255,255,0.05)',
+                                        border: '1px solid rgba(255,255,255,0.1)',
                                         borderRadius: '8px',
                                         padding: '8px 14px',
-                                        color: userHasLiked ? '#ef4444' : 'rgba(255,255,255,0.7)',
-                                        cursor: user ? 'pointer' : 'not-allowed',
+                                        color: 'rgba(255,255,255,0.7)',
                                         fontSize: '0.9rem',
-                                        fontWeight: '500',
-                                        transition: 'all 0.2s ease',
-                                        opacity: isLiking ? 0.6 : 1
-                                    }}
-                                >
-                                    <Heart
-                                        size={18}
-                                        fill={userHasLiked ? '#ef4444' : 'none'}
-                                        strokeWidth={2}
-                                    />
-                                    <span>{likesCount}</span>
-                                </button>
+                                        fontWeight: '500'
+                                    }}>
+                                        <Eye size={18} />
+                                        <span>{viewsCount}</span>
+                                    </div>
+                                </>
                             )}
                         </h1>
                     )}
