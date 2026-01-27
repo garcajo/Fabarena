@@ -549,7 +549,8 @@ export const translations = {
             action: 'Acción',
             banned: 'BANEADA',
             max: 'MAX',
-            hero: 'Héroe'
+            hero: 'Héroe',
+            stats: 'Estadísticas'
         },
         auth: {
             register_title: 'Crear Cuenta',

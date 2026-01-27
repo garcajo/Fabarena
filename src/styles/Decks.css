@@ -648,7 +648,7 @@
 .cell-stats {
     flex: 0.8;
     min-width: 100px;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 .cell-actions {
