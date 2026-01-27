@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
 const cardService = require('../services/cardService');
+const supabase = require('../config/supabase');
 
 /**
  * Obtiene todas las cartas con opciones de paginación y filtros
@@ -161,10 +162,10 @@ const FALLBACK_LL_DATA = [
     { name: "Briar, Warden of Thorns", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
     { name: "Viserai, Rune Blood", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
     { name: "Chane, Bound by Shadow", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
-    { name: "Starvo", points: 1000, rank: "Ascended", status: "Ascended", class: "Guardian" }, // Bravo, Star of the Show
+    { name: "Starvo", points: 1000, rank: "Ascended", status: "Ascended", class: "Guardian" },
     { name: "Prism, Sculptor of Arc Light", points: 1000, rank: "Ascended", status: "Ascended", class: "Illusionist" },
     { name: "Lexi, Livewire", points: 1000, rank: "Ascended", status: "Ascended", class: "Ranger" },
-    { name: "Kano, Dracai of Aether", points: 500, rank: "1", status: "Active", class: "Wizard" }, // Example active
+    { name: "Kano, Dracai of Aether", points: 500, rank: "1", status: "Active", class: "Wizard" },
     { name: "Dash, Inventor Extraordinaire", points: 400, rank: "2", status: "Active", class: "Mechanologist" },
     { name: "Rhinar, Reckless Rampage", points: 300, rank: "3", status: "Active", class: "Brute" },
     { name: "Dorinthea Ironsong", points: 300, rank: "4", status: "Active", class: "Warrior" }
@@ -172,12 +173,48 @@ const FALLBACK_LL_DATA = [
 
 const getLivingLegendData = async (req, res) => {
     try {
-        console.log("Scraping Living Legend data...");
+        console.log("Checking DB Cache for Living Legend data...");
+        // 1. Check DB Cache
+        const { data: cachedData, error: dbError } = await supabase
+            .from('living_legend_leaderboard')
+            .select('*')
+            .order('points', { ascending: false });
+
+        // If updated_at is missing (old logic) assume stale
+        const lastUpdated = (cachedData && cachedData.length > 0 && cachedData[0].updated_at)
+            ? new Date(cachedData[0].updated_at) : new Date(0);
+
+        const isStale = (new Date() - lastUpdated) > (7 * 24 * 60 * 60 * 1000); // 7 days check
+
+        // Normalize DB data for frontend (hero_name -> name)
+        const normalizeCached = (data) => data.map(h => ({
+            name: h.hero_name,
+            points: h.points,
+            rank: h.rank,
+            status: h.status,
+            class: h.class
+        }));
+
+        if (!isStale && cachedData.length > 0) {
+            console.log("Serving cached LL data.");
+            return res.json(normalizeCached(cachedData));
+        }
+
+        console.log("Cache miss or stale. Scraping with headers...");
+
+        // 2. Scrape with Headers
         const url = 'https://fabtcg.com/resources/rules-and-policy-center/living-legend/';
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9'
+            }
+        });
 
         if (!response.ok) {
-            console.warn(`LL Scrape failed with status ${response.status}. Using fallback.`);
+            console.warn(`LL Scrape failed with status ${response.status}. Serving Cache (if any) or Fallback.`);
+            if (cachedData && cachedData.length > 0) return res.json(normalizeCached(cachedData));
             return res.json(FALLBACK_LL_DATA);
         }
 
@@ -208,11 +245,8 @@ const getLivingLegendData = async (req, res) => {
         };
 
         const rows = html.split('<tr');
-
         for (const row of rows) {
-            // Extract cell contents
             const cells = row.split(/<td[^>]*>/).slice(1).map(c => c.split('</td>')[0].trim());
-
             if (cells.length >= 3) {
                 let rank = decodeHtmlEntities(cells[0].replace(/<[^>]*>/g, ''));
                 let heroName = decodeHtmlEntities(cells[1].replace(/<[^>]*>/g, ''));
@@ -230,27 +264,43 @@ const getLivingLegendData = async (req, res) => {
                     const existing = activeHeroes.find(h => h.name === heroName);
                     if (!existing) {
                         activeHeroes.push({
-                            name: heroName,
+                            hero_name: heroName,
                             points: points,
                             rank: rank,
                             status: status,
-                            class: 'Unknown'
+                            class: 'Unknown',
+                            updated_at: new Date()
                         });
                     }
                 }
             }
         }
 
-        const ascendedHeroes = [];
-        const allHeroes = [...ascendedHeroes, ...activeHeroes].sort((a, b) => b.points - a.points);
+        // 3. Update Cache if successful scrape
+        if (activeHeroes.length > 0) {
+            console.log(`Scraped ${activeHeroes.length} heroes. Updating Cache...`);
+            // Upsert Logic
+            const { error: upsertError } = await supabase
+                .from('living_legend_leaderboard')
+                .upsert(activeHeroes, { onConflict: 'hero_name' });
 
-        // If scraping returned nothing (unexpected layout change), use fallback
-        if (allHeroes.length === 0) {
-            console.warn("LL Scrape returned 0 heroes. Using fallback.");
+            if (upsertError) console.error("Cache update failed:", upsertError);
+
+            // Normalize for frontend (hero_name -> name)
+            const frontendData = activeHeroes.map(h => ({
+                name: h.hero_name,
+                points: h.points,
+                rank: h.rank,
+                status: h.status,
+                class: h.class
+            }));
+            return res.json(frontendData.sort((a, b) => b.points - a.points));
+        } else {
+            console.warn("LL Scrape returned 0 heroes (layout change?). Serving Cache/Fallback.");
+            if (cachedData && cachedData.length > 0) return res.json(normalizeCached(cachedData));
             return res.json(FALLBACK_LL_DATA);
         }
 
-        res.json(allHeroes);
     } catch (error) {
         console.error('Error scraping LL:', error);
         // On error, return fallback instead of failing
