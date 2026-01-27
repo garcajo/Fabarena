@@ -715,7 +715,8 @@
 .creator-info-wrapper {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
+    gap: 0.75rem;
+    /* Reduced from 1.5rem */
     width: 100%;
 }
 
@@ -731,9 +732,12 @@
 .deck-engagement-stats {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding-left: 1rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    gap: 0.75rem;
+    /* Reduced gap between icons */
+    padding-left: 0.75rem;
+    /* Reduced from 1rem */
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    /* Even more subtle */
 }
 
 .stat-item {
