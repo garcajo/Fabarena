@@ -914,6 +914,38 @@ export const DeckService = {
         }
     },
 
+    async deleteDeckComment(commentId) {
+        try {
+            const { error } = await supabase
+                .from('deck_comments')
+                .delete()
+                .eq('id', commentId);
+
+            if (error) throw error;
+            return true;
+        } catch (error) {
+            console.error("Error deleting comment:", error);
+            throw error;
+        }
+    },
+
+    async updateDeckComment(commentId, content) {
+        try {
+            const { data, error } = await supabase
+                .from('deck_comments')
+                .update({ content, updated_at: new Date() })
+                .eq('id', commentId)
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error("Error updating comment:", error);
+            throw error;
+        }
+    },
+
     async getLikeStatus(deckId) {
         try {
             const { data: { user } } = await supabase.auth.getUser();

@@ -1,24 +1,76 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { MessageSquare, CornerDownRight, Send, X } from 'lucide-react';
+import { MessageSquare, CornerDownRight, Send, X, Trash2, Pencil, Check } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLanguage } from '../../context/LanguageContext';
 import { DeckService } from '../../services/api';
 import '../../styles/Comments.css';
 
-const CommentItem = ({ comment, depth = 0, onReply, replies }) => {
+const CommentItem = ({ comment, depth = 0, onReply, onDelete, onUpdate, currentUser, replies }) => {
     const { t } = useLanguage();
     const dateStr = new Date(comment.created_at).toLocaleDateString();
+
+    // Check ownership properly
+    const isOwner = currentUser && currentUser.id === comment.user_id;
+
+    const [isEditing, setIsEditing] = useState(false);
+    const [editContent, setEditContent] = useState(comment.content);
+
+    const handleSaveEdit = () => {
+        if (editContent.trim() !== comment.content) {
+            onUpdate(comment.id, editContent);
+        }
+        setIsEditing(false);
+    };
 
     return (
         <div className="comment-item" style={{ marginLeft: depth > 0 ? '2rem' : '0' }}>
             <div className="comment-header">
                 <span className="comment-author">{comment.username}</span>
                 <span className="comment-date">{dateStr}</span>
+                {isOwner && !isEditing && (
+                    <div className="comment-owner-actions">
+                        <button
+                            className="comment-action-btn edit-btn"
+                            onClick={() => setIsEditing(true)}
+                            title={t('comments.edit') || "Edit"}
+                        >
+                            <Pencil size={14} />
+                        </button>
+                        <button
+                            className="comment-action-btn delete-btn"
+                            onClick={() => onDelete(comment.id)}
+                            title={t('comments.delete') || "Delete"}
+                        >
+                            <Trash2 size={14} />
+                        </button>
+                    </div>
+                )}
             </div>
+
             <div className="comment-content">
-                {comment.content}
+                {isEditing ? (
+                    <div className="comment-edit-form">
+                        <textarea
+                            value={editContent}
+                            onChange={(e) => setEditContent(e.target.value)}
+                            className="comment-edit-input"
+                            rows={2}
+                        />
+                        <div className="comment-edit-actions">
+                            <button onClick={handleSaveEdit} className="comment-save-btn">
+                                <Check size={14} /> Save
+                            </button>
+                            <button onClick={() => { setIsEditing(false); setEditContent(comment.content); }} className="comment-cancel-btn">
+                                <X size={14} /> Cancel
+                            </button>
+                        </div>
+                    </div>
+                ) : (
+                    comment.content
+                )}
             </div>
+
             <div className="comment-actions">
                 <button className="comment-reply-btn" onClick={() => onReply(comment)}>
                     <CornerDownRight size={14} />
@@ -34,6 +86,9 @@ const CommentItem = ({ comment, depth = 0, onReply, replies }) => {
                             comment={reply}
                             depth={depth + 1}
                             onReply={onReply}
+                            onDelete={onDelete}
+                            onUpdate={onUpdate}
+                            currentUser={currentUser}
                             replies={reply.replies}
                         />
                     ))}
@@ -83,7 +138,28 @@ const CommentSection = ({ deckId }) => {
             fetchComments();
         } catch (err) {
             console.error("Failed to post comment", err);
-            alert("Failed to post comment: " + err.message); // Temporary for debug
+            alert("Failed to post comment: " + err.message);
+        }
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        if (!window.confirm("Are you sure you want to delete this comment?")) return;
+        try {
+            await DeckService.deleteDeckComment(commentId);
+            fetchComments();
+        } catch (err) {
+            console.error("Failed to delete comment", err);
+            alert("Failed to delete comment");
+        }
+    };
+
+    const handleUpdateComment = async (commentId, content) => {
+        try {
+            await DeckService.updateDeckComment(commentId, content);
+            fetchComments();
+        } catch (err) {
+            console.error("Failed to update comment", err);
+            alert("Failed to update comment");
         }
     };
 
@@ -159,6 +235,9 @@ const CommentSection = ({ deckId }) => {
                         key={comment.id}
                         comment={comment}
                         replies={comment.replies}
+                        currentUser={user}
+                        onDelete={handleDeleteComment}
+                        onUpdate={handleUpdateComment}
                         onReply={(c) => {
                             setReplyTo(c);
                             document.querySelector('.comment-input')?.focus();

@@ -146,6 +146,8 @@ export const translations = {
             login_to_comment: 'Login to comment',
             send: 'Send',
             cancel: 'Cancel',
+            edit: 'Edit',
+            delete: 'Delete',
         },
         deck: {
             guide: 'Deck Guide',
@@ -552,6 +554,8 @@ export const translations = {
             login_to_comment: 'Inicia sesión para comentar',
             send: 'Enviar',
             cancel: 'Cancelar',
+            edit: 'Editar',
+            delete: 'Eliminar',
         },
         deck: {
             guide: 'Guía del Mazo',
