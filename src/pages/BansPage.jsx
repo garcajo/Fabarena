@@ -197,25 +197,9 @@ const BansPage = () => {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                background: 'rgba(0,0,0,0.4)',
-                                                flexDirection: 'column',
-                                                gap: '8px'
+                                                background: 'rgba(0,0,0,0.4)'
                                             }}>
                                                 <ShieldBan size={48} color="#ff4444" strokeWidth={1.5} />
-                                                {/* Show specific Pitch if requested */}
-                                                {targetPitch && (
-                                                    <span style={{
-                                                        color: targetPitch === '1' ? '#ff4444' : targetPitch === '2' ? '#ffff44' : '#4444ff',
-                                                        fontWeight: 'bold',
-                                                        textShadow: '0 2px 4px black',
-                                                        background: 'rgba(0,0,0,0.8)',
-                                                        padding: '2px 8px',
-                                                        borderRadius: '4px',
-                                                        fontSize: '0.8rem'
-                                                    }}>
-                                                        {targetPitch === '1' ? 'RED' : targetPitch === '2' ? 'YELLOW' : 'BLUE'}
-                                                    </span>
-                                                )}
                                             </div>
                                         </div>
 
