@@ -6,6 +6,7 @@ import { StorageService } from '../services/storage';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { isCardBanned } from '../data/bannedCards';
+import { isCardLegalForHero } from '../utils/deckValidation';
 import FormatSelection from '../components/deck-builder/FormatSelection';
 import CardSearchModal from '../components/deck-builder/CardSearchModal';
 import StackedDeckList from '../components/deck-builder/StackedDeckList';
@@ -198,12 +199,44 @@ const DeckBuilder = () => {
                         }
                     }
 
-                    const equipmentData = safeParse(deck.equipment);
-                    const mainDeckData = safeParse(deck.main_deck);
-                    const sideboardData = safeParse(deck.sideboard);
-                    const maybeboardData = safeParse(deck.maybeboard);
+                    let equipmentData = [];
+                    let mainDeckData = [];
+                    let sideboardData = [];
+                    let maybeboardData = [];
 
-                    console.log("[DeckBuilder] Parsed Hero:", heroData);
+                    if (deck.cards && Array.isArray(deck.cards) && deck.cards.length > 0) {
+                        // New Relational Logic
+                        console.log("[DeckBuilder] Loading from relational deck_cards...", deck.cards.length);
+
+                        mainDeckData = deck.cards
+                            .filter(c => c.section === 'main' && !c.is_sideboard)
+                            .map(c => ({ card: c, count: c.quantity }));
+
+                        sideboardData = deck.cards
+                            .filter(c => c.section === 'sideboard' || c.is_sideboard)
+                            .map(c => ({ card: c, count: c.quantity }));
+
+                        maybeboardData = deck.cards
+                            .filter(c => c.section === 'maybeboard')
+                            .map(c => ({ card: c, count: c.quantity }));
+
+                        // Equipment: Expand quantity to individual items
+                        deck.cards.filter(c => c.section === 'equipment').forEach(c => {
+                            for (let i = 0; i < (c.quantity || 1); i++) {
+                                equipmentData.push(c);
+                            }
+                        });
+
+                    } else {
+                        // Fallback: Legacy JSON columns
+                        console.log("[DeckBuilder] Loading from legacy JSON columns (or empty)");
+                        equipmentData = safeParse(deck.equipment) || [];
+                        mainDeckData = safeParse(deck.main_deck) || [];
+                        sideboardData = safeParse(deck.sideboard) || [];
+                        maybeboardData = safeParse(deck.maybeboard) || [];
+                    }
+
+                    console.log("[DeckBuilder] Final Loaded State - Main:", mainDeckData.length);
 
                     setDeckData({
                         name: deck.name,
@@ -332,7 +365,7 @@ const DeckBuilder = () => {
     };
 
     const handleBackToFormat = () => {
-        navigate('/decks');
+        navigate('/my-decks');
     };
 
     const handleSaveDeck = async () => {
