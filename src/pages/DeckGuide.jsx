@@ -121,7 +121,7 @@ const DeckGuide = () => {
     };
 
     const removeSection = (index) => {
-        if (window.confirm('Are you sure you want to delete this section?')) {
+        if (window.confirm(t('guide.confirm_delete_section') || 'Are you sure you want to delete this section?')) {
             const newSections = sections.filter((_, i) => i !== index);
             setSections(newSections);
         }
@@ -134,9 +134,9 @@ const DeckGuide = () => {
         return (match && match[2].length === 11) ? match[2] : null;
     };
 
-    if (loading) return <div className="container" style={{ paddingTop: '2rem' }}>Loading...</div>;
+    if (loading) return <div className="container" style={{ paddingTop: '2rem' }}>{t('common.loading')}</div>;
 
-    if (!deck) return <div className="container" style={{ paddingTop: '2rem' }}>Deck not found</div>;
+    if (!deck) return <div className="container" style={{ paddingTop: '2rem' }}>{t('deckBuilder.notFoundTitle')}</div>;
 
     return (
         <div className="deck-guide-page" style={{ paddingBottom: '4rem' }}>
@@ -235,7 +235,7 @@ const DeckGuide = () => {
                                 <>
                                     <button
                                         onClick={() => {
-                                            if (window.confirm('Discard changes?')) {
+                                            if (window.confirm(t('guide.discard_changes') || 'Discard changes?')) {
                                                 loadDeck(); // Revert to saved
                                                 setIsEditing(false);
                                             }
@@ -250,7 +250,7 @@ const DeckGuide = () => {
                                             fontWeight: '600',
                                         }}
                                     >
-                                        Cancel
+                                        {t('common.cancel')}
                                     </button>
                                     <button
                                         onClick={handleSave}
@@ -312,7 +312,7 @@ const DeckGuide = () => {
                             {isOwner && isEditing ? (
                                 <div className="section-editor">
                                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                                        <h4 style={{ margin: 0, opacity: 0.7 }}>Section {index + 1}</h4>
+                                        <h4 style={{ margin: 0, opacity: 0.7 }}>{t('guide.section')} {index + 1}</h4>
                                         <button
                                             onClick={() => removeSection(index)}
                                             style={{
@@ -330,19 +330,19 @@ const DeckGuide = () => {
                                             onMouseLeave={(e) => {
                                                 e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
                                             }}
-                                            title="Delete Section"
+                                            title={t('guide.delete_section') || "Delete Section"}
                                         >
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
 
                                     <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>TITLE</label>
+                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>{t('common.title') || 'TITLE'}</label>
                                         <input
                                             type="text"
                                             value={section.title}
                                             onChange={(e) => updateSection(index, 'title', e.target.value)}
-                                            placeholder="Section Title (e.g., 'Core Strategy')"
+                                            placeholder={t('guide.title_placeholder') || "Section Title (e.g., 'Core Strategy')"}
                                             style={{
                                                 width: '100%',
                                                 padding: '0.75rem',
@@ -356,12 +356,12 @@ const DeckGuide = () => {
                                     </div>
 
                                     <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>SUBTITLE (OPTIONAL)</label>
+                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>{t('common.subtitle') || 'SUBTITLE (OPTIONAL)'}</label>
                                         <input
                                             type="text"
                                             value={section.subtitle}
                                             onChange={(e) => updateSection(index, 'subtitle', e.target.value)}
-                                            placeholder="Subtitle or Context"
+                                            placeholder={t('guide.subtitle_placeholder') || "Subtitle or Context"}
                                             style={{
                                                 width: '100%',
                                                 padding: '0.75rem',
@@ -375,12 +375,12 @@ const DeckGuide = () => {
                                     </div>
 
                                     <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>IMAGE OR VIDEO URL (YOUTUBE)</label>
+                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>{t('guide.media_label') || 'IMAGE OR VIDEO URL (YOUTUBE)'}</label>
                                         <input
                                             type="text"
                                             value={section.imageUrl}
                                             onChange={(e) => updateSection(index, 'imageUrl', e.target.value)}
-                                            placeholder="https://example.com/image.jpg or YouTube URL"
+                                            placeholder={t('guide.media_placeholder') || "https://example.com/image.jpg or YouTube URL"}
                                             style={{
                                                 width: '100%',
                                                 padding: '0.75rem',
@@ -413,11 +413,11 @@ const DeckGuide = () => {
                                     </div>
 
                                     <div className="form-group">
-                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>CONTENT</label>
+                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.85rem', fontWeight: '600', color: 'var(--color-text-muted)' }}>{t('guide.content') || 'CONTENT'}</label>
                                         <textarea
                                             value={section.content}
                                             onChange={(e) => updateSection(index, 'content', e.target.value)}
-                                            placeholder="Write your guide content here..."
+                                            placeholder={t('guide.content_placeholder') || "Write your guide content here..."}
                                             rows={8}
                                             style={{
                                                 width: '100%',

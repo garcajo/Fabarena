@@ -151,7 +151,7 @@ const Register = () => {
                     </button>
 
                     <div className="auth-footer">
-                        <Link to="/" className="auth-link">{t('auth.login_link')}</Link>
+                        <Link to="/" className="auth-link">{t('auth.already_have_account')}</Link>
                     </div>
                 </form>
             </div>

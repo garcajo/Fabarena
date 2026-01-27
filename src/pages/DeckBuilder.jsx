@@ -1327,8 +1327,8 @@ const DeckBuilder = () => {
                                                         <div className="result-meta">
                                                             <span className="result-cost">{card.costo !== null ? card.costo : '-'}</span>
                                                             <span className="result-type">{card.tipo}</span>
-                                                            {banned && <span className="banned-badge">BANNED</span>}
-                                                            {isLimitReached && <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 'bold' }}>MAX</span>}
+                                                            {banned && <span className="banned-badge">{t('common.banned')}</span>}
+                                                            {isLimitReached && <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 'bold' }}>{t('common.max')}</span>}
                                                             {!isDisabled && <button className="add-btn-inline"><Plus size={14} /></button>}
                                                         </div>
                                                     </div>
@@ -1415,7 +1415,7 @@ const DeckBuilder = () => {
                                                     <span className="deck-card-name" style={{ flex: 1, color: 'white', fontWeight: '600' }}>
                                                         {deckData.hero.name || "(No Name)"}
                                                     </span>
-                                                    <span style={{ fontSize: '0.8rem', opacity: 0.7, marginRight: '10px' }}>Hero</span>
+                                                    <span style={{ fontSize: '0.8rem', opacity: 0.7, marginRight: '10px' }}>{t('common.hero')}</span>
                                                 </div>
                                             )}
 

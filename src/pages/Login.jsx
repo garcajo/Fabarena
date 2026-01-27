@@ -49,7 +49,7 @@ const Login = () => {
         <div className="register-page">
             <div className="register-container">
                 <div className="register-header">
-                    <h2>Login</h2>
+                    <h2>{t('auth.login_title')}</h2>
                     <p className="register-subtitle">Fab<span className="text-red">Arena</span></p>
                 </div>
 
@@ -92,11 +92,11 @@ const Login = () => {
                     </div>
 
                     <button type="submit" className="auth-button" disabled={isLoading}>
-                        {isLoading ? t('common.loading') : 'Log In'}
+                        {isLoading ? t('common.loading') : t('auth.login_button')}
                     </button>
 
                     <div className="auth-footer">
-                        <Link to="/register" className="auth-link">Don't have an account? Sign Up</Link>
+                        <Link to="/register" className="auth-link">{t('auth.dont_have_account')}</Link>
                     </div>
                 </form>
             </div>

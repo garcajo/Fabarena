@@ -354,7 +354,7 @@ const DeckList = ({ mode }) => {
                 <div className="list-header-cell cell-format">{t('filters.label_class') || 'Format'}</div>
                 <div className="list-header-cell cell-creator">{t('hero.filter_user') || 'Creator'}</div>
                 <div className="list-header-cell cell-date">{t('common.date') || 'Date'}</div>
-                {mode === 'mine' && <div className="list-header-cell cell-actions">Action</div>}
+                {mode === 'mine' && <div className="list-header-cell cell-actions">{t('common.action')}</div>}
             </div>
             <div className="decks-list-body">
                 {decks.map(deck => {

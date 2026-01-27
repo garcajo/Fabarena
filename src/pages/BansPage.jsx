@@ -110,7 +110,7 @@ const BansPage = () => {
 
                 {/* List */}
                 {loading ? (
-                    <div style={{ textAlign: 'center' }}>Loading...</div>
+                    <div style={{ textAlign: 'center' }}>{t('common.loading')}</div>
                 ) : (
                     <div style={{
                         display: 'grid',
