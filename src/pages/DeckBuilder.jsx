@@ -27,12 +27,12 @@ const DeckBuilder = () => {
     const navigate = useNavigate();
     const { deckId: paramDeckId } = useParams();
 
-    const [step, setStep] = useState(STEPS.FORMAT);
+    const [step, setStep] = useState(paramDeckId ? STEPS.BUILDER : STEPS.FORMAT);
     const [deckId, setDeckId] = useState(paramDeckId || null);
     // Default to Edit Mode ONLY if creating a new deck (!paramDeckId). 
     // If viewing existing deck, default to View Mode (false).
     const [isEditMode, setIsEditMode] = useState(!paramDeckId);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(!!paramDeckId);
     const [deckData, setDeckData] = useState({
         name: '',
         format: 'cc', // Default to Classic Constructed
@@ -902,6 +902,37 @@ const DeckBuilder = () => {
         }
     };
 
+    // Loading View
+    if (loading || authLoading) {
+        return (
+            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
+                <div className="flex flex-col items-center gap-4">
+                    <div className="relative w-16 h-16">
+                        <div className="absolute inset-0 border-4 border-white/5 rounded-full"></div>
+                        <div className="absolute inset-0 border-4 border-t-primary-red border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-white/40 text-sm font-medium tracking-[0.2em] uppercase">
+                            {t('common.loading') || 'Loading'}
+                        </p>
+                        <div className="h-[2px] w-24 bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-full bg-primary-red animate-[loading-bar_1.5s_infinite_ease-in-out]"></div>
+                        </div>
+                    </div>
+                </div>
+                <style dangerouslySetInnerHTML={{
+                    __html: `
+                    @keyframes loading-bar {
+                        0% { transform: translateX(-100%); }
+                        100% { transform: translateX(100%); }
+                    }
+                    .border-t-primary-red { border-top-color: var(--color-primary-red, #ef4444); }
+                    .bg-primary-red { background-color: var(--color-primary-red, #ef4444); }
+                `}} />
+            </div>
+        );
+    }
+
     // Initial Format Selection View
     if (step === STEPS.FORMAT) {
         return <FormatSelection onSelect={handleFormatSelect} />;
@@ -1370,7 +1401,8 @@ const DeckBuilder = () => {
                     </div>
                 )}
 
-                {!deckData.hero ? (
+                {/* Main Hero Selection Prompt - Only show if NO HERO and NO LOADING */}
+                {!deckData.hero && !loading && !authLoading && (
                     <div className="select-hero-prompt fade-in">
                         <div className="prompt-content">
                             <h2>{t('deckBuilder.selectHeroTitle') || "Choose Your Hero"}</h2>
@@ -1381,7 +1413,9 @@ const DeckBuilder = () => {
                             </button>
                         </div>
                     </div>
-                ) : (
+                )}
+
+                {deckData.hero && (
                     <>
                         <div className="builder-layout">
                             {/* Hero Section - FIXED */}
