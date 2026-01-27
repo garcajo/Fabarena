@@ -359,13 +359,37 @@ export const CardService = {
         ];
 
         try {
+            // 1. Try fetching directly from Supabase (fastest, no proxy needed)
+            const { data: sbData, error: sbError } = await supabase
+                .from('living_legend_leaderboard')
+                .select('*')
+                .order('points', { ascending: false });
+
+            if (!sbError && sbData && sbData.length > 0) {
+                // Normalize keys from DB (hero_name) to Frontend (name)
+                // Note: backend controller also does this. We need to match.
+                // Our DB has hero_name, points, rank, status, class
+                const normalized = sbData.map(h => ({
+                    name: h.hero_name,
+                    points: h.points,
+                    rank: h.rank,
+                    status: h.status,
+                    class: h.class
+                }));
+                console.log("[api.js] Loaded LL data from Supabase directly.");
+                return { data: normalized, error: null };
+            }
+
+            // 2. If empty or error (e.g. table empty), try Backend API (triggers scrape)
+            console.log("[api.js] Supabase LL empty/error, calling backend to trigger scrape...", sbError);
             const response = await fetch('/api/cards/living-legend');
+
             if (!response.ok) {
                 console.warn('Backend LL fetch failed, using frontend fallback');
                 return { data: FALLBACK_LL_DATA, error: null };
             }
             const data = await response.json();
-            // Check if data is valid array
+
             if (!Array.isArray(data) || data.length === 0) {
                 console.warn('Backend LL returned empty/invalid, using frontend fallback');
                 return { data: FALLBACK_LL_DATA, error: null };
@@ -373,6 +397,7 @@ export const CardService = {
             return { data, error: null };
         } catch (error) {
             console.warn("LL data fetch failed (network/proxy), using frontend fallback", error);
+            // Last resort
             return { data: FALLBACK_LL_DATA, error: null };
         }
     },
