@@ -5,9 +5,11 @@ async function scrapeLL() {
         const url = 'https://fabtcg.com/resources/rules-and-policy-center/living-legend/';
         console.log(`Fetching ${url}...`);
         const response = await fetch(url);
+        console.log(`Status: ${response.status} ${response.statusText}`);
         const html = await response.text();
 
         console.log("HTML Length:", html.length);
+        console.log("HTML Content:", html);
 
         // Helper to decode HTML entities (SAME AS CONTROLLER)
         const decodeHtmlEntities = (text) => {
