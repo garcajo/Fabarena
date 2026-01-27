@@ -1078,7 +1078,7 @@ const DeckBuilder = () => {
 
                         {/* Save/Clone Button (Moved) */}
                         {/* Use derived isOwner for robustness */}
-                        {(deckId && !isOwner && deckData.id) ? (
+                        {(deckId && !!user && !isOwner && deckData.id) ? (
                             <button
                                 className="save-deck-btn"
                                 onClick={async () => {
