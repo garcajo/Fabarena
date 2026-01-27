@@ -645,6 +645,12 @@
     min-width: 120px;
 }
 
+.cell-stats {
+    flex: 0.8;
+    min-width: 100px;
+    justify-content: flex-start;
+}
+
 .cell-actions {
     flex: 0.5;
     min-width: 60px;

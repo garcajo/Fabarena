@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Plus, Layers, Sword, Calendar, Trash2, FolderInput, X } from 'lucide-react';
+import { Plus, Layers, Sword, Calendar, Trash2, FolderInput, X, Heart, MessageSquare } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { DeckService, CardService, FolderService } from '../services/api'; // Import DeckService, CardService, and FolderService
@@ -352,6 +352,7 @@ const DeckList = ({ mode }) => {
             <div className="decks-list-header">
                 <div className="list-header-cell cell-title">{t('hero.filter_title') || 'Title'}</div>
                 <div className="list-header-cell cell-format">{t('filters.label_class') || 'Format'}</div>
+                <div className="list-header-cell cell-stats">{t('common.stats') || 'Stats'}</div>
                 <div className="list-header-cell cell-creator">{t('hero.filter_user') || 'Creator'}</div>
                 <div className="list-header-cell cell-date">{t('common.date') || 'Date'}</div>
                 {mode === 'mine' && <div className="list-header-cell cell-actions">{t('common.action')}</div>}
@@ -376,6 +377,18 @@ const DeckList = ({ mode }) => {
                                     <span className={`format-badge-small ${deck.format === 'cc' ? 'format-cc' : 'format-sa'}`}>
                                         {deck.format === 'cc' ? 'CC' : 'Silver'}
                                     </span>
+                                </div>
+                                <div className="list-cell cell-stats">
+                                    <div className="deck-engagement-stats">
+                                        <div className="stat-item" title={t('deckBuilder.addLike') || 'Likes'}>
+                                            <Heart size={14} className={deck.likes_count > 0 ? 'text-red fill-red' : 'opacity-50'} />
+                                            <span>{deck.likes_count || 0}</span>
+                                        </div>
+                                        <div className="stat-item" title={t('deckBuilder.comments') || 'Comments'}>
+                                            <MessageSquare size={14} className={deck.comments_count > 0 ? 'text-blue' : 'opacity-50'} />
+                                            <span>{deck.comments_count || 0}</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="list-cell cell-creator">
                                     {deck.username || 'Unknown'}
