@@ -145,12 +145,13 @@ const BansPage = () => {
                                 if (Array.isArray(versions) && versions.length > 0) {
                                     // a) Try to find exact pitch match
                                     if (targetPitch) {
-                                        card = versions.find(v => v.pitch === targetPitch);
+                                        // Compare loosely (==) because pitch from DB is number, targetPitch is string
+                                        card = versions.find(v => v.pitch == targetPitch);
                                     }
 
                                     // b) If no target pitch or not found, try Pitch 1 (Red)
                                     if (!card) {
-                                        card = versions.find(v => v.pitch === '1');
+                                        card = versions.find(v => v.pitch == 1);
                                     }
 
                                     // c) Fallback to any version
