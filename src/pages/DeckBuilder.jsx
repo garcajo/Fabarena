@@ -61,20 +61,6 @@ const DeckBuilder = () => {
     // 2. They own the deck (isOwner) AND are in edit mode
     const canEdit = (!deckId && !!user) || (isOwner && isEditMode);
 
-    // Fetch like status when deck loads
-    useEffect(() => {
-        const fetchLikeStatus = async () => {
-            if (!deckId) return;
-            try {
-                const status = await DeckService.getLikeStatus(deckId);
-                setLikesCount(status.likes || 0);
-                setUserHasLiked(status.liked || false);
-            } catch (err) {
-                console.error('Error fetching like status:', err);
-            }
-        };
-        fetchLikeStatus();
-    }, [deckId]);
 
     // Handle like toggle
     const handleToggleLike = async () => {
@@ -260,8 +246,23 @@ const DeckBuilder = () => {
                         sideboard: sideboardData || [],
                         maybeboard: maybeboardData || []
                     });
+                    // Set likes and views count
                     setLikesCount(deck.likes_count || 0);
                     setViewsCount(deck.views_count || 0);
+
+                    // Also fetch if current user has liked it
+                    if (user && deck.id) {
+                        try {
+                            const status = await DeckService.getLikeStatus(deck.id);
+                            setUserHasLiked(status.liked || false);
+                            // Ensure the count is the most up-to-date one
+                            if (status.likes !== undefined) {
+                                setLikesCount(status.likes);
+                            }
+                        } catch (err) {
+                            console.error('Error fetching individual like status:', err);
+                        }
+                    }
 
                     // Increment views (non-blocking)
                     DeckService.incrementViews(deck.id);
@@ -274,7 +275,7 @@ const DeckBuilder = () => {
             };
             loadDeck();
         }
-    }, [paramDeckId]);
+    }, [paramDeckId, user]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
