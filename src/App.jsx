@@ -73,7 +73,7 @@ function App() {
                 <Route
                   path="/decks/new"
                   element={
-                    <ProtectedRoute>
+                    <ProtectedRoute redirectTo="/login">
                       <DeckBuilder />
                     </ProtectedRoute>
                   }
