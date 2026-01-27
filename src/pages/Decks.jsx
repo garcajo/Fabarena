@@ -381,11 +381,11 @@ const DeckList = ({ mode }) => {
                                     <div className="creator-info-wrapper">
                                         <span className="creator-name">{deck.username || 'Unknown'}</span>
                                         <div className="deck-engagement-stats">
-                                            <div className="stat-item" title={t('deckBuilder.addLike') || 'Likes'}>
+                                            <div className="engagement-stat-item" title={t('deckBuilder.addLike') || 'Likes'}>
                                                 <Heart size={14} className={deck.likes_count > 0 ? 'text-red fill-red' : 'opacity-50'} />
                                                 <span>{deck.likes_count || 0}</span>
                                             </div>
-                                            <div className="stat-item" title={t('deckBuilder.comments') || 'Comments'}>
+                                            <div className="engagement-stat-item" title={t('deckBuilder.comments') || 'Comments'}>
                                                 <MessageSquare size={14} className={deck.comments_count > 0 ? 'text-blue' : 'opacity-50'} />
                                                 <span>{deck.comments_count || 0}</span>
                                             </div>

@@ -155,7 +155,7 @@
     flex-wrap: wrap;
 }
 
-.stat-item {
+.modal-stats .stat-item {
     display: flex;
     flex-direction: column;
     align-items: center;

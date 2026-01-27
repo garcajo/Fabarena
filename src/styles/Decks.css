@@ -728,38 +728,49 @@
 }
 
 .deck-engagement-stats {
-    display: flex;
+    display: flex !important;
+    flex-direction: row !important;
     align-items: center;
     gap: 8px;
+    /* Controlled horizontal separation */
+    margin-left: 10px;
+    padding: 0;
+    border: none;
+    background: none;
 }
 
-.stat-item {
-    display: flex;
+.engagement-stat-item {
+    display: flex !important;
+    flex-direction: row !important;
     align-items: center;
     gap: 4px;
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.5);
+    background: none !important;
+    padding: 0 !important;
+    border: none !important;
+    min-width: unset !important;
     transition: all 0.2s ease;
 }
 
-.stat-item span {
+.engagement-stat-item span {
     font-weight: 500;
 }
 
-.stat-item .text-red {
+.engagement-stat-item .text-red {
     color: #ef4444;
 }
 
-.stat-item .fill-red {
+.engagement-stat-item .fill-red {
     fill: #ef4444;
 }
 
-.stat-item .text-blue {
+.engagement-stat-item .text-blue {
     color: #3b82f6;
 }
 
-.stat-item .opacity-50 {
-    opacity: 0.4;
+.engagement-stat-item .opacity-50 {
+    opacity: 0.5;
 }
 
 .format-badge-small {
