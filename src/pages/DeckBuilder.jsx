@@ -100,27 +100,26 @@ const DeckBuilder = () => {
 
     // Redirect to home if user logs out while viewing a private deck OR if they were editing (isOwner)
     useEffect(() => {
-        // Only run redirection check once auth is ready AND we aren't currently loading deck data
-        if (!authLoading && !user && !loading) {
-            // Wait until deck data ID is present before checking visibility
-            if (deckId && !deckData.id) return;
+        // Only run redirection check once:
+        // 1. Auth state is fully determined (!authLoading)
+        // 2. We are NOT creating a new deck (deckId exists)
+        // 3. Deck data has been successfully loaded (!loading && deckData.id exists)
+        if (!authLoading && deckId && !loading && deckData.id) {
 
-            // Redirect if:
-            // 1. We are viewing an existing deck that is explicitly private
-            // 2. We were the owner (editing) but our session ended (this prevents "ghost" editing)
-            const isPrivateAccess = deckId && deckData.visibility === 'private';
-            const wasOwnerNowLoggedOut = deckData.isOwner;
+            const isPublic = deckData.visibility === 'public';
+            const isOwner = deckData.isOwner || (user && deckData.user_id === user.id);
 
-            if (isPrivateAccess || wasOwnerNowLoggedOut) {
+            // Redirect if the deck is NOT public AND the user is NOT the owner
+            if (!isPublic && !isOwner) {
                 console.log("[DeckBuilder] Unauthorized access. Redirecting to home.", {
                     deckId: deckData.id,
                     visibility: deckData.visibility,
-                    wasOwner: wasOwnerNowLoggedOut
+                    isOwner
                 });
                 navigate('/');
             }
         }
-    }, [user, authLoading, loading, deckData.visibility, deckData.isOwner, deckData.id, deckId, navigate]);
+    }, [user, authLoading, loading, deckData.visibility, deckData.isOwner, deckData.user_id, deckData.id, deckId, navigate]);
 
     useEffect(() => {
         if (paramDeckId) {
