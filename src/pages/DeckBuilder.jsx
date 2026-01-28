@@ -557,10 +557,10 @@ const DeckBuilder = () => {
             // So if I move Main -> Side: Remove (Total - 1), Add (Total - 1 + 1) = Total. No change.
             // If I move Maybe -> Main: Add (Total + 1).
 
-            return totalActive < 80;
+            const limit = currentData.format === 'sa' ? 55 : 80;
+            return totalActive < limit;
         }
 
-        // Silver Age / Blitz might have other limits, for now only enforcing CC 80 as requested.
         return true;
     };
 
@@ -578,7 +578,8 @@ const DeckBuilder = () => {
             // Check limit
             const targetKey = target === 'main' ? 'mainDeck' : target;
             if (!validateDeckLimit(deckData, card, targetKey)) {
-                setToastMessage(t('deckBuilder.limitReached') || "Deck Limit Reached (Max 80 cards for CC)");
+                const limit = deckData.format === 'sa' ? 55 : 80;
+                setToastMessage(t('deckBuilder.limitReached') || `Deck Limit Reached (Max ${limit} cards)`);
                 setToastType('error');
                 setShowToast(true);
                 return;
@@ -678,7 +679,8 @@ const DeckBuilder = () => {
 
         if (!isSourceActive && isTargetActive) {
             if (!validateDeckLimit(deckData, card, targetKey)) {
-                setToastMessage(t('deckBuilder.limitReached') || "Deck Limit Reached (Max 80 cards for CC)");
+                const limit = deckData.format === 'sa' ? 55 : 80;
+                setToastMessage(t('deckBuilder.limitReached') || `Deck Limit Reached (Max ${limit} cards)`);
                 setToastType('error');
                 setShowToast(true);
                 return;
@@ -761,6 +763,7 @@ const DeckBuilder = () => {
     const maybeboardCards = deckData.maybeboard.reduce((acc, curr) => acc + curr.count, 0);
     const equipmentCount = deckData.equipment.length;
     const tournamentTotal = totalCards + sideboardCards + equipmentCount;
+    const tournamentLimit = deckData.format === 'sa' ? 55 : 80;
 
     const [hoveredCard, setHoveredCard] = React.useState(null); // { image: string, side: 'left' | 'right' }
 
@@ -1304,12 +1307,12 @@ const DeckBuilder = () => {
                     )}
 
                     {/* Tournament Legal Counter */}
-                    <div className={`tournament-counter ${tournamentTotal > 80 ? 'over-limit' : ''}`} title={t('deckBuilder.tournamentTotalHint') || "Total cards (Equipment + Deck + Sideboard) - Max 80"}>
+                    <div className={`tournament-counter ${tournamentTotal > tournamentLimit ? 'over-limit' : ''}`} title={t('deckBuilder.tournamentTotalHint') || `Total cards (Equipment + Deck + Sideboard) - Max ${tournamentLimit}`}>
                         <div className="counter-label">{t('deckBuilder.totalLegal') || "Total Cards"}</div>
                         <div className="counter-value">
                             <span className="current">{tournamentTotal}</span>
                             <span className="separator">/</span>
-                            <span className="limit">80</span>
+                            <span className="limit">{tournamentLimit}</span>
                         </div>
                     </div>
 

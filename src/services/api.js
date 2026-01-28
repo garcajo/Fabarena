@@ -511,6 +511,7 @@ export const DeckService = {
             }
 
             if (filters.hero) query = query.ilike('hero', `%${filters.hero}%`);
+            if (filters.format) query = query.eq('format', filters.format);
             if (filters.username) {
                 query = query.ilike('username', `%${filters.username}%`);
             }

@@ -66,6 +66,7 @@ const DeckList = ({ mode }) => {
     const [filters, setFilters] = React.useState({
         hero: '',
         username: '',
+        format: '',
         sort: 'newest'
     });
 
@@ -73,6 +74,7 @@ const DeckList = ({ mode }) => {
     const [tempFilters, setTempFilters] = React.useState({
         hero: '',
         username: '',
+        format: '',
         sort: 'newest'
     });
 
@@ -281,6 +283,23 @@ const DeckList = ({ mode }) => {
                     value={tempFilters.username}
                     onChange={(e) => handleInputChange('username', e.target.value)}
                     onKeyDown={handleKeyDown}
+                />
+            </div>
+
+            {/* Format Filter */}
+            <div className="filter-group">
+                <label>
+                    {t('filters.label_format') || 'Format'}
+                </label>
+                <CustomSelect
+                    options={[
+                        { value: '', label: t('filters.format_any') || 'Any Format' },
+                        { value: 'cc', label: t('filters.format_cc') || 'Classic Constructed' },
+                        { value: 'sa', label: t('filters.format_sa') || 'Silver Age' }
+                    ]}
+                    value={tempFilters.format}
+                    onChange={(value) => handleInputChange('format', value)}
+                    placeholder={t('filters.format_any') || 'Any Format'}
                 />
             </div>
 
