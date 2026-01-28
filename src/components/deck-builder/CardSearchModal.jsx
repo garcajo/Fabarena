@@ -216,7 +216,7 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                         placeholder={t('filters.search_placeholder') || "Search..."}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        autoFocus
+                        autoFocus={window.innerWidth > 768}
                     />
                 </div>
 
