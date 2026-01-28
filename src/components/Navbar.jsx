@@ -381,231 +381,231 @@ const Navbar = () => {
             fontWeight: 'bold'
           }}>?</div>
         </Link>
-      </div>
 
-      {/* Language Selector - Centered Absolutely */}
-      <div className="language-selector desktop-only" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-        <button
-          onClick={() => setLanguage('es')}
-          className={`lang-btn ${language === 'es' ? 'active' : ''}`}
-          title="Español"
-        >
-          🇪🇸
-        </button>
-        <button
-          onClick={() => setLanguage('en')}
-          className={`lang-btn ${language === 'en' ? 'active' : ''}`}
-          title="English"
-        >
-          🇬🇧
-        </button>
-      </div>
 
-      {/* Mobile Language Selector - Centered Absolutely (Same Position as Desktop) */}
-      <div className="language-selector mobile-only" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
-        <button
-          onClick={() => setLanguage('es')}
-          className={`lang-btn ${language === 'es' ? 'active' : ''}`}
-          title="Español"
-        >
-          🇪🇸
-        </button>
-        <button
-          onClick={() => setLanguage('en')}
-          className={`lang-btn ${language === 'en' ? 'active' : ''}`}
-          title="English"
-        >
-          🇬🇧
-        </button>
-      </div>
+        {/* Language Selector - Centered Absolutely */}
+        <div className="language-selector desktop-only" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <button
+            onClick={() => setLanguage('es')}
+            className={`lang-btn ${language === 'es' ? 'active' : ''}`}
+            title="Español"
+          >
+            🇪🇸
+          </button>
+          <button
+            onClick={() => setLanguage('en')}
+            className={`lang-btn ${language === 'en' ? 'active' : ''}`}
+            title="English"
+          >
+            🇬🇧
+          </button>
+        </div>
 
-      <ul className="navbar-menu">
-        {/* User Auth Section */}
-        <li>
+        {/* Mobile Language Selector - Centered Absolutely (Same Position as Desktop) */}
+        <div className="language-selector mobile-only" style={{ position: 'absolute', left: '50%', transform: 'translateX(-50%)', zIndex: 10 }}>
+          <button
+            onClick={() => setLanguage('es')}
+            className={`lang-btn ${language === 'es' ? 'active' : ''}`}
+            title="Español"
+          >
+            🇪🇸
+          </button>
+          <button
+            onClick={() => setLanguage('en')}
+            className={`lang-btn ${language === 'en' ? 'active' : ''}`}
+            title="English"
+          >
+            🇬🇧
+          </button>
+        </div>
+
+        <ul className="navbar-menu">
+          {/* User Auth Section */}
+          <li>
+            {user ? (
+              <div
+                className="navbar-item-dropdown"
+                style={{ position: 'relative' }}
+                ref={userDropdownRef}
+                onMouseEnter={handleUserEnter}
+                onMouseLeave={handleUserLeave}
+              >
+                <div
+                  className="navbar-item user-profile-chip"
+                  onClick={() => setIsUserOpen(!isUserOpen)}
+                >
+                  <div className="user-avatar">
+                    <span className="user-initial">{displayName.charAt(0).toUpperCase()}</span>
+                  </div>
+                  <span className="user-name">{displayName}</span>
+                </div>
+
+                {/* User Dropdown Content */}
+                <div
+                  className={`dropdown-content ${isUserOpen ? 'show' : ''}`}
+                  style={{
+                    left: '50%',
+                    right: 'auto',
+                    transform: 'translate(-50%, 10px)',
+                    minWidth: '160px'
+                  }}
+                >
+                  {/* Position adjustment to align right */}
+                  <Link to="/collection" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
+                    <Package size={16} />
+                    <span>{t('nav.collection')}</span>
+                  </Link>
+                  <Link to="/my-decks" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
+                    <LayoutIcon size={16} />
+                    <span>{t('nav.your_decks') || 'Your Decks'}</span>
+                  </Link>
+                  <Link to="/settings" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
+                    <Settings size={16} />
+                    <span>{t('nav.settings') || 'Settings'}</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setIsUserOpen(false);
+                      logout();
+                    }}
+                    className="dropdown-link"
+                    style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit' }}
+                  >
+                    <LogOut size={16} className="text-red" />
+                    <span className="text-red">{t('auth.logout')}</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                <Link to="/login" className="navbar-login-btn">
+                  {t('auth.login_button')}
+                </Link>
+                <Link to="/register" className="navbar-register-btn">
+                  {t('auth.submit')}
+                </Link>
+              </div>
+            )}
+          </li>
+        </ul>
+
+        {/* Mobile Menu Toggle Section - Updated for Separated Logic */}
+        <div
+          className="navbar-toggle"
+          ref={navbarToggleRef}
+          style={{ cursor: 'pointer', gap: '1rem' }}
+        >
+          {/* User Button (Mobile Only) */}
           {user ? (
             <div
-              className="navbar-item-dropdown"
-              style={{ position: 'relative' }}
-              ref={userDropdownRef}
-              onMouseEnter={handleUserEnter}
-              onMouseLeave={handleUserLeave}
+              className={`user-avatar ${activeMobileMenu === 'user' ? 'active-ring' : ''}`}
+              onClick={toggleMobileUser}
+              style={{
+                width: '36px',
+                height: '36px',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                boxShadow: activeMobileMenu === 'user' ? '0 0 0 2px var(--color-primary-red)' : 'none',
+                transition: 'box-shadow 0.2s'
+              }}
             >
-              <div
-                className="navbar-item user-profile-chip"
-                onClick={() => setIsUserOpen(!isUserOpen)}
-              >
-                <div className="user-avatar">
-                  <span className="user-initial">{displayName.charAt(0).toUpperCase()}</span>
-                </div>
-                <span className="user-name">{displayName}</span>
-              </div>
-
-              {/* User Dropdown Content */}
-              <div
-                className={`dropdown-content ${isUserOpen ? 'show' : ''}`}
-                style={{
-                  left: '50%',
-                  right: 'auto',
-                  transform: 'translate(-50%, 10px)',
-                  minWidth: '160px'
-                }}
-              >
-                {/* Position adjustment to align right */}
-                <Link to="/collection" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
-                  <Package size={16} />
-                  <span>{t('nav.collection')}</span>
-                </Link>
-                <Link to="/my-decks" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
-                  <LayoutIcon size={16} />
-                  <span>{t('nav.your_decks') || 'Your Decks'}</span>
-                </Link>
-                <Link to="/settings" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
-                  <Settings size={16} />
-                  <span>{t('nav.settings') || 'Settings'}</span>
-                </Link>
-                <button
-                  onClick={() => {
-                    setIsUserOpen(false);
-                    logout();
-                  }}
-                  className="dropdown-link"
-                  style={{ width: '100%', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit' }}
-                >
-                  <LogOut size={16} className="text-red" />
-                  <span className="text-red">{t('auth.logout')}</span>
-                </button>
-              </div>
+              <span className="user-initial">{displayName.charAt(0).toUpperCase()}</span>
             </div>
           ) : (
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-              <Link to="/login" className="navbar-login-btn">
-                {t('auth.login_button')}
-              </Link>
-              <Link to="/register" className="navbar-register-btn">
-                {t('auth.submit')}
-              </Link>
-            </div>
+            // Keep user-related actions in main menu for logged out
+            null
           )}
-        </li>
-      </ul>
+        </div>
+      </div >
 
-      {/* Mobile Menu Toggle Section - Updated for Separated Logic */}
+      {/* Mobile Menu Content - Conditional Rendering */}
       <div
-        className="navbar-toggle"
-        ref={navbarToggleRef}
-        style={{ cursor: 'pointer', gap: '1rem' }}
+        className={`mobile-menu ${activeMobileMenu ? 'active' : ''}`}
+        ref={mobileMenuRef}
       >
-        {/* User Button (Mobile Only) */}
-        {user ? (
-          <div
-            className={`user-avatar ${activeMobileMenu === 'user' ? 'active-ring' : ''}`}
-            onClick={toggleMobileUser}
-            style={{
-              width: '36px',
-              height: '36px',
-              fontSize: '1rem',
-              cursor: 'pointer',
-              boxShadow: activeMobileMenu === 'user' ? '0 0 0 2px var(--color-primary-red)' : 'none',
-              transition: 'box-shadow 0.2s'
-            }}
-          >
-            <span className="user-initial">{displayName.charAt(0).toUpperCase()}</span>
-          </div>
-        ) : (
-          // Keep user-related actions in main menu for logged out
-          null
-        )}
-      </div>
-    </div >
-
-      {/* Mobile Menu Content - Conditional Rendering */ }
-  <div
-    className={`mobile-menu ${activeMobileMenu ? 'active' : ''}`}
-    ref={mobileMenuRef}
-  >
-    {/* === NAVIGATION MENU CONTENT === */}
-    {activeMobileMenu === 'nav' && (
-      <>
-        <Link to="/cards" className="mobile-item" onClick={closeMobileMenu} >
-          <Box size={18} />
-          <span>{t('nav.cards')}</span>
-        </Link >
-        <Link to="/decks" className="mobile-item" onClick={closeMobileMenu}>
-          <LayoutIcon size={18} />
-          <span>{t('nav.decks')}</span>
-        </Link>
-        <Link to="/decks/new" className="mobile-item" onClick={closeMobileMenu} style={{ color: 'var(--color-primary-gold)' }}>
-          <PlusCircle size={18} />
-          <span>{t('nav.create_deck')}</span>
-        </Link>
-
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }}></div>
-
-        <Link to="/heroes" className="mobile-item" onClick={closeMobileMenu}>
-          <BookOpen size={18} />
-          <span>{t('nav.heroes')}</span>
-        </Link>
-        <Link to="/living-legend" className="mobile-item" onClick={closeMobileMenu}>
-          <Crown size={18} />
-          <span>{t('nav.living_legend')}</span>
-        </Link>
-        <Link to="/bans" className="mobile-item" onClick={closeMobileMenu}>
-          <ShieldBan size={18} />
-          <span>{t('nav.bans') || "Bans & Restrictions"}</span>
-        </Link>
-
-        {/* Login/Register for Logged Out users in Nav menu */}
-        {!user && (
+        {/* === NAVIGATION MENU CONTENT === */}
+        {activeMobileMenu === 'nav' && (
           <>
+            <Link to="/cards" className="mobile-item" onClick={closeMobileMenu} >
+              <Box size={18} />
+              <span>{t('nav.cards')}</span>
+            </Link >
+            <Link to="/decks" className="mobile-item" onClick={closeMobileMenu}>
+              <LayoutIcon size={18} />
+              <span>{t('nav.decks')}</span>
+            </Link>
+            <Link to="/decks/new" className="mobile-item" onClick={closeMobileMenu} style={{ color: 'var(--color-primary-gold)' }}>
+              <PlusCircle size={18} />
+              <span>{t('nav.create_deck')}</span>
+            </Link>
+
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }}></div>
-            <Link to="/login" className="mobile-item" onClick={closeMobileMenu}>
-              <span>{t('auth.login_button')}</span>
+
+            <Link to="/heroes" className="mobile-item" onClick={closeMobileMenu}>
+              <BookOpen size={18} />
+              <span>{t('nav.heroes')}</span>
             </Link>
-            <Link to="/register" className="mobile-item" onClick={closeMobileMenu} style={{ color: 'var(--color-primary-red)' }}>
-              <span>{t('auth.submit')}</span>
+            <Link to="/living-legend" className="mobile-item" onClick={closeMobileMenu}>
+              <Crown size={18} />
+              <span>{t('nav.living_legend')}</span>
             </Link>
+            <Link to="/bans" className="mobile-item" onClick={closeMobileMenu}>
+              <ShieldBan size={18} />
+              <span>{t('nav.bans') || "Bans & Restrictions"}</span>
+            </Link>
+
+            {/* Login/Register for Logged Out users in Nav menu */}
+            {!user && (
+              <>
+                <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }}></div>
+                <Link to="/login" className="mobile-item" onClick={closeMobileMenu}>
+                  <span>{t('auth.login_button')}</span>
+                </Link>
+                <Link to="/register" className="mobile-item" onClick={closeMobileMenu} style={{ color: 'var(--color-primary-red)' }}>
+                  <span>{t('auth.submit')}</span>
+                </Link>
+              </>
+            )}
           </>
         )}
-      </>
-    )}
 
-    {/* === USER MENU CONTENT === */}
-    {activeMobileMenu === 'user' && user && (
-      <>
-        <div className="mobile-item" style={{ opacity: 0.7, fontSize: '0.9rem', marginBottom: '0.5rem' }}>
-          <span className="user-initial" style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-primary-red)', borderRadius: '50%', marginRight: '0.5rem', fontSize: '0.8rem', fontWeight: 'bold' }}>
-            {displayName.charAt(0).toUpperCase()}
-          </span>
-          <span>{displayName}</span>
-        </div>
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }}></div>
+        {/* === USER MENU CONTENT === */}
+        {activeMobileMenu === 'user' && user && (
+          <>
+            <div className="mobile-item" style={{ opacity: 0.7, fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+              <span className="user-initial" style={{ width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-primary-red)', borderRadius: '50%', marginRight: '0.5rem', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                {displayName.charAt(0).toUpperCase()}
+              </span>
+              <span>{displayName}</span>
+            </div>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }}></div>
 
-        <Link to="/collection" className="mobile-item" onClick={closeMobileMenu}>
-          <Package size={18} />
-          <span>{t('nav.collection')}</span>
-        </Link>
-        <Link to="/my-decks" className="mobile-item" onClick={closeMobileMenu}>
-          <LayoutIcon size={18} />
-          <span>{t('nav.your_decks') || 'Your Decks'}</span>
-        </Link>
-        <Link to="/settings" className="mobile-item" onClick={closeMobileMenu}>
-          <Settings size={18} />
-          <span>{t('nav.settings') || 'Settings'}</span>
-        </Link>
+            <Link to="/collection" className="mobile-item" onClick={closeMobileMenu}>
+              <Package size={18} />
+              <span>{t('nav.collection')}</span>
+            </Link>
+            <Link to="/my-decks" className="mobile-item" onClick={closeMobileMenu}>
+              <LayoutIcon size={18} />
+              <span>{t('nav.your_decks') || 'Your Decks'}</span>
+            </Link>
+            <Link to="/settings" className="mobile-item" onClick={closeMobileMenu}>
+              <Settings size={18} />
+              <span>{t('nav.settings') || 'Settings'}</span>
+            </Link>
 
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }}></div>
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '0.5rem 0' }}></div>
 
-        <button
-          className="mobile-item"
-          onClick={() => { logout(); closeMobileMenu(); }}
-          style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', fontFamily: 'inherit', fontSize: 'inherit', cursor: 'pointer' }}
-        >
-          <LogOut size={18} className="text-red" />
-          <span className="text-red">{t('auth.logout')}</span>
-        </button>
-      </>
-    )}
-  </div>
+            <button
+              className="mobile-item"
+              onClick={() => { logout(); closeMobileMenu(); }}
+              style={{ background: 'none', border: 'none', width: '100%', textAlign: 'left', fontFamily: 'inherit', fontSize: 'inherit', cursor: 'pointer' }}
+            >
+              <LogOut size={18} className="text-red" />
+              <span className="text-red">{t('auth.logout')}</span>
+            </button>
+          </>
+        )}
+      </div>
     </nav >
   );
 };
