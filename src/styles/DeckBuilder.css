@@ -1328,39 +1328,31 @@
 
 /* Columnar Layout for Text Mode */
 .deck-cards-list.text-mode-columns {
-    display: grid;
-    grid-auto-flow: column;
-    /* Fill vertical first */
-    gap: 0.5rem 1.5rem;
-    /* Reduced column gap slightly */
-    /* Row gap, Column gap */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
     align-content: start;
-    overflow-x: auto;
-    /* Allow scrolling if too wide */
-    padding-bottom: 180px;
-    /* Adjusted to minimum for menu */
-    min-height: 250px;
-    /* Ensure strictly tall enough */
-    grid-auto-columns: max-content;
-    /* Columns only as wide as needed */
+    padding-bottom: 2rem;
+    min-height: auto;
 }
 
-/* Specific Row Limits */
-.text-columns-6 {
-    grid-template-rows: repeat(6, auto);
-}
+/* Specific Row Limits - REMOVED for horizontal flow */
 
-.text-columns-10 {
-    grid-template-rows: repeat(10, auto);
-}
-
-/* Ensure items take full width of their column but respect grid */
+/* Ensure items take controlled width in horizontal flow */
 .deck-cards-list.text-mode-columns .deck-card-row {
-    width: 100%;
-    /* Compact Row Styling */
+    width: auto;
+    min-width: 220px;
+    /* Consistent column width */
+    max-width: 300px;
+    /* Flex-grow to fill row? Or fixed? Fixed width feels more like a list */
+    flex: 1 1 220px;
+    /* Grow, shrink, base */
     padding: 0.25rem 0.5rem;
     gap: 0.5rem;
     position: relative;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
 .deck-cards-list.text-mode-columns .deck-card-row.menu-open {
@@ -1810,6 +1802,7 @@
         padding: 0 0 4rem 0;
     }
 }
+
 /* Tournament Counter */
 .tournament-counter {
     background: rgba(255, 255, 255, 0.05);

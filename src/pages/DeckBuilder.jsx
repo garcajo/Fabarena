@@ -1572,7 +1572,7 @@ const DeckBuilder = () => {
                                             </div>
                                         )
                                     ) : (
-                                        <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-6'}`} style={viewMode === 'visual' ? { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' } : {}}>
+                                        <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns'}`} style={viewMode === 'visual' ? { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' } : {}}>
                                             {(() => {
                                                 // Helper to group equipment for display (like 2x Kodachi)
                                                 const groupedEquipment = [];
