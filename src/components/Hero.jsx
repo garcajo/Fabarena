@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
-import AdBanner from './AdBanner';
 import '../styles/Hero.css';
 
 const Hero = () => {
