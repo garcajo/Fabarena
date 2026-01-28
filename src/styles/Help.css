@@ -191,4 +191,23 @@
         flex-shrink: 0;
         white-space: nowrap;
     }
+
+    /* Mobile Text Styling */
+    .help-section h1 {
+        text-align: center;
+        display: block;
+        width: 100%;
+        padding: 0 1rem;
+        /* Prevent overflow if title is long */
+    }
+
+    /* Let's use padding for "sangria" (indentation/spacing) and keep text alignment natural or centered if preferred, but usually left with padding is best for readability.
+       However, "sangria" strictly means indentation. But often users mean padding.
+       Let's stick to left align but with padding. */
+    .help-text-lead,
+    .help-text,
+    .help-text-small {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
