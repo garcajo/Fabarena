@@ -7,6 +7,7 @@ import { CollectionService } from '../services/api';
 import CardFilters from '../components/CardFilters';
 import Pagination from '../components/Pagination';
 import CardModal from '../components/CardModal';
+import AdBanner from '../components/AdBanner';
 import { Package, Plus } from 'lucide-react';
 import '../styles/Card.css';
 import '../styles/CardGrid.css';
@@ -87,6 +88,7 @@ const Collection = () => {
     return (
 
         <div className="container">
+            <AdBanner position="top" adSlot="8911247227" />
             <div className="collection-container">
                 <div className="collection-header">
                     <div className="collection-title-section">
