@@ -120,24 +120,24 @@
 @media (max-width: 768px) {
     .collection-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
         gap: 1.5rem;
         margin-bottom: 2.5rem;
-        /* Ensure space on mobile too */
     }
 
     .collection-actions {
-        display: grid;
-        /* Grid allows equal width buttons */
-        grid-template-columns: 1fr 1fr;
+        display: flex;
+        justify-content: center;
         gap: 1rem;
         width: 100%;
     }
 
     .action-btn {
         justify-content: center;
-        width: 100%;
-        padding: 0.85rem;
+        width: auto;
+        min-width: 200px;
+        padding: 0.85rem 1.5rem;
         font-size: 0.9rem;
     }
 }
