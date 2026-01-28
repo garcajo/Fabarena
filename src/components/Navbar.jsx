@@ -362,25 +362,6 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* Help Button */}
-        <Link
-          to="/help"
-          className={`navbar-item desktop-only ${location.pathname.includes('/help') ? 'active' : ''}`}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
-          title={t('nav.help') || 'Help'}
-        >
-          <div style={{
-            width: '18px',
-            height: '18px',
-            borderRadius: '50%',
-            border: '2px solid currentColor',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '12px',
-            fontWeight: 'bold'
-          }}>?</div>
-        </Link>
 
 
         {/* Language Selector - Centered Absolutely */}
@@ -486,6 +467,29 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
+          </li>
+
+          {/* Help Button */}
+          <li className="desktop-only">
+            <Link
+              to="/help"
+              className={`navbar-item ${location.pathname.includes('/help') ? 'active' : ''}`}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center' }}
+              title={t('nav.help') || 'Help'}
+            >
+              <div style={{
+                width: '18px',
+                height: '18px',
+                borderRadius: '50%',
+                border: '2px solid currentColor',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '10px',
+                fontWeight: 'bold',
+                flexShrink: 0
+              }}>?</div>
+            </Link>
           </li>
         </ul>
 
