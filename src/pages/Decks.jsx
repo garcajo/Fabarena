@@ -4,6 +4,7 @@ import { Plus, Layers, Sword, Calendar, Trash2, FolderInput, X, Heart, MessageSq
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { DeckService, CardService, FolderService } from '../services/api'; // Import DeckService, CardService, and FolderService
+import AdBanner from '../components/AdBanner';
 import CustomSelect from '../components/common/CustomSelect';
 import FolderSidebar from '../components/FolderSidebar';
 import '../styles/Decks.css';
@@ -16,6 +17,7 @@ const Decks = ({ mode = 'public' }) => {
     return (
         <div className="decks-page">
             <div className="container mx-auto">
+                <AdBanner position="top" adSlot="8911247227" />
                 <div className="decks-header">
                     <h1 className="decks-title">
                         <Layers size={42} />

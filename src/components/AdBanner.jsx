@@ -13,8 +13,8 @@ import '../styles/AdBanner.css';
  */
 const AdBanner = ({
     position = 'top',
-    adSlot = import.meta.env.VITE_ADSENSE_SLOT_ID || '',
-    adClient = import.meta.env.VITE_ADSENSE_CLIENT_ID || 'ca-pub-5842541392737931'
+    adSlot = '8911247227', // Default to the requested slot if not provided
+    adClient = 'ca-pub-5842541392737931'
 }) => {
     const adRef = useRef(null);
     const isAdSenseEnabled = adSlot && adClient;
