@@ -400,7 +400,7 @@ const DeckList = ({ mode }) => {
                                 </div>
                                 <div className="list-cell cell-format">
                                     <span className={`format-badge-small ${deck.format === 'cc' ? 'format-cc' : 'format-sa'}`}>
-                                        {deck.format === 'cc' ? 'CC' : 'Silver'}
+                                        {deck.format === 'cc' ? 'CC' : 'SAGE'}
                                     </span>
                                 </div>
                                 <div className="list-cell cell-creator">

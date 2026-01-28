@@ -71,7 +71,7 @@ const RecentDecks = () => {
                             {/* Content */}
                             <div className="deck-card-content">
                                 <span className={`format-badge ${deck.format === 'cc' ? 'format-cc' : 'format-silver'}`}>
-                                    {deck.format === 'cc' ? 'Classic Constructed' : 'Silver Age'}
+                                    {deck.format === 'cc' ? 'CC' : 'SAGE'}
                                 </span>
                                 <h3 className="deck-name">{deck.name}</h3>
                                 <div className="deck-meta">
