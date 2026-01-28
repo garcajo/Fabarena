@@ -1486,6 +1486,13 @@
     .deck-cards-list.text-mode-columns .deck-card-row {
         width: 100%;
         max-width: 100%;
+        min-width: 0;
+        flex: none;
+        /* Avoid growing vertically if flex-direction is column */
+        background: transparent;
+        /* Cleaner look for mobile list */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 0;
     }
 
     /* Back and Save buttons: icon-only squares */
