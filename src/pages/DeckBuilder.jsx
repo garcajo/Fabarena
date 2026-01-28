@@ -579,7 +579,7 @@ const DeckBuilder = () => {
             const targetKey = target === 'main' ? 'mainDeck' : target;
             if (!validateDeckLimit(deckData, card, targetKey)) {
                 const limit = deckData.format === 'sa' ? 55 : 80;
-                setToastMessage(t('deckBuilder.limitReached') || `Deck Limit Reached (Max ${limit} cards)`);
+                setToastMessage(`${t('deckBuilder.limitReached')} (Max ${limit})`);
                 setToastType('error');
                 setShowToast(true);
                 return;
@@ -680,7 +680,7 @@ const DeckBuilder = () => {
         if (!isSourceActive && isTargetActive) {
             if (!validateDeckLimit(deckData, card, targetKey)) {
                 const limit = deckData.format === 'sa' ? 55 : 80;
-                setToastMessage(t('deckBuilder.limitReached') || `Deck Limit Reached (Max ${limit} cards)`);
+                setToastMessage(`${t('deckBuilder.limitReached')} (Max ${limit})`);
                 setToastType('error');
                 setShowToast(true);
                 return;
@@ -1306,15 +1306,17 @@ const DeckBuilder = () => {
                         </h1>
                     )}
 
-                    {/* Tournament Legal Counter */}
-                    <div className={`tournament-counter ${tournamentTotal > tournamentLimit ? 'over-limit' : ''}`} title={t('deckBuilder.tournamentTotalHint') || `Total cards (Equipment + Deck + Sideboard) - Max ${tournamentLimit}`}>
-                        <div className="counter-label">{t('deckBuilder.totalLegal') || "Total Cards"}</div>
-                        <div className="counter-value">
-                            <span className="current">{tournamentTotal}</span>
-                            <span className="separator">/</span>
-                            <span className="limit">{tournamentLimit}</span>
+                    {/* Tournament Legal Counter - Only visible in Edit mode */}
+                    {canEdit && (
+                        <div className={`tournament-counter ${tournamentTotal > tournamentLimit ? 'over-limit' : ''}`} title={t('deckBuilder.totalCardsHint') || `Total cards (Equipment + Deck + Sideboard) - Max ${tournamentLimit}`}>
+                            <div className="counter-label">{t('deckBuilder.totalCardsLabel') || "Total Cards"}</div>
+                            <div className="counter-value">
+                                <span className="current">{tournamentTotal}</span>
+                                <span className="separator">/</span>
+                                <span className="limit">{tournamentLimit}</span>
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                     <div className="deck-stat-pill" style={{
                         display: 'flex',
