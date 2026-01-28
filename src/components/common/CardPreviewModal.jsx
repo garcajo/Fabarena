@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { X, Plus } from 'lucide-react';
 import { useLanguage } from '../../context/LanguageContext';
 
 const CardPreviewModal = ({ card, onClose, onAdd, children }) => {
     const { t } = useLanguage();
+
+    // Lock body scroll when modal is open
+    useEffect(() => {
+        const originalStyle = window.getComputedStyle(document.body).overflow;
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = originalStyle;
+        };
+    }, []);
 
     if (!card) return null;
 
@@ -14,13 +24,16 @@ const CardPreviewModal = ({ card, onClose, onAdd, children }) => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.85)',
-            zIndex: 2000,
+            backgroundColor: 'rgba(0,0,0,0.9)',
+            zIndex: 9999, // Ensure it's above navbar (which is typically 1000)
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '1rem',
-            backdropFilter: 'blur(5px)'
+            paddingTop: 'max(1rem, env(safe-area-inset-top))', // Account for notch on mobile
+            paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
+            backdropFilter: 'blur(8px)',
+            overflowY: 'auto' // Allow scroll within modal if needed
         }}>
             <div className="preview-content" onClick={e => e.stopPropagation()} style={{
                 position: 'relative',
@@ -35,22 +48,26 @@ const CardPreviewModal = ({ card, onClose, onAdd, children }) => {
                     onClick={onClose}
                     style={{
                         position: 'absolute',
-                        top: '-10px',
-                        right: '-10px',
+                        top: '-12px',
+                        right: '-12px',
                         background: 'var(--color-primary-red)',
-                        border: 'none',
+                        border: '2px solid rgba(255, 255, 255, 0.2)',
                         borderRadius: '50%',
                         color: 'white',
-                        width: '32px',
-                        height: '32px',
+                        width: '40px',
+                        height: '40px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: 'pointer',
-                        zIndex: 10
+                        zIndex: 10,
+                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                        transition: 'transform 0.2s ease'
                     }}
+                    onTouchStart={(e) => e.currentTarget.style.transform = 'scale(0.9)'}
+                    onTouchEnd={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    <X size={20} />
+                    <X size={22} />
                 </button>
 
                 <img
