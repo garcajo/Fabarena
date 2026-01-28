@@ -456,7 +456,7 @@ const DeckList = ({ mode }) => {
                             renderEmptyState()
                         ) : (
                             <>
-                                <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center' }}>
+                                <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'center', width: '100%', boxSizing: 'border-box' }}>
                                     <Link to="/decks/new" className="create-deck-btn-small">
                                         <Plus size={18} />
                                         {t('decks.create_button') || 'New Deck'}
