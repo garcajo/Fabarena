@@ -377,6 +377,7 @@ const DeckBuilder = () => {
     const handleFormatSelect = (format) => {
         setDeckData(prev => ({ ...prev, format }));
         setStep(STEPS.BUILDER);
+        window.scrollTo(0, 0);
     };
 
     const handleBackToFormat = () => {

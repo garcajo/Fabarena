@@ -8,6 +8,11 @@ const FormatSelection = ({ onSelect }) => {
     const { t } = useLanguage();
     const { user } = useAuth();
 
+    // Ensure scroll to top on mount
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     const defaultFormats = {
         cc: {
             title: 'Classic Constructed',

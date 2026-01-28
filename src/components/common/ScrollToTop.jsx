@@ -9,8 +9,15 @@ const ScrollToTop = () => {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        // Reset scroll to top
+        // Immediate reset
         window.scrollTo(0, 0);
+
+        // Delayed backup for heavy pages/component mounts
+        const timeout = setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 100);
+
+        return () => clearTimeout(timeout);
     }, [pathname]);
 
     return null;

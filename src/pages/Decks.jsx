@@ -17,7 +17,7 @@ const Decks = ({ mode = 'public' }) => {
     // Force scroll to top on mount or mode change
     React.useEffect(() => {
         window.scrollTo(0, 0);
-    }, [mode]);
+    }, [mode, location.pathname]);
 
     return (
         <div className="decks-page">
