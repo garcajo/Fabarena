@@ -29,13 +29,22 @@ export const isCardLegalForHero = (cardClass, heroClass) => {
 
     // 3. Cleanse and Split by Slash (OR options)
     // Slashes represent dual-class or alternative requirements (Hero must match at least one option).
-    const options = cardClassLower.split('/').map(s => s.trim());
-    const nonTraitWords = ['equipment', 'weapon', 'hero', 'arma', 'equipamiento', 'héroe', 'token'];
+    const options = cardClass.split('/').map(s => s.trim());
+
+    // Ignored words for validation (noise in scraping or malformed data)
+    const nonTraitWords = [
+        'equipment', 'weapon', 'hero', 'arma', 'equipamiento', 'héroe', 'token',
+        'reaction', 'attack', 'defense', 'instant', 'action'
+    ];
 
     return options.some(optionStr => {
+        // Handle CamelCase/Concat issues (e.g. NinjaReaction -> Ninja Reaction)
+        // Cleanse specific patterns by inserting space before capitals
+        let cleanedOption = optionStr.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
+
         // Split each option by Space (AND traits)
         // Spaces represent combined requirements like Talent + Class (Hero must match ALL traits in the option).
-        const traits = optionStr.split(/\s+/)
+        const traits = cleanedOption.split(/\s+/)
             .filter(s => s && s !== 'generic' && !nonTraitWords.includes(s));
 
         if (traits.length === 0) return true; // Effectively generic or just meta-words
