@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Search, Sword, Crown, Shirt, Hand, Footprints, Shield, LayoutGrid } from 'lucide-react';
+import { X, Search, Sword, Crown, Shirt, Hand, Footprints, Shield } from 'lucide-react';
 import { CardService } from '../../services/api';
 import { useLanguage } from '../../context/LanguageContext';
 import { isCardBanned } from '../../data/bannedCards';
@@ -11,14 +11,14 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState('all'); // 'all', 'weapon', 'head', 'chest', 'arms', 'legs', 'off-hand'
+    const [activeTab, setActiveTab] = useState('weapon'); // 'weapon', 'head', 'chest', 'arms', 'legs', 'off-hand'
 
     // Debug: Log what type we're searching for
     console.log('CardSearchModal - Type:', type, 'Hero Class:', heroClass);
 
     // Filter results based on active tab (local filtering)
     const getFilteredResults = () => {
-        if (type !== 'equipment' || activeTab === 'all') return results;
+        if (type !== 'equipment') return results;
 
         return results.filter(card => {
             const tipo = (card.tipo || '').toLowerCase();
@@ -37,8 +37,8 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
     const displayResults = getFilteredResults();
 
     // Pagination (Client-side for now, but usually we want to see all for Equipment slots)
-    // If tab is specific, show all (no pagination). If 'all', use pagination to avoid lag.
-    const usePagination = type === 'hero' || activeTab === 'all';
+    // If tab is specific, show all (no pagination).
+    const usePagination = type === 'hero';
     const [currentPage, setCurrentPage] = useState(1);
     const cardsPerPage = 15;
 
@@ -172,7 +172,6 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
         if (type !== 'equipment') return null;
 
         const tabs = [
-            { id: 'all', label: 'All', icon: LayoutGrid },
             { id: 'weapon', label: 'Weapon', icon: Sword },
             { id: 'head', label: 'Head', icon: Crown },
             { id: 'chest', label: 'Chest', icon: Shirt },
