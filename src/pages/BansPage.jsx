@@ -112,11 +112,7 @@ const BansPage = () => {
                 {loading ? (
                     <div style={{ textAlign: 'center' }}>{t('common.loading')}</div>
                 ) : (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                        gap: '1.5rem'
-                    }}>
+                    <div className="bans-grid">
                         {currentList.length > 0 ? (
                             currentList.map(cardName => {
                                 // 1. Determine target pitch from name suffix
@@ -204,7 +200,7 @@ const BansPage = () => {
                                             </div>
                                         </div>
 
-                                        <div style={{ padding: '1rem' }}>
+                                        <div className="ban-card-info">
                                             <h3 style={{ margin: 0, fontSize: '0.9rem', textAlign: 'center' }}>
                                                 {cardName}
                                             </h3>

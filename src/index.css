@@ -154,3 +154,29 @@ button {
   color: var(--color-text-main);
   background: transparent;
 }
+
+/* Banned Cards Grid - Responsive */
+.bans-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.ban-card-info {
+  padding: 1rem;
+}
+
+@media (max-width: 600px) {
+  .bans-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .bans-grid .ban-card h3 {
+    font-size: 0.75rem !important;
+  }
+
+  .ban-card-info {
+    padding: 0.5rem;
+  }
+}
