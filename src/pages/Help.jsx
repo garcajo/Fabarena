@@ -76,28 +76,28 @@ const Help = () => {
     return (
         <div className="help-page-container container">
             <div className="help-sidebar">
-                <h2 className="help-sidebar-title">{t('help.title') || 'Help Center'}</h2>
+                <h2 className="help-sidebar-title">{t('help.title')}</h2>
                 <nav className="help-nav">
                     <button
                         className={`help-nav-item ${activeTab === 'welcome' ? 'active' : ''}`}
                         onClick={() => setActiveTab('welcome')}
                     >
                         <BookOpen size={20} />
-                        <span>{t('help.welcome') || 'Welcome'}</span>
+                        <span>{t('help.welcome')}</span>
                     </button>
                     <button
                         className={`help-nav-item ${activeTab === 'goal' ? 'active' : ''}`}
                         onClick={() => setActiveTab('goal')}
                     >
                         <Target size={20} />
-                        <span>{t('help.goal') || 'Our Goal'}</span>
+                        <span>{t('help.goal')}</span>
                     </button>
                     <button
                         className={`help-nav-item ${activeTab === 'contact' ? 'active' : ''}`}
                         onClick={() => setActiveTab('contact')}
                     >
                         <Mail size={20} />
-                        <span>{t('help.contact') || 'Contact Us'}</span>
+                        <span>{t('help.contact')}</span>
                     </button>
                 </nav>
             </div>
@@ -105,72 +105,72 @@ const Help = () => {
             <main className="help-content">
                 {activeTab === 'welcome' && (
                     <section className="help-section fade-in">
-                        <h1>{t('help.welcome_title') || 'Welcome to FabArena'}</h1>
+                        <h1>{t('help.welcome_title')}</h1>
                         <p className="help-text-lead">
-                            Fabarena es una creación personal donde todos puedan gestionar lo que más gusta de Flesh and Blood: las cartas.
+                            {t('help.welcome_lead')}
                         </p>
                         <p className="help-text">
-                            Estará siempre en continuo crecimiento y mejoría, añadiendo siempre las funcionalidades que mejor ayuden a la comunidad.
+                            {t('help.welcome_text')}
                         </p>
                     </section>
                 )}
 
                 {activeTab === 'goal' && (
                     <section className="help-section fade-in">
-                        <h1>{t('help.goal_title') || 'The Goal of FabArena'}</h1>
+                        <h1>{t('help.goal_title')}</h1>
                         <p className="help-text">
-                            Conseguir que todos puedan gestionar su colección y sus mazos de manera eficiente, compartiendo con los demás tus creaciones, además de añadiendo guas para conectar a todos de manera intuitiva con lo que pueda ser tu mejor mazo.
+                            {t('help.goal_text')}
                         </p>
                     </section>
                 )}
 
                 {activeTab === 'contact' && (
                     <section className="help-section fade-in">
-                        <h1>{t('help.contact_title') || 'Contact Us'}</h1>
+                        <h1>{t('help.contact_title')}</h1>
                         <p className="help-text">
-                            Si necesitas contactar, puedes hacerlo aquí.
+                            {t('help.contact_lead')}
                         </p>
                         <p className="help-text-small text-muted">
-                            Estos mensajes se enviarán directamente al administrador.
+                            {t('help.contact_note')}
                         </p>
 
                         <form className="contact-form" onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="email">Email</label>
+                                <label htmlFor="email">{t('help.email_label')}</label>
                                 <input
                                     type="email"
                                     id="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
-                                    placeholder="your@email.com"
+                                    placeholder={t('help.email_placeholder')}
                                     required
                                     disabled={isSubmitting}
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="subject">Asunto</label>
+                                <label htmlFor="subject">{t('help.subject_label')}</label>
                                 <input
                                     type="text"
                                     id="subject"
                                     name="subject"
                                     value={formData.subject}
                                     onChange={handleInputChange}
-                                    placeholder="Motivo del contacto"
+                                    placeholder={t('help.subject_placeholder')}
                                     required
                                     disabled={isSubmitting}
                                 />
                             </div>
 
                             <div className="form-group">
-                                <label htmlFor="message">Mensaje</label>
+                                <label htmlFor="message">{t('help.message_label')}</label>
                                 <textarea
                                     id="message"
                                     name="message"
                                     value={formData.message}
                                     onChange={handleInputChange}
-                                    placeholder="¿En qué podemos ayudarte?"
+                                    placeholder={t('help.message_placeholder')}
                                     rows={5}
                                     required
                                     disabled={isSubmitting}
@@ -180,22 +180,22 @@ const Help = () => {
                             {formStatus === 'success' && (
                                 <div className="form-alert success">
                                     <CheckCircle size={20} />
-                                    <span>Mensaje enviado correctamente. Contactaremos contigo pronto.</span>
+                                    <span>{t('help.success_message')}</span>
                                 </div>
                             )}
 
                             {formStatus === 'error' && (
                                 <div className="form-alert error">
                                     <AlertCircle size={20} />
-                                    <span>Error al enviar el mensaje. Por favor intenta de nuevo.</span>
+                                    <span>{t('help.error_message')}</span>
                                 </div>
                             )}
 
                             <button type="submit" className="submit-btn" disabled={isSubmitting}>
-                                {isSubmitting ? 'Enviando...' : (
+                                {isSubmitting ? t('help.sending') : (
                                     <>
                                         <Send size={18} />
-                                        <span>Enviar Mensaje</span>
+                                        <span>{t('help.send_button')}</span>
                                     </>
                                 )}
                             </button>

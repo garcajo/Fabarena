@@ -15,9 +15,9 @@ export const translations = {
             encyclopedia: 'Encyclopedia',
             heroes: 'Heroes',
             living_legend: 'Living Legend',
-            living_legend: 'Living Legend',
             bans: 'Bans & Restrictions',
             all_decks: 'All Decks',
+            help: 'Help',
         },
         bans: {
             title: 'Banned & Suspended',
@@ -393,6 +393,30 @@ export const translations = {
             instructions: 'Click Draw Opening Hand to start. Pitch cards for resources, Play them to graveyard. End Turn returns pitched cards to deck bottom.',
             noCards: 'No cards in hand',
             notEnoughResources: 'Not enough resources!'
+        },
+        help: {
+            title: 'Help Center',
+            welcome: 'Welcome',
+            goal: 'Our Goal',
+            contact: 'Contact Us',
+            welcome_title: 'Welcome to FabArena',
+            welcome_lead: 'Fabarena is a personal creation where everyone can manage what they love most about Flesh and Blood: the cards.',
+            welcome_text: 'It will always be in continuous growth and improvement, always adding features that best help the community.',
+            goal_title: 'The Goal of FabArena',
+            goal_text: 'To ensure everyone can manage their collection and decks efficiently, sharing your creations with others, and adding guides to intuitively connect everyone with what could be their best deck.',
+            contact_title: 'Contact Us',
+            contact_lead: 'If you need to contact us, you can do so here.',
+            contact_note: 'These messages will be sent directly to the administrator.',
+            email_label: 'Email',
+            subject_label: 'Subject',
+            message_label: 'Message',
+            email_placeholder: 'your@email.com',
+            subject_placeholder: 'Reason for contact',
+            message_placeholder: 'How can we help you?',
+            sending: 'Sending...',
+            send_button: 'Send Message',
+            success_message: 'Message sent successfully. We will contact you soon.',
+            error_message: 'Error sending message. Please try again.'
         }
     },
     es: {
@@ -411,9 +435,9 @@ export const translations = {
             encyclopedia: 'Enciclopedia',
             heroes: 'Héroes',
             living_legend: 'Leyenda Viviente',
-            living_legend: 'Leyenda Viviente',
             bans: 'Baneos y Restricciones',
             all_decks: 'Todos los Mazos',
+            help: 'Ayuda',
         },
         folders: {
             title: 'Carpetas',
@@ -790,6 +814,30 @@ export const translations = {
             to_confirm: 'para confirmar',
             cancel: 'Cancelar',
             delete_confirmation_keyword: 'eliminar'
+        },
+        help: {
+            title: 'Centro de Ayuda',
+            welcome: 'Bienvenida',
+            goal: 'Nuestro Objetivo',
+            contact: 'Contáctanos',
+            welcome_title: 'Bienvenido a FabArena',
+            welcome_lead: 'Fabarena es una creación personal donde todos puedan gestionar lo que más gusta de Flesh and Blood: las cartas.',
+            welcome_text: 'Estará siempre en continuo crecimiento y mejoría, añadiendo siempre las funcionalidades que mejor ayuden a la comunidad.',
+            goal_title: 'El Objetivo de FabArena',
+            goal_text: 'Conseguir que todos puedan gestionar su colección y sus mazos de manera eficiente, compartiendo con los demás tus creaciones, además de añadiendo guías para conectar a todos de manera intuitiva con lo que pueda ser tu mejor mazo.',
+            contact_title: 'Contáctanos',
+            contact_lead: 'Si necesitas contactar, puedes hacerlo aquí.',
+            contact_note: 'Estos mensajes se enviarán directamente al administrador.',
+            email_label: 'Correo Electrónico',
+            subject_label: 'Asunto',
+            message_label: 'Mensaje',
+            email_placeholder: 'tu@email.com',
+            subject_placeholder: 'Motivo del contacto',
+            message_placeholder: '¿En qué podemos ayudarte?',
+            sending: 'Enviando...',
+            send_button: 'Enviar Mensaje',
+            success_message: 'Mensaje enviado correctamente. Contactaremos contigo pronto.',
+            error_message: 'Error al enviar el mensaje. Por favor intenta de nuevo.'
         }
     }
 };
