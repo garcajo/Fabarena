@@ -759,6 +759,8 @@ const DeckBuilder = () => {
     const totalCards = deckData.mainDeck.reduce((acc, curr) => acc + curr.count, 0);
     const sideboardCards = deckData.sideboard.reduce((acc, curr) => acc + curr.count, 0);
     const maybeboardCards = deckData.maybeboard.reduce((acc, curr) => acc + curr.count, 0);
+    const equipmentCount = deckData.equipment.length;
+    const tournamentTotal = totalCards + sideboardCards + equipmentCount;
 
     const [hoveredCard, setHoveredCard] = React.useState(null); // { image: string, side: 'left' | 'right' }
 
@@ -1296,27 +1298,36 @@ const DeckBuilder = () => {
                                         />
                                         <span>{likesCount}</span>
                                     </button>
-
-                                    <div className="deck-stat-pill" style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '6px',
-                                        background: 'rgba(255,255,255,0.05)',
-                                        border: '1px solid rgba(255,255,255,0.1)',
-                                        borderRadius: '8px',
-                                        padding: '8px 14px',
-                                        color: 'rgba(255,255,255,0.7)',
-                                        fontSize: '0.9rem',
-                                        fontWeight: '500'
-                                    }}>
-                                        <Eye size={18} />
-                                        <span>{viewsCount}</span>
-                                    </div>
                                 </>
                             )}
                         </h1>
                     )}
 
+                    {/* Tournament Legal Counter */}
+                    <div className={`tournament-counter ${tournamentTotal > 80 ? 'over-limit' : ''}`} title={t('deckBuilder.tournamentTotalHint') || "Total cards (Equipment + Deck + Sideboard) - Max 80"}>
+                        <div className="counter-label">{t('deckBuilder.totalLegal') || "Total Cards"}</div>
+                        <div className="counter-value">
+                            <span className="current">{tournamentTotal}</span>
+                            <span className="separator">/</span>
+                            <span className="limit">80</span>
+                        </div>
+                    </div>
+
+                    <div className="deck-stat-pill" style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '6px',
+                        background: 'rgba(255,255,255,0.05)',
+                        border: '1px solid rgba(255,255,255,0.1)',
+                        borderRadius: '8px',
+                        padding: '8px 14px',
+                        color: 'rgba(255,255,255,0.7)',
+                        fontSize: '0.9rem',
+                        fontWeight: '500'
+                    }}>
+                        <Eye size={18} />
+                        <span>{viewsCount}</span>
+                    </div>
 
                     {/* Privacy Selector - Only visible in Edit Mode */}
                     {isEditMode && (
@@ -1332,422 +1343,440 @@ const DeckBuilder = () => {
                             </select>
                         </div>
                     )}
-
-
                 </div>
 
+
+
                 {/* Main Search and View Toggles */}
-                {deckData.hero && (
-                    <div
-                        className={`main-search-bar ${activeSection !== 'main' ? 'section-active' : ''} fade-in-section`}
-                        style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', maxWidth: '100%', justifyContent: 'space-between' }}
-                    >
-                        {/* 1. Search Bar (Only for Owner/Editor) */}
-                        {canEdit ? (
-                            <div className="search-container-large">
-                                <Search className="search-icon-large" size={20} />
-                                <input
-                                    type="text"
-                                    className="main-search-input"
-                                    placeholder={t('deckBuilder.searchCards') || "Search cards..."}
-                                    value={searchTerm}
-                                    onChange={(e) => {
-                                        setSearchTerm(e.target.value);
-                                        if (e.target.value.length >= 2) {
-                                            // Handle search via useEffect
-                                            setSearching(true);
-                                            setIsSearchDropdownOpen(true);
-                                        } else {
-                                            setSearchResults([]);
-                                            setSearching(false);
-                                            setIsSearchDropdownOpen(false);
-                                        }
-                                    }}
-                                    onFocus={() => {
-                                        if (searchTerm.length >= 2) setIsSearchDropdownOpen(true);
-                                    }}
-                                />
+                {
+                    deckData.hero && (
+                        <div
+                            className={`main-search-bar ${activeSection !== 'main' ? 'section-active' : ''} fade-in-section`}
+                            style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start', maxWidth: '100%', justifyContent: 'space-between' }}
+                        >
+                            {/* 1. Search Bar (Only for Owner/Editor) */}
+                            {canEdit ? (
+                                <div className="search-container-large">
+                                    <Search className="search-icon-large" size={20} />
+                                    <input
+                                        type="text"
+                                        className="main-search-input"
+                                        placeholder={t('deckBuilder.searchCards') || "Search cards..."}
+                                        value={searchTerm}
+                                        onChange={(e) => {
+                                            setSearchTerm(e.target.value);
+                                            if (e.target.value.length >= 2) {
+                                                // Handle search via useEffect
+                                                setSearching(true);
+                                                setIsSearchDropdownOpen(true);
+                                            } else {
+                                                setSearchResults([]);
+                                                setSearching(false);
+                                                setIsSearchDropdownOpen(false);
+                                            }
+                                        }}
+                                        onFocus={() => {
+                                            if (searchTerm.length >= 2) setIsSearchDropdownOpen(true);
+                                        }}
+                                    />
 
 
-                                {/* Search Results Dropdown */}
-                                {isSearchDropdownOpen && searchResults.length > 0 && (
-                                    <div className="search-results-dropdown-large">
-                                        {searchResults.map(card => {
-                                            const banned = isCardBanned(card, deckData.format);
-                                            const currentCount =
-                                                (deckData.mainDeck.find(c => c.card.id === card.id)?.count || 0) +
-                                                (deckData.sideboard.find(c => c.card.id === card.id)?.count || 0) +
-                                                (deckData.maybeboard.find(c => c.card.id === card.id)?.count || 0);
-                                            const isLimitReached = currentCount >= 3;
-                                            const isDisabled = banned || isLimitReached;
+                                    {/* Search Results Dropdown */}
+                                    {isSearchDropdownOpen && searchResults.length > 0 && (
+                                        <div className="search-results-dropdown-large">
+                                            {searchResults.map(card => {
+                                                const banned = isCardBanned(card, deckData.format);
+                                                const currentCount =
+                                                    (deckData.mainDeck.find(c => c.card.id === card.id)?.count || 0) +
+                                                    (deckData.sideboard.find(c => c.card.id === card.id)?.count || 0) +
+                                                    (deckData.maybeboard.find(c => c.card.id === card.id)?.count || 0);
+                                                const isLimitReached = currentCount >= 3;
+                                                const isDisabled = banned || isLimitReached;
 
-                                            return (
-                                                <div
-                                                    key={card.id}
-                                                    className={`search-result-item-large ${banned ? 'banned-item' : ''} ${isLimitReached ? 'limit-reached' : ''} ${lastAddedId === card.id ? 'flash-success' : ''}`}
-                                                    onClick={() => !isDisabled && addCardToDeck(card)}
-                                                    style={isDisabled ? { opacity: 0.6, cursor: 'default' } : {}}
-                                                >
-                                                    <div className="result-img-wrapper">
-                                                        <img
-                                                            src={card.imagen || '/placeholder-card.png'}
-                                                            alt={card.name}
-                                                            className="result-thumb-large"
-                                                            onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/62x87?text=No+Img'; }}
-                                                        />
-                                                    </div>
-                                                    <div className="result-info">
-                                                        <div className="result-header">
-                                                            <span className="result-name">{card.name}</span>
-                                                            {card.pitch > 0 && (
-                                                                <div className="search-result-pitch-dots">
-                                                                    {Array.from({ length: card.pitch }).map((_, i) => (
-                                                                        <span key={i} className={`pitch-dot pitch-bg-${card.pitch}`} />
-                                                                    ))}
-                                                                </div>
-                                                            )}
+                                                return (
+                                                    <div
+                                                        key={card.id}
+                                                        className={`search-result-item-large ${banned ? 'banned-item' : ''} ${isLimitReached ? 'limit-reached' : ''} ${lastAddedId === card.id ? 'flash-success' : ''}`}
+                                                        onClick={() => !isDisabled && addCardToDeck(card)}
+                                                        style={isDisabled ? { opacity: 0.6, cursor: 'default' } : {}}
+                                                    >
+                                                        <div className="result-img-wrapper">
+                                                            <img
+                                                                src={card.imagen || '/placeholder-card.png'}
+                                                                alt={card.name}
+                                                                className="result-thumb-large"
+                                                                onError={(e) => { e.target.onerror = null; e.target.src = 'https://via.placeholder.com/62x87?text=No+Img'; }}
+                                                            />
                                                         </div>
-                                                        <div className="result-meta">
-                                                            <span className="result-cost">{card.costo !== null ? card.costo : '-'}</span>
-                                                            <span className="result-type">{card.tipo}</span>
-                                                            {banned && <span className="banned-badge">{t('common.banned')}</span>}
-                                                            {isLimitReached && <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 'bold' }}>{t('common.max')}</span>}
-                                                            {!isDisabled && <button className="add-btn-inline"><Plus size={14} /></button>}
+                                                        <div className="result-info">
+                                                            <div className="result-header">
+                                                                <span className="result-name">{card.name}</span>
+                                                                {card.pitch > 0 && (
+                                                                    <div className="search-result-pitch-dots">
+                                                                        {Array.from({ length: card.pitch }).map((_, i) => (
+                                                                            <span key={i} className={`pitch-dot pitch-bg-${card.pitch}`} />
+                                                                        ))}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            <div className="result-meta">
+                                                                <span className="result-cost">{card.costo !== null ? card.costo : '-'}</span>
+                                                                <span className="result-type">{card.tipo}</span>
+                                                                {banned && <span className="banned-badge">{t('common.banned')}</span>}
+                                                                {isLimitReached && <span style={{ fontSize: '0.6rem', color: '#ef4444', fontWeight: 'bold' }}>{t('common.max')}</span>}
+                                                                {!isDisabled && <button className="add-btn-inline"><Plus size={14} /></button>}
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )}
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            ) : (
+                                // Spacer if no search bar
+                                <div style={{ flex: 1 }}></div>
+                            )}
+
+                            {/* View Mode Toggle - Visible to ALL */}
+                            <div className="view-selector-container">
+                                <button
+                                    className={`view-selector-btn ${viewMode === 'text' ? 'active' : ''}`}
+                                    onClick={() => setViewMode('text')}
+                                >
+                                    <span>{t('deckBuilder.sortBy.text') || 'Text'}</span>
+                                </button>
+                                <button
+                                    className={`view-selector-btn ${viewMode === 'stacked' ? 'active' : ''}`}
+                                    onClick={() => setViewMode('stacked')}
+                                >
+                                    <span>{t('deckBuilder.sortBy.stacked') || 'Stacked'}</span>
+                                </button>
                             </div>
-                        ) : (
-                            // Spacer if no search bar
-                            <div style={{ flex: 1 }}></div>
-                        )}
 
-                        {/* View Mode Toggle - Visible to ALL */}
-                        <div className="view-selector-container">
-                            <button
-                                className={`view-selector-btn ${viewMode === 'text' ? 'active' : ''}`}
-                                onClick={() => setViewMode('text')}
-                            >
-                                <span>{t('deckBuilder.sortBy.text') || 'Text'}</span>
-                            </button>
-                            <button
-                                className={`view-selector-btn ${viewMode === 'stacked' ? 'active' : ''}`}
-                                onClick={() => setViewMode('stacked')}
-                            >
-                                <span>{t('deckBuilder.sortBy.stacked') || 'Stacked'}</span>
-                            </button>
                         </div>
-
-                    </div>
-                )}
+                    )
+                }
 
                 {/* Main Hero Selection Prompt - Only show if NO HERO and NO LOADING */}
-                {!deckData.hero && !loading && !authLoading && (
-                    <div className="select-hero-prompt fade-in">
-                        <div className="prompt-content">
-                            <h2>{t('deckBuilder.selectHeroTitle') || "Choose Your Hero"}</h2>
-                            <p>{t('deckBuilder.selectHeroSubtitle') || "Select a hero to start building your deck."}</p>
-                            <button className="primary-action-btn" onClick={openHeroModal}>
-                                <Plus size={20} />
-                                {t('deckBuilder.selectHero') || "Select Hero"}
-                            </button>
+                {
+                    !deckData.hero && !loading && !authLoading && (
+                        <div className="select-hero-prompt fade-in">
+                            <div className="prompt-content">
+                                <h2>{t('deckBuilder.selectHeroTitle') || "Choose Your Hero"}</h2>
+                                <p>{t('deckBuilder.selectHeroSubtitle') || "Select a hero to start building your deck."}</p>
+                                <button className="primary-action-btn" onClick={openHeroModal}>
+                                    <Plus size={20} />
+                                    {t('deckBuilder.selectHero') || "Select Hero"}
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
 
-                {deckData.hero && (
-                    <>
-                        <div className="builder-layout">
-                            {/* Hero Section - FIXED */}
-                            {/* Hero Section - FIXED */}
-                            <div className="hero-section" ref={heroRef}>
-                                <div className="hero-card-display">
-                                    <div className={`deck-card-visual ${viewMode === 'stacked' ? 'visual-mode' : ''}`} style={{ width: viewMode === 'stacked' ? '130px' : '100%', margin: '0 0 1rem 0' }}>
-                                        <div
-                                            className="deck-card-visual"
-                                            style={{
-                                                width: viewMode === 'stacked' ? '130px' : 'auto', // Match StackedView.css width
-                                                margin: '0',
-                                                padding: viewMode === 'text' ? '0.5rem' : '0' // Add padding in Text Mode
-                                            }}
-                                            onMouseEnter={(e) => handleCardMouseEnter(e, deckData.hero.imagen)}
-                                            onMouseLeave={() => setHoveredCard(null)}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                if (showHeroActions) {
-                                                    openHeroModal();
-                                                    setShowHeroActions(false);
-                                                } else {
-                                                    setShowHeroActions(true);
-                                                }
-                                            }}
-                                        >
-                                            {/* STACKED MODE: Image */}
-                                            {viewMode === 'stacked' && (
-                                                <img
-                                                    src={deckData.hero.imagen}
-                                                    alt={deckData.hero.name}
-                                                    style={{ width: '100%', borderRadius: '10px', display: 'block' }}
-                                                />
-                                            )}
-
-                                            {/* TEXT MODE: Name Row (Manually styled to avoid conflicts) */}
-                                            {viewMode === 'text' && (
-                                                <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                                                    <span className="deck-card-name" style={{ flex: 1, color: 'white', fontWeight: '600' }}>
-                                                        {deckData.hero.name || "(No Name)"}
-                                                    </span>
-                                                    <span style={{ fontSize: '0.8rem', opacity: 0.7, marginRight: '10px' }}>{t('common.hero')}</span>
-                                                </div>
-                                            )}
-
-                                            {/* Overlay Actions (Click) - Shared for both modes to maintain aesthetic consistency */}
-                                            {canEdit && (
-                                                <div className={`hero-overlay-actions ${showHeroActions ? 'visible' : ''}`}>
-                                                    <button className="change-hero-btn" onClick={(e) => {
-                                                        e.stopPropagation();
+                {
+                    deckData.hero && (
+                        <>
+                            <div className="builder-layout">
+                                {/* Hero Section - FIXED */}
+                                {/* Hero Section - FIXED */}
+                                <div className="hero-section" ref={heroRef}>
+                                    <div className="hero-card-display">
+                                        <div className={`deck-card-visual ${viewMode === 'stacked' ? 'visual-mode' : ''}`} style={{ width: viewMode === 'stacked' ? '130px' : '100%', margin: '0 0 1rem 0' }}>
+                                            <div
+                                                className="deck-card-visual"
+                                                style={{
+                                                    width: viewMode === 'stacked' ? '130px' : 'auto', // Match StackedView.css width
+                                                    margin: '0',
+                                                    padding: viewMode === 'text' ? '0.5rem' : '0' // Add padding in Text Mode
+                                                }}
+                                                onMouseEnter={(e) => handleCardMouseEnter(e, deckData.hero.imagen)}
+                                                onMouseLeave={() => setHoveredCard(null)}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    if (showHeroActions) {
                                                         openHeroModal();
-                                                    }}>
-                                                        {t('deckBuilder.changeHero') || 'Change Hero'}
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-
-                                </div>
-                                {/* END hero-card-display */}
-                            </div>
-
-                            <div className="equipment-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
-                                <h3 style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1.2rem' }}>{t('deckBuilder.equipment') || "EQUIPMENT"}</h3>
-                                {canEdit && (
-                                    <button
-                                        className="add-slot-button-small"
-                                        onClick={openEquipmentModal}
-                                    >
-                                        <Plus size={16} />
-                                    </button>
-                                )}
-                            </div>
-                            <div
-                                className="equipment-list"
-                                onDragOver={handleDragOver}
-                                onDrop={(e) => handleDrop(e, 'equipment')}
-                            >
-                                {/* Equipment always renders as list/grid, never "Stacked" piles */}
-                                {deckData.equipment.length === 0 ? (
-                                    canEdit ? (
-                                        <div className="empty-equip-slot" onClick={openEquipmentModal}>
-                                            <Plus size={32} style={{ opacity: 0.3 }} />
-                                        </div>
-                                    ) : (
-                                        <div style={{ padding: '1rem', color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>
-                                            {t('deckBuilder.noEquipment') || "No Equipment"}
-                                        </div>
-                                    )
-                                ) : (
-                                    <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-6'}`} style={viewMode === 'visual' ? { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' } : {}}>
-                                        {(() => {
-                                            // Helper to group equipment for display (like 2x Kodachi)
-                                            const groupedEquipment = [];
-                                            const equipmentMap = new Map();
-                                            deckData.equipment.forEach(card => {
-                                                if (equipmentMap.has(card.id)) {
-                                                    equipmentMap.get(card.id).count++;
-                                                } else {
-                                                    const entry = { card, count: 1 };
-                                                    equipmentMap.set(card.id, entry);
-                                                    groupedEquipment.push(entry);
-                                                }
-                                            });
-
-                                            if (viewMode === 'stacked') {
-                                                return (
-                                                    <StackedDeckList
-                                                        cards={groupedEquipment}
-                                                        onCardClick={(item) => { }}
-                                                        onDragStart={(e, card) => handleDragStart(e, card, 'equipment')}
-                                                        isOwner={canEdit}
-                                                        activeCardMenu={activeCardMenu}
-                                                        setActiveCardMenu={setActiveCardMenu}
-                                                        section="equipment"
-                                                        onMoveCard={moveCard}
-                                                        onRemoveCard={removeCard}
-                                                        onHoverCard={handleCardMouseEnter}
+                                                        setShowHeroActions(false);
+                                                    } else {
+                                                        setShowHeroActions(true);
+                                                    }
+                                                }}
+                                            >
+                                                {/* STACKED MODE: Image */}
+                                                {viewMode === 'stacked' && (
+                                                    <img
+                                                        src={deckData.hero.imagen}
+                                                        alt={deckData.hero.name}
+                                                        style={{ width: '100%', borderRadius: '10px', display: 'block' }}
                                                     />
-                                                );
-                                            }
+                                                )}
 
-                                            return groupedEquipment.map((item, index) => (
-                                                renderCardItem(item, 'equipment', index)
-                                            ));
-                                        })()}
+                                                {/* TEXT MODE: Name Row (Manually styled to avoid conflicts) */}
+                                                {viewMode === 'text' && (
+                                                    <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                                                        <span className="deck-card-name" style={{ flex: 1, color: 'white', fontWeight: '600' }}>
+                                                            {deckData.hero.name || "(No Name)"}
+                                                        </span>
+                                                        <span style={{ fontSize: '0.8rem', opacity: 0.7, marginRight: '10px' }}>{t('common.hero')}</span>
+                                                    </div>
+                                                )}
+
+                                                {/* Overlay Actions (Click) - Shared for both modes to maintain aesthetic consistency */}
+                                                {canEdit && (
+                                                    <div className={`hero-overlay-actions ${showHeroActions ? 'visible' : ''}`}>
+                                                        <button className="change-hero-btn" onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            openHeroModal();
+                                                        }}>
+                                                            {t('deckBuilder.changeHero') || 'Change Hero'}
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+
                                     </div>
-                                )}
-                            </div>
+                                    {/* END hero-card-display */}
+                                </div>
 
-
-
-
-
-
-
-
-                            {/* Main Deck Section (Always First) */}
-                            <div
-                                className="deck-section main-deck"
-                                onDragOver={handleDragOver}
-                                onDrop={(e) => handleDrop(e, 'mainDeck')}
-                            >
-                                <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                    <h2>{t('deckBuilder.mainDeck') || 'MAIN DECK'} ({totalCards})</h2>
+                                <div className="equipment-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>
+                                    <h3 style={{ margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1.2rem' }}>{t('deckBuilder.equipment') || "EQUIPMENT"}</h3>
                                     {canEdit && (
                                         <button
                                             className="add-slot-button-small"
-                                            onClick={() => handleSectionAdd('main')}
+                                            onClick={openEquipmentModal}
                                         >
                                             <Plus size={16} />
                                         </button>
                                     )}
                                 </div>
-                                <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-10'}`}>
-                                    {renderListSection(deckData.mainDeck, 'mainDeck')}
-                                </div>
-                            </div>
+                                <div
+                                    className="equipment-list"
+                                    onDragOver={handleDragOver}
+                                    onDrop={(e) => handleDrop(e, 'equipment')}
+                                >
+                                    {/* Equipment always renders as list/grid, never "Stacked" piles */}
+                                    {deckData.equipment.length === 0 ? (
+                                        canEdit ? (
+                                            <div className="empty-equip-slot" onClick={openEquipmentModal}>
+                                                <Plus size={32} style={{ opacity: 0.3 }} />
+                                            </div>
+                                        ) : (
+                                            <div style={{ padding: '1rem', color: 'rgba(255,255,255,0.3)', fontStyle: 'italic' }}>
+                                                {t('deckBuilder.noEquipment') || "No Equipment"}
+                                            </div>
+                                        )
+                                    ) : (
+                                        <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-6'}`} style={viewMode === 'visual' ? { display: 'flex', flexWrap: 'wrap', gap: '0.5rem' } : {}}>
+                                            {(() => {
+                                                // Helper to group equipment for display (like 2x Kodachi)
+                                                const groupedEquipment = [];
+                                                const equipmentMap = new Map();
+                                                deckData.equipment.forEach(card => {
+                                                    if (equipmentMap.has(card.id)) {
+                                                        equipmentMap.get(card.id).count++;
+                                                    } else {
+                                                        const entry = { card, count: 1 };
+                                                        equipmentMap.set(card.id, entry);
+                                                        groupedEquipment.push(entry);
+                                                    }
+                                                });
 
-                            <div
-                                className="deck-section"
-                                onDragOver={handleDragOver}
-                                onDrop={(e) => handleDrop(e, 'sideboard')}
-                            >
-                                <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                    <h2>{t('deckBuilder.sideboard') || 'SIDEBOARD'} ({sideboardCards}/{deckData.format === 'cc' ? 15 : 12})</h2>
-                                    {canEdit && (
-                                        <button
-                                            className="add-slot-button-small"
-                                            onClick={() => handleSectionAdd('sideboard')}
-                                        >
-                                            <Plus size={16} />
-                                        </button>
+                                                if (viewMode === 'stacked') {
+                                                    return (
+                                                        <StackedDeckList
+                                                            cards={groupedEquipment}
+                                                            onCardClick={(item) => { }}
+                                                            onDragStart={(e, card) => handleDragStart(e, card, 'equipment')}
+                                                            isOwner={canEdit}
+                                                            activeCardMenu={activeCardMenu}
+                                                            setActiveCardMenu={setActiveCardMenu}
+                                                            section="equipment"
+                                                            onMoveCard={moveCard}
+                                                            onRemoveCard={removeCard}
+                                                            onHoverCard={handleCardMouseEnter}
+                                                        />
+                                                    );
+                                                }
+
+                                                return groupedEquipment.map((item, index) => (
+                                                    renderCardItem(item, 'equipment', index)
+                                                ));
+                                            })()}
+                                        </div>
                                     )}
                                 </div>
-                                <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-10'}`}>
-                                    {renderListSection(deckData.sideboard, 'sideboard')}
-                                </div>
-                            </div>
 
-                            <div
-                                className="deck-section"
-                                onDragOver={handleDragOver}
-                                onDrop={(e) => handleDrop(e, 'maybeboard')}
-                            >
-                                <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                    <h2>{t('deckBuilder.maybeboard') || 'MAYBEBOARD'} ({maybeboardCards})</h2>
-                                    {canEdit && (
-                                        <button
-                                            className="add-slot-button-small"
-                                            onClick={() => handleSectionAdd('maybeboard')}
-                                        >
-                                            <Plus size={16} />
-                                        </button>
-                                    )}
+
+
+
+
+
+
+
+                                {/* Main Deck Section (Always First) */}
+                                <div
+                                    className="deck-section main-deck"
+                                    onDragOver={handleDragOver}
+                                    onDrop={(e) => handleDrop(e, 'mainDeck')}
+                                >
+                                    <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                        <h2>{t('deckBuilder.mainDeck') || 'MAIN DECK'} ({totalCards})</h2>
+                                        {canEdit && (
+                                            <button
+                                                className="add-slot-button-small"
+                                                onClick={() => handleSectionAdd('main')}
+                                            >
+                                                <Plus size={16} />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-10'}`}>
+                                        {renderListSection(deckData.mainDeck, 'mainDeck')}
+                                    </div>
                                 </div>
-                                <div className={`deck-cards-list ${viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-10'}`}>
-                                    {renderListSection(deckData.maybeboard, 'maybeboard')}
+
+                                <div
+                                    className="deck-section"
+                                    onDragOver={handleDragOver}
+                                    onDrop={(e) => handleDrop(e, 'sideboard')}
+                                >
+                                    <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                        <h2>{t('deckBuilder.sideboard') || 'SIDEBOARD'} ({sideboardCards}/{deckData.format === 'cc' ? 15 : 12})</h2>
+                                        {canEdit && (
+                                            <button
+                                                className="add-slot-button-small"
+                                                onClick={() => handleSectionAdd('sideboard')}
+                                            >
+                                                <Plus size={16} />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className={`deck-cards-list ${viewMode === 'visual' ? 'visual-mode' : viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-10'}`}>
+                                        {renderListSection(deckData.sideboard, 'sideboard')}
+                                    </div>
+                                </div>
+
+                                <div
+                                    className="deck-section"
+                                    onDragOver={handleDragOver}
+                                    onDrop={(e) => handleDrop(e, 'maybeboard')}
+                                >
+                                    <div className="section-header" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                        <h2>{t('deckBuilder.maybeboard') || 'MAYBEBOARD'} ({maybeboardCards})</h2>
+                                        {canEdit && (
+                                            <button
+                                                className="add-slot-button-small"
+                                                onClick={() => handleSectionAdd('maybeboard')}
+                                            >
+                                                <Plus size={16} />
+                                            </button>
+                                        )}
+                                    </div>
+                                    <div className={`deck-cards-list ${viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-10'}`}>
+                                        {renderListSection(deckData.maybeboard, 'maybeboard')}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </>
-                )}
+                        </>
+                    )
+                }
 
                 {/* Comments Section - Only show if deck is saved (has ID) */}
-                {deckId && (
-                    <div id="comments-section" className="deck-comments-wrapper">
-                        <CommentSection deckId={deckId} />
-                    </div>
-                )}
+                {
+                    deckId && (
+                        <div id="comments-section" className="deck-comments-wrapper">
+                            <CommentSection deckId={deckId} />
+                        </div>
+                    )
+                }
 
-                {showModal && (
-                    <CardSearchModal
-                        isOpen={showModal}
-                        onClose={() => setShowModal(false)}
-                        onSelect={handleSelectFromModal}
-                        type={modalType}
-                        heroClass={deckData.hero?.clase} // Pass hero class string for filtering
-                        format={deckData.format}
-                    />
-                )}
+                {
+                    showModal && (
+                        <CardSearchModal
+                            isOpen={showModal}
+                            onClose={() => setShowModal(false)}
+                            onSelect={handleSelectFromModal}
+                            type={modalType}
+                            heroClass={deckData.hero?.clase} // Pass hero class string for filtering
+                            format={deckData.format}
+                        />
+                    )
+                }
 
                 {/* Mobile Card Preview Modal */}
-                {previewCard && (
-                    <CardPreviewModal
-                        card={previewCard.item.card || previewCard.item}
-                        onClose={() => setPreviewCard(null)}
-                    >
+                {
+                    previewCard && (
+                        <CardPreviewModal
+                            card={previewCard.item.card || previewCard.item}
+                            onClose={() => setPreviewCard(null)}
+                        >
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', width: '100%', maxWidth: '350px' }}>
-                            {/* Move Options */}
-                            {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && previewCard.section !== 'mainDeck' && (
-                                <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'mainDeck'); setPreviewCard(null); }}>
-                                    {t('deckBuilder.moveToDeck') || 'To Main Deck'}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', width: '100%', maxWidth: '350px' }}>
+                                {/* Move Options */}
+                                {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && previewCard.section !== 'mainDeck' && (
+                                    <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'mainDeck'); setPreviewCard(null); }}>
+                                        {t('deckBuilder.moveToDeck') || 'To Main Deck'}
+                                    </button>
+                                )}
+
+                                {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && (previewCard.item.card?.tipo?.toLowerCase().includes('weapon') || previewCard.item.card?.tipo?.toLowerCase().includes('arma') || previewCard.item.card?.tipo?.toLowerCase().includes('equipment') || previewCard.item.card?.tipo?.toLowerCase().includes('equipamiento')) && previewCard.section !== 'equipment' && (
+                                    <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'equipment'); setPreviewCard(null); }}>
+                                        {t('deckBuilder.moveToEquipment') || 'To Equipment'}
+                                    </button>
+                                )}
+
+                                {(['mainDeck', 'sideboard', 'equipment'].includes(previewCard.section) || previewCard.section === 'mainDeck') && previewCard.section !== 'sideboard' && (
+                                    <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'sideboard'); setPreviewCard(null); }}>
+                                        {t('deckBuilder.moveToSideboard') || 'To Sideboard'}
+                                    </button>
+                                )}
+
+                                {(['mainDeck', 'sideboard', 'equipment'].includes(previewCard.section) || previewCard.section === 'equipment') && previewCard.section !== 'maybeboard' && (
+                                    <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'maybeboard'); setPreviewCard(null); }}>
+                                        {t('deckBuilder.moveToMaybeboard') || 'To Maybeboard'}
+                                    </button>
+                                )}
+
+                                <button className="preview-action-btn danger" style={{ gridColumn: '1 / -1', background: 'rgba(220, 38, 38, 0.8)' }} onClick={() => { removeCard(previewCard.item.card?.id || previewCard.item.id, previewCard.section); setPreviewCard(null); }}>
+                                    <X size={16} style={{ marginRight: '5px' }} />
+                                    {t('deckBuilder.remove') || 'Remove'}
                                 </button>
-                            )}
-
-                            {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && (previewCard.item.card?.tipo?.toLowerCase().includes('weapon') || previewCard.item.card?.tipo?.toLowerCase().includes('arma') || previewCard.item.card?.tipo?.toLowerCase().includes('equipment') || previewCard.item.card?.tipo?.toLowerCase().includes('equipamiento')) && previewCard.section !== 'equipment' && (
-                                <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'equipment'); setPreviewCard(null); }}>
-                                    {t('deckBuilder.moveToEquipment') || 'To Equipment'}
-                                </button>
-                            )}
-
-                            {(['mainDeck', 'sideboard', 'equipment'].includes(previewCard.section) || previewCard.section === 'mainDeck') && previewCard.section !== 'sideboard' && (
-                                <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'sideboard'); setPreviewCard(null); }}>
-                                    {t('deckBuilder.moveToSideboard') || 'To Sideboard'}
-                                </button>
-                            )}
-
-                            {(['mainDeck', 'sideboard', 'equipment'].includes(previewCard.section) || previewCard.section === 'equipment') && previewCard.section !== 'maybeboard' && (
-                                <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'maybeboard'); setPreviewCard(null); }}>
-                                    {t('deckBuilder.moveToMaybeboard') || 'To Maybeboard'}
-                                </button>
-                            )}
-
-                            <button className="preview-action-btn danger" style={{ gridColumn: '1 / -1', background: 'rgba(220, 38, 38, 0.8)' }} onClick={() => { removeCard(previewCard.item.card?.id || previewCard.item.id, previewCard.section); setPreviewCard(null); }}>
-                                <X size={16} style={{ marginRight: '5px' }} />
-                                {t('deckBuilder.remove') || 'Remove'}
-                            </button>
-                        </div>
-                    </CardPreviewModal>
-                )}
+                            </div>
+                        </CardPreviewModal>
+                    )
+                }
 
                 {/* Card Hover Preview Overlay */}
-                {hoveredCard && (
-                    <div className={`card-preview-overlay visible ${hoveredCard.side}`}>
-                        <img src={hoveredCard.image} alt="Preview" />
-                    </div>
-                )}
+                {
+                    hoveredCard && (
+                        <div className={`card-preview-overlay visible ${hoveredCard.side}`}>
+                            <img src={hoveredCard.image} alt="Preview" />
+                        </div>
+                    )
+                }
 
                 {/* Toast Notification */}
-                {showToast && (
-                    <Toast
-                        message={toastMessage}
-                        type={toastType}
-                        onClose={() => setShowToast(false)}
-                    />
-                )}
+                {
+                    showToast && (
+                        <Toast
+                            message={toastMessage}
+                            type={toastType}
+                            onClose={() => setShowToast(false)}
+                        />
+                    )
+                }
 
                 {/* Deck Playtester Modal */}
-                {showPlaytester && (
-                    <DeckPlaytester
-                        deck={deckData}
-                        onClose={() => setShowPlaytester(false)}
-                    />
-                )}
-            </div>
+                {
+                    showPlaytester && (
+                        <DeckPlaytester
+                            deck={deckData}
+                            onClose={() => setShowPlaytester(false)}
+                        />
+                    )
+                }
+            </div >
         </div >
     );
 };

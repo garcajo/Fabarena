@@ -1810,3 +1810,62 @@
         padding: 0 0 4rem 0;
     }
 }
+/* Tournament Counter */
+.tournament-counter {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--color-accent);
+}
+
+.tournament-counter.over-limit {
+    border-left-color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.1);
+}
+
+.tournament-counter.over-limit .counter-value .current {
+    color: #ef4444;
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.3);
+}
+
+.tournament-counter .counter-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2px;
+    font-weight: 600;
+}
+
+.tournament-counter .counter-value {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    font-family: 'Inter', sans-serif;
+}
+
+.tournament-counter .counter-value .current {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--color-text-main);
+}
+
+.tournament-counter .counter-value .separator {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0 2px;
+}
+
+.tournament-counter .counter-value .limit {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 500;
+}
