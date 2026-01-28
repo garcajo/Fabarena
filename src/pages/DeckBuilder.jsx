@@ -450,7 +450,6 @@ const DeckBuilder = () => {
             try {
                 const searchParams = {
                     search: searchTerm,
-                    clase: deckData.hero ? [...(deckData.hero.clase || '').split(' '), ...(deckData.hero.clase || '').split('/'), 'Generic'].filter(Boolean) : undefined,
                     pageSize: 50
                 };
 
