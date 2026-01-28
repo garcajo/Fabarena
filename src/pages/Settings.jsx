@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
 import { CollectionService, DeckService, AuthService } from '../services/api';
+import { EmailService } from '../services/emailService';
 import { User, Database, Mail, Save, Download, Upload, Trash, AlertTriangle, X } from 'lucide-react';
 import '../styles/Settings.css';
 
@@ -140,12 +141,17 @@ const Settings = () => {
         reader.readAsText(file);
     };
 
-    const handleSuggestionSubmit = (e) => {
+    const handleSuggestionSubmit = async (e) => {
         e.preventDefault();
-        const mailtoLink = `mailto:cabjosue16@gmail.com?subject=FabArena Feedback: ${encodeURIComponent(suggestion.title)}&body=${encodeURIComponent(suggestion.message)}`;
-        window.location.href = mailtoLink;
-        addToast('Opening email client...', 'info');
-        setSuggestion({ title: '', message: '' });
+        try {
+            addToast(t('settings.sending_feedback') || 'Sending feedback...', 'info');
+            await EmailService.sendFeedback(suggestion.title, suggestion.message, user);
+            addToast(t('settings.feedback_sent') || 'Feedback sent successfully!', 'success');
+            setSuggestion({ title: '', message: '' });
+        } catch (error) {
+            console.error('Feedback Error:', error);
+            addToast(t('settings.feedback_error') || 'Failed to send feedback', 'error');
+        }
     };
 
     return (

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../services/supabase';
+import { EmailService } from '../services/emailService';
 import { BookOpen, Target, Mail, Send, CheckCircle, AlertCircle } from 'lucide-react';
 import '../styles/Help.css';
 
@@ -49,6 +50,14 @@ const Help = () => {
                 ]);
 
             if (error) throw error;
+
+            // Send email notification in background (non-blocking for UI, but good to try)
+            try {
+                await EmailService.sendContactMessage(formData.email, formData.subject, formData.message);
+            } catch (emailError) {
+                console.warn('Failed to send email notif:', emailError);
+                // We don't fail the whole submission if just email fails, since DB saved it.
+            }
 
             setFormStatus('success');
             setFormData({
