@@ -201,9 +201,13 @@
 
 .modal-card-img-large {
     width: 100%;
+    height: auto;
     aspect-ratio: 2.5/3.5;
-    object-fit: cover;
+    object-fit: contain;
+    /* Ensure full card is visible */
     border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+    /* Fallback background */
 }
 
 .modal-card-name-sm {
