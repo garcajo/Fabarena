@@ -63,7 +63,7 @@ const StackedDeckList = ({
                                 onDragStart(e, item.card);
                             }
                         }}
-                        onMouseEnter={() => setHoveredCard && setHoveredCard(item.card.imagen)}
+                        onMouseEnter={(e) => setHoveredCard && setHoveredCard(e, item.card.imagen)}
                         onMouseLeave={() => setHoveredCard && setHoveredCard(null)}
                         style={{ cursor: isOwner ? 'pointer' : 'default' }}
                     >

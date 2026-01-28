@@ -1259,8 +1259,7 @@
 .card-preview-overlay {
     position: fixed;
     top: 50%;
-    right: 15%;
-    /* Default to right side, adjustable */
+    /* Positions will be set by .left or .right classes */
     transform: translateY(-50%);
     width: 350px;
     /* High-res size */
@@ -1273,6 +1272,16 @@
     opacity: 0;
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s;
     background: transparent;
+}
+
+.card-preview-overlay.left {
+    left: 5%;
+    right: auto;
+}
+
+.card-preview-overlay.right {
+    right: 5%;
+    left: auto;
 }
 
 .card-preview-overlay.visible {

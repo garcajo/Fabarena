@@ -760,7 +760,16 @@ const DeckBuilder = () => {
     const sideboardCards = deckData.sideboard.reduce((acc, curr) => acc + curr.count, 0);
     const maybeboardCards = deckData.maybeboard.reduce((acc, curr) => acc + curr.count, 0);
 
-    const [hoveredCard, setHoveredCard] = React.useState(null);
+    const [hoveredCard, setHoveredCard] = React.useState(null); // { image: string, side: 'left' | 'right' }
+
+    const handleCardMouseEnter = (e, image) => {
+        if (!image) return;
+        const screenWidth = window.innerWidth;
+        const mouseX = e.clientX;
+        // If mouse is on the right half, show preview on the left. If on left half, show on right.
+        const side = mouseX > screenWidth / 2 ? 'left' : 'right';
+        setHoveredCard({ image, side });
+    };
 
     // ... existing ...
 
@@ -796,7 +805,7 @@ const DeckBuilder = () => {
                                 }
                             }
                         }}
-                        onMouseEnter={() => setHoveredCard(card.imagen)}
+                        onMouseEnter={(e) => handleCardMouseEnter(e, card.imagen)}
                         onMouseLeave={() => setHoveredCard(null)}
                     >
                         <img src={card.imagen} alt={card.name} />
@@ -845,7 +854,7 @@ const DeckBuilder = () => {
                                 }
                             }
                         }}
-                        onMouseEnter={() => setHoveredCard(card.imagen)}
+                        onMouseEnter={(e) => handleCardMouseEnter(e, card.imagen)}
                         onMouseLeave={() => setHoveredCard(null)}
                     >
                         {section !== 'hero' && (
@@ -1462,7 +1471,7 @@ const DeckBuilder = () => {
                                                 margin: '0',
                                                 padding: viewMode === 'text' ? '0.5rem' : '0' // Add padding in Text Mode
                                             }}
-                                            onMouseEnter={() => setHoveredCard(deckData.hero.imagen)}
+                                            onMouseEnter={(e) => handleCardMouseEnter(e, deckData.hero.imagen)}
                                             onMouseLeave={() => setHoveredCard(null)}
                                             onClick={(e) => {
                                                 e.stopPropagation();
@@ -1714,8 +1723,8 @@ const DeckBuilder = () => {
 
                 {/* Card Hover Preview Overlay */}
                 {hoveredCard && (
-                    <div className="card-preview-overlay visible">
-                        <img src={hoveredCard} alt="Preview" />
+                    <div className={`card-preview-overlay visible ${hoveredCard.side}`}>
+                        <img src={hoveredCard.image} alt="Preview" />
                     </div>
                 )}
 
