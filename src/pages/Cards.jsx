@@ -5,6 +5,7 @@ import Pagination from '../components/Pagination';
 import CardModal from '../components/CardModal';
 import { useCards } from '../hooks/useCards';
 import { useLanguage } from '../context/LanguageContext';
+import AdBanner from '../components/AdBanner';
 
 const Cards = () => {
     const { t } = useLanguage();
@@ -25,6 +26,7 @@ const Cards = () => {
     return (
         <div className="container">
             <div style={{ padding: '2rem 0' }}>
+                <AdBanner position="top" adSlot="8911247227" />
                 <h1 style={{ marginBottom: '1rem' }}>{t('cardsPage.title') || 'Card Database'}</h1>
                 <p style={{ color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
                     {t('cardsPage.subtitle') || 'Explore the complete library of Flesh and Blood cards.'}
