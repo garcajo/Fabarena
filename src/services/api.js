@@ -598,6 +598,20 @@ export const DeckService = {
             if (error) throw error;
             console.log("[api.js] Deck created:", deck.id);
 
+            // 2. Auto-Like for Creator
+            // The user automatically likes their own deck upon creation.
+            const { error: likeError } = await supabase
+                .from('deck_likes')
+                .insert({
+                    deck_id: deck.id,
+                    user_id: user.id
+                });
+
+            if (likeError) {
+                console.warn("[api.js] Auto-like failed (non-critical):", likeError);
+                // We don't throw here to avoid failing the whole deck creation
+            }
+
             // 2. Insert Cards
             // Normalize cards from different sections if not provided as 'cards'
             let cardsToInsert = deckData.cards || [];
