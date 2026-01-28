@@ -1082,35 +1082,38 @@ const DeckBuilder = () => {
                             </button>
                         )}
 
-                        {/* Guide Button - Always show, but require save first for new decks */}
-                        <button
-                            className="view-guide-btn"
-                            onClick={() => {
-                                if (deckId) {
-                                    navigate(`/decks/${deckId}/guide`);
-                                } else {
-                                    alert(t('deckBuilder.saveFirstForGuide') || 'Please save your deck first to create a guide.');
-                                }
-                            }}
-                            style={{
-                                background: deckId ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)',
-                                border: '1px solid rgba(255, 255, 255, 0.2)',
-                                color: deckId ? 'var(--color-text-main)' : 'rgba(255, 255, 255, 0.4)',
-                                padding: '0.5rem',
-                                borderRadius: '8px',
-                                cursor: 'pointer',
-                                fontSize: '0.9rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '36px',
-                                height: '36px',
-                                opacity: deckId ? 1 : 0.6
-                            }}
-                            title={deckId ? (t('deck.guide') || 'Deck Guide') : (t('deckBuilder.saveFirstForGuide') || 'Save deck first')}
-                        >
-                            <BookOpen size={18} />
-                        </button>
+
+                        {/* Guide Button - Only show to deck owner */}
+                        {canEdit && (
+                            <button
+                                className="view-guide-btn"
+                                onClick={() => {
+                                    if (deckId) {
+                                        navigate(`/decks/${deckId}/guide`);
+                                    } else {
+                                        alert(t('deckBuilder.saveFirstForGuide') || 'Please save your deck first to create a guide.');
+                                    }
+                                }}
+                                style={{
+                                    background: deckId ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.05)',
+                                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                                    color: deckId ? 'var(--color-text-main)' : 'rgba(255, 255, 255, 0.4)',
+                                    padding: '0.5rem',
+                                    borderRadius: '8px',
+                                    cursor: 'pointer',
+                                    fontSize: '0.9rem',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '36px',
+                                    height: '36px',
+                                    opacity: deckId ? 1 : 0.6
+                                }}
+                                title={deckId ? (t('deck.guide') || 'Deck Guide') : (t('deckBuilder.saveFirstForGuide') || 'Save deck first')}
+                            >
+                                <BookOpen size={18} />
+                            </button>
+                        )}
 
                         {/* Test Deck Button */}
                         {deckData.mainDeck.length > 0 && (
