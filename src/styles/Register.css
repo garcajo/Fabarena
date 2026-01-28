@@ -106,7 +106,7 @@
 
 .input-wrapper input {
     width: 100%;
-    padding: 1rem 1.25rem 1rem 3rem;
+    padding: 1rem 1.25rem 1rem 3.5rem;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.12);
