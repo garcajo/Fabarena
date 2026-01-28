@@ -196,9 +196,8 @@
     .help-section h1 {
         text-align: center;
         display: block;
-        width: 100%;
+        /* Width default is auto, which respects padding without overflow */
         padding: 0 1rem;
-        /* Prevent overflow if title is long */
     }
 
     /* Let's use padding for "sangria" (indentation/spacing) and keep text alignment natural or centered if preferred, but usually left with padding is best for readability.
