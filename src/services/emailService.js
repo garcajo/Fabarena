@@ -37,7 +37,7 @@ export const EmailService = {
      */
     sendFeedback: async (title, message, user) => {
         const params = {
-            subject: `Feedback: ${title}`,
+            subject: title,
             from_name: user?.user_metadata?.username || user?.email || 'Anonymous User',
             from_email: user?.email || 'no-email@provided',
             message: message,
