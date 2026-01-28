@@ -420,16 +420,13 @@ const DeckBuilder = () => {
                 savedDeck = await DeckService.createDeck(payload);
                 setDeckId(savedDeck.id);
                 setToastMessage(t('deckBuilder.deckCreated') || 'Deck created successfully!');
+                // Update URL for new decks without reloading the page
+                navigate(`/decks/${savedDeck.id}`, { replace: true });
             }
             setToastType('success');
             setShowToast(true);
             // Exit Edit Mode on successful save
             setIsEditMode(false);
-
-            // Redirect to My Decks after successful save
-            setTimeout(() => {
-                navigate('/my-decks');
-            }, 1500); // Small delay to show the success toast
         } catch (error) {
             console.error('Error saving deck:', error);
             setToastMessage(`${t('deckBuilder.deckError') || 'Error saving deck'}: ${error.message}`);
