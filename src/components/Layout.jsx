@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
     const location = useLocation();
 
     // Hide bottom banner on pages that have a top banner to avoid redundancy/clutter
-    const hideBottomBanner = ['/decks', '/my-decks', '/cards'].some(path => location.pathname.startsWith(path));
+    const hideBottomBanner = ['/decks', '/my-decks', '/cards', '/collection'].some(path => location.pathname.startsWith(path));
 
     return (
         <div className="layout">
