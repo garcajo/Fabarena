@@ -553,6 +553,21 @@ const Navbar = () => {
               <ShieldBan size={18} />
               <span>{t('nav.bans') || "Bans & Restrictions"}</span>
             </Link>
+            {/* Help Link Added */}
+            <Link to="/help" className="mobile-item" onClick={closeMobileMenu}>
+              <div style={{
+                width: '18px',
+                height: '18px',
+                borderRadius: '50%',
+                border: '2px solid currentColor',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '12px',
+                fontWeight: 'bold'
+              }}>?</div>
+              <span>{t('nav.help')}</span>
+            </Link>
 
             {/* Login/Register for Logged Out users in Nav menu */}
             {!user && (
