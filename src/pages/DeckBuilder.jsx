@@ -1678,7 +1678,7 @@ const DeckBuilder = () => {
                                             </button>
                                         )}
                                     </div>
-                                    <div className={`deck-cards-list ${viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns text-columns-10'}`}>
+                                    <div className={`deck-cards-list ${viewMode === 'stacked' ? 'stacked-mode' : 'text-mode-columns'}`}>
                                         {renderListSection(deckData.maybeboard, 'maybeboard')}
                                     </div>
                                 </div>
