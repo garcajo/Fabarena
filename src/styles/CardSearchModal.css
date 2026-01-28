@@ -23,9 +23,8 @@
     flex-direction: column;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
     position: relative;
-    /* Add this to ensure absolute elements stay inside */
-    overflow: hidden;
-    /* Ensure rounded corners clip content */
+    overflow: visible;
+    /* Allow tabs to be visible */
 }
 
 .modal-header {
@@ -328,17 +327,31 @@
 .equipment-tabs {
     display: flex;
     gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.02);
-    /* More subtle background */
     overflow-x: auto;
-    scrollbar-width: none;
-    z-index: 10;
+    overflow-y: visible;
+    /* Ensure vertical visibility */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+    flex-shrink: 0;
+    /* Prevent tabs from shrinking */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
 }
 
 .equipment-tabs::-webkit-scrollbar {
-    display: none;
+    height: 4px;
+}
+
+.equipment-tabs::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.equipment-tabs::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
 }
 
 .equip-tab-btn {
@@ -350,11 +363,13 @@
     border: 1px solid transparent;
     border-radius: 8px;
     color: var(--color-text-muted);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
+    flex-shrink: 0;
+    /* Prevent button shrinking */
 }
 
 .equip-tab-btn:hover {
