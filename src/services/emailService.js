@@ -54,7 +54,7 @@ export const EmailService = {
      */
     sendContactMessage: async (email, subject, message) => {
         const params = {
-            subject: `Contact: ${subject}`,
+            subject: subject,
             from_name: email,
             from_email: email,
             message: message,
