@@ -179,7 +179,7 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
                                         style={{ cursor: 'pointer' }}
                                     >
                                         <div className="card-image-container" style={{ borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
-                                            <img src={card.imagen} alt={card.name} className="card-image" loading="lazy" style={{ transition: 'transform 0.3s ease' }} />
+                                            <img src={card.imagen} alt={card.name} className="card-image" style={{ transition: 'transform 0.3s ease' }} />
                                         </div>
                                         <div className="card-info" style={{ padding: '0.75rem 0.25rem' }}>
                                             <div className="card-name" style={{ fontWeight: 600, fontSize: '0.95rem' }}>{card.name}</div>

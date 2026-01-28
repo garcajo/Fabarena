@@ -141,7 +141,6 @@ const Collection = () => {
                                         src={item.imagen}
                                         alt={item.name}
                                         className="card-image"
-                                        loading="lazy"
                                     />
                                     {/* Quantity Badge */}
                                     <div style={{

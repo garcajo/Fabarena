@@ -1,42 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { usePreloadedData } from '../context/DataPreloadContext';
 import { CardService } from '../services/api';
 import { ShieldBan, AlertTriangle } from 'lucide-react';
 import CardModal from '../components/CardModal';
 
 const BansPage = () => {
     const { t } = useLanguage();
-    const [bans, setBans] = useState({});
+    const { bans, isBansLoading } = usePreloadedData();
     const [cardDetails, setCardDetails] = useState({});
-    const [loading, setLoading] = useState(true);
+    const [detailsLoading, setDetailsLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('Classic Constructed');
     const [selectedCard, setSelectedCard] = useState(null);
 
-    // Map internal format keys to display names
-    // If scraper finds "Blitz", we might show it as "Silver Age (Blitz)" if user demands Silver Age
-    // or just separate tabs.
-    // User requested "Classic Constructed" and "Silver Age".
     const TABS = ['Classic Constructed', 'Silver Age'];
 
+    // Fetch card details when bans data is available
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
+        const fetchCardDetails = async () => {
+            if (!bans || Object.keys(bans).length === 0) {
+                setDetailsLoading(false);
+                return;
+            }
+
             try {
-                const { data, error } = await CardService.getBannedCards();
-                if (error) {
-                    console.error("Failed to load bans", error);
-                    return;
-                }
-
-                setBans(data);
-
-                // Fetch visual details for all banned cards
-                // Collect all names unique
+                // Collect all banned card names
                 const allNames = new Set();
-                Object.values(data).forEach(list => {
+                Object.values(bans).forEach(list => {
                     if (Array.isArray(list)) {
                         list.forEach(name => {
-                            // Strip suffixes like " (Red)", " (Yellow)", etc for DB lookup
                             const clean = name.split('(')[0].trim();
                             allNames.add(clean);
                         });
@@ -47,7 +39,6 @@ const BansPage = () => {
                     const response = await CardService.getCardsByNames(Array.from(allNames));
                     const details = {};
                     (response.data || []).forEach(card => {
-                        // Store all versions for a given name
                         if (!details[card.name]) {
                             details[card.name] = [];
                         }
@@ -55,17 +46,21 @@ const BansPage = () => {
                     });
                     setCardDetails(details);
                 }
-
             } catch (err) {
-                console.error(err);
+                console.error("Error fetching card details", err);
             } finally {
-                setLoading(false);
+                setDetailsLoading(false);
             }
         };
 
-        fetchData();
-    }, []);
+        if (!isBansLoading && Object.keys(bans).length > 0) {
+            fetchCardDetails();
+        } else if (!isBansLoading) {
+            setDetailsLoading(false);
+        }
+    }, [bans, isBansLoading]);
 
+    const loading = isBansLoading || detailsLoading;
     const currentList = bans[activeTab] || [];
 
     return (

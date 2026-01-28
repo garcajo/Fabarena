@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { usePreloadedData } from '../context/DataPreloadContext';
 import { CardService } from '../services/api';
 import { Trophy, Crown, Swords } from 'lucide-react';
 
@@ -21,59 +22,50 @@ const getClassColor = (className) => {
 
 const LivingLegendPage = () => {
     const { t } = useLanguage();
-    const [heroes, setHeroes] = useState([]);
+    const { livingLegend, isLivingLegendLoading } = usePreloadedData();
     const [heroDetails, setHeroDetails] = useState({}); // Stores images and classes
-    const [loading, setLoading] = useState(true);
+    const [detailsLoading, setDetailsLoading] = useState(true);
 
+    // Fetch image details when living legend data is available
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
+        const fetchDetails = async () => {
+            if (!livingLegend || livingLegend.length === 0) {
+                setDetailsLoading(false);
+                return;
+            }
+
             try {
-                // 1. Fetch Leaderboard Data from Backend (Scraped)
-                const { data: llData, error } = await CardService.getLivingLegendData();
-
-                if (error || !llData) {
-                    console.error("Failed to load LL data", error);
-                    setLoading(false);
-                    return;
-                }
-
-                setHeroes(llData);
-
-                // 2. Fetch Images and Classes for these heroes
-                // We need to batch these efficiently
-                const names = llData.map(h => h.name);
-
-                // The batch lookup might return multiple cards or partial matches.
-                // We trust getCardsByNames to handle reasonable batch sizes.
+                const names = livingLegend.map(h => h.name);
                 const response = await CardService.getCardsByNames(names);
                 const cards = response.data || [];
 
                 const detailsMap = {};
-                for (const h of llData) {
-                    // Fuzzy match or exact match
-                    // Scraped names might have titles like "Florian, Rotwood Harbinger"
-                    // Database names should match that.
+                for (const h of livingLegend) {
                     const match = cards.find(c => c.name === h.name) || cards.find(c => h.name.includes(c.name));
-
                     if (match) {
                         detailsMap[h.name] = {
                             image: match.imagen,
-                            class: match.clase // Assuming backend returns localized or english class, we use it for color
+                            class: match.clase
                         };
                     }
                 }
                 setHeroDetails(detailsMap);
-
             } catch (err) {
-                console.error("Error in LL Page", err);
+                console.error("Error fetching hero details", err);
             } finally {
-                setLoading(false);
+                setDetailsLoading(false);
             }
         };
 
-        fetchData();
-    }, []);
+        if (!isLivingLegendLoading && livingLegend.length > 0) {
+            fetchDetails();
+        } else if (!isLivingLegendLoading) {
+            setDetailsLoading(false);
+        }
+    }, [livingLegend, isLivingLegendLoading]);
+
+    const loading = isLivingLegendLoading || detailsLoading;
+    const heroes = livingLegend || [];
 
     return (
         <div className="living-legend-page" style={{ color: 'var(--color-text-main)', paddingBottom: '3rem' }}>

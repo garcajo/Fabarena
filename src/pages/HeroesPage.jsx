@@ -1,42 +1,14 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { CardService } from '../services/api';
+import React, { useState, useMemo } from 'react';
+import { usePreloadedData } from '../context/DataPreloadContext';
 import CardGrid from '../components/CardGrid';
 import CardModal from '../components/CardModal';
 import { useLanguage } from '../context/LanguageContext';
 
 const HeroesPage = () => {
     const { t } = useLanguage();
-    const [heroes, setHeroes] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const { heroes, isHeroesLoading } = usePreloadedData();
     const [selectedCard, setSelectedCard] = useState(null);
     const [filterType, setFilterType] = useState('adult'); // 'adult' or 'young'
-
-    useEffect(() => {
-        const fetchHeroes = async () => {
-            setLoading(true);
-            try {
-                // Fetch all heroes
-                const response = await CardService.getCards({
-                    type: 'Hero',
-                    pageSize: 1000,
-                    sort: 'name'
-                });
-
-                if (response.error) {
-                    throw new Error(response.error);
-                }
-                setHeroes(response.data || []);
-            } catch (err) {
-                console.error('Error loading heroes:', err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchHeroes();
-    }, []);
 
     // Filter and Deduplicate Heroes
     const processedHeroes = useMemo(() => {
@@ -124,29 +96,21 @@ const HeroesPage = () => {
                     </div>
                 </div>
 
-                {error ? (
-                    <div className="error-state" style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-primary-red)' }}>
-                        <p>{t('common.error')}: {error}</p>
+                <CardGrid
+                    cards={processedHeroes}
+                    isLoading={isHeroesLoading}
+                    onCardClick={setSelectedCard}
+                />
+                {selectedCard && (
+                    <CardModal
+                        card={selectedCard}
+                        onClose={() => setSelectedCard(null)}
+                    />
+                )}
+                {!isHeroesLoading && processedHeroes.length === 0 && (
+                    <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-muted)' }}>
+                        <p>{t('heroesPage.no_heroes')}</p>
                     </div>
-                ) : (
-                    <>
-                        <CardGrid
-                            cards={processedHeroes}
-                            isLoading={loading}
-                            onCardClick={setSelectedCard}
-                        />
-                        {selectedCard && (
-                            <CardModal
-                                card={selectedCard}
-                                onClose={() => setSelectedCard(null)}
-                            />
-                        )}
-                        {!loading && processedHeroes.length === 0 && (
-                            <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-muted)' }}>
-                                <p>{t('heroesPage.no_heroes')}</p>
-                            </div>
-                        )}
-                    </>
                 )}
             </div>
         </div>

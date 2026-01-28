@@ -65,7 +65,6 @@ const CardList = ({ cards, isLoading, onCardClick }) => {
                             src={card.imagen}
                             alt={card.name}
                             className="list-image-thumb"
-                            loading="lazy"
                         />
                         <div className="list-cell-name">{card.name || card.nombre}</div>
                         <div className="list-cell-set">{card.set || card.set_code}</div>

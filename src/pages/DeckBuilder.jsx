@@ -801,7 +801,7 @@ const DeckBuilder = () => {
                         onMouseEnter={() => setHoveredCard(card.imagen)}
                         onMouseLeave={() => setHoveredCard(null)}
                     >
-                        <img src={card.imagen} alt={card.name} loading="lazy" />
+                        <img src={card.imagen} alt={card.name} />
                         {item.count > 1 && <div className="visual-count-badge">{item.count}</div>}
 
                         {/* Popover Menu */}

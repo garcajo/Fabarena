@@ -89,7 +89,7 @@ const StackedDeckList = ({
                                     top: `${(Math.min(item.count, 10) - 1) * 25}px`
                                 }}
                             >
-                                <img src={item.card.imagen} alt={item.card.name} loading="lazy" />
+                                <img src={item.card.imagen} alt={item.card.name} />
                             </div>
                         </div>
 

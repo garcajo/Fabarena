@@ -29,7 +29,7 @@ const Card = ({ card, onClick }) => {
         >
             <div className={`card-image-container ${getPitchClass(card.pitch)}`}>
                 {card.imagen ? (
-                    <img src={card.imagen} alt={card.name} className="card-image" loading="lazy" />
+                    <img src={card.imagen} alt={card.name} className="card-image" />
                 ) : (
                     <div className="card-placeholder">
                         <span>{card.name}</span>
