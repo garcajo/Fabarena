@@ -22,6 +22,10 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    /* Add this to ensure absolute elements stay inside */
+    overflow: hidden;
+    /* Ensure rounded corners clip content */
 }
 
 .modal-header {
@@ -140,8 +144,6 @@
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1rem;
     padding: 1rem;
-    padding-top: 0.5rem;
-    /* Minimal space below tabs */
     align-content: start;
 }
 
@@ -322,18 +324,13 @@
 .equipment-tabs {
     display: flex;
     gap: 0.5rem;
-    padding: 0.5rem 2rem;
+    padding: 0.75rem 1.5rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+    /* More subtle background */
     overflow-x: auto;
     scrollbar-width: none;
-    /* Position above cards */
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    backdrop-filter: blur(8px);
-    background: rgba(20, 20, 20, 0.95);
+    z-index: 10;
 }
 
 .equipment-tabs::-webkit-scrollbar {
