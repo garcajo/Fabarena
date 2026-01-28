@@ -63,8 +63,8 @@ const Login = () => {
 
                     <div className="form-group">
                         <label htmlFor="email">{t('auth.email')}</label>
-                        <div className="auth-input-wrapper">
-                            <Mail size={18} className="auth-input-icon" />
+                        <div className="input-wrapper">
+                            <Mail size={18} className="input-icon" />
                             <input
                                 type="email"
                                 id="email"
@@ -78,8 +78,8 @@ const Login = () => {
 
                     <div className="form-group">
                         <label htmlFor="password">{t('auth.password')}</label>
-                        <div className="auth-input-wrapper">
-                            <Lock size={18} className="auth-input-icon" />
+                        <div className="input-wrapper">
+                            <Lock size={18} className="input-icon" />
                             <input
                                 type="password"
                                 id="password"
