@@ -88,8 +88,8 @@ const Register = () => {
 
                     <div className="form-group">
                         <label htmlFor="username">{t('auth.username')}</label>
-                        <div className="input-wrapper">
-                            <User size={18} className="input-icon" />
+                        <div className="auth-input-wrapper">
+                            <User size={18} className="auth-input-icon" />
                             <input
                                 type="text"
                                 id="username"
@@ -103,8 +103,8 @@ const Register = () => {
 
                     <div className="form-group">
                         <label htmlFor="email">{t('auth.email')}</label>
-                        <div className="input-wrapper">
-                            <Mail size={18} className="input-icon" />
+                        <div className="auth-input-wrapper">
+                            <Mail size={18} className="auth-input-icon" />
                             <input
                                 type="email"
                                 id="email"
@@ -118,8 +118,8 @@ const Register = () => {
 
                     <div className="form-group">
                         <label htmlFor="password">{t('auth.password')}</label>
-                        <div className="input-wrapper">
-                            <Lock size={18} className="input-icon" />
+                        <div className="auth-input-wrapper">
+                            <Lock size={18} className="auth-input-icon" />
                             <input
                                 type="password"
                                 id="password"
@@ -133,8 +133,8 @@ const Register = () => {
 
                     <div className="form-group">
                         <label htmlFor="confirmPassword">{t('auth.confirm_password')}</label>
-                        <div className="input-wrapper">
-                            <Lock size={18} className="input-icon" />
+                        <div className="auth-input-wrapper">
+                            <Lock size={18} className="auth-input-icon" />
                             <input
                                 type="password"
                                 id="confirmPassword"
