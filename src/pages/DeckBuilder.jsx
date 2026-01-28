@@ -763,9 +763,12 @@ const DeckBuilder = () => {
     const [hoveredCard, setHoveredCard] = React.useState(null); // { image: string, side: 'left' | 'right' }
 
     const handleCardMouseEnter = (e, image) => {
-        if (!image) return;
+        if (!image) {
+            setHoveredCard(null);
+            return;
+        }
         const screenWidth = window.innerWidth;
-        const mouseX = e.clientX;
+        const mouseX = e?.clientX || 0;
         // If mouse is on the right half, show preview on the left. If on left half, show on right.
         const side = mouseX > screenWidth / 2 ? 'left' : 'right';
         setHoveredCard({ image, side });
@@ -1018,7 +1021,7 @@ const DeckBuilder = () => {
                     section={sectionName}
                     onMoveCard={moveCard}
                     onRemoveCard={removeCard}
-                    setHoveredCard={setHoveredCard}
+                    onHoverCard={handleCardMouseEnter}
                 />
             );
         }
@@ -1575,7 +1578,7 @@ const DeckBuilder = () => {
                                                         section="equipment"
                                                         onMoveCard={moveCard}
                                                         onRemoveCard={removeCard}
-                                                        setHoveredCard={setHoveredCard}
+                                                        onHoverCard={handleCardMouseEnter}
                                                     />
                                                 );
                                             }

@@ -12,7 +12,7 @@ const StackedDeckList = ({
     section,
     onMoveCard,
     onRemoveCard,
-    setHoveredCard
+    onHoverCard
 }) => {
     const { t } = useLanguage();
 
@@ -63,8 +63,8 @@ const StackedDeckList = ({
                                 onDragStart(e, item.card);
                             }
                         }}
-                        onMouseEnter={(e) => setHoveredCard && setHoveredCard(e, item.card.imagen)}
-                        onMouseLeave={() => setHoveredCard && setHoveredCard(null)}
+                        onMouseEnter={(e) => onHoverCard && onHoverCard(e, item.card.imagen)}
+                        onMouseLeave={() => onHoverCard && onHoverCard(null)}
                         style={{ cursor: isOwner ? 'pointer' : 'default' }}
                     >
                         <div className="stack-container">
