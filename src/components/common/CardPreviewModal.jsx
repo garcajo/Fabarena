@@ -52,48 +52,52 @@ const CardPreviewModal = ({ card, onClose, onAdd, children }) => {
         }}>
             <div className="preview-content" onClick={e => e.stopPropagation()} style={{
                 position: 'relative',
-                maxWidth: '90%',
-                maxHeight: '85vh', // Reduced from 90vh to ensure it doesn't touch top/bottom
+                width: '100%',
+                maxWidth: '500px',
+                maxHeight: '80vh', // More conservative height
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '1rem',
-                touchAction: 'auto' // Allow touch on content
+                gap: '0.75rem',
+                touchAction: 'auto',
+                padding: '0.5rem'
             }}>
                 <button
                     onClick={onClose}
                     style={{
                         position: 'absolute',
-                        top: '-12px',
-                        right: '-12px',
+                        top: '8px', // Inside the content area
+                        right: '8px',
                         background: 'var(--color-primary-red)',
-                        border: '2px solid rgba(255, 255, 255, 0.2)',
+                        border: '2px solid rgba(255, 255, 255, 0.3)',
                         borderRadius: '50%',
                         color: 'white',
-                        width: '40px',
-                        height: '40px',
+                        width: '44px',
+                        height: '44px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         cursor: 'pointer',
-                        zIndex: 10,
-                        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
+                        zIndex: 100,
+                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.6)',
                         transition: 'transform 0.2s ease'
                     }}
                     onTouchStart={(e) => e.currentTarget.style.transform = 'scale(0.9)'}
                     onTouchEnd={(e) => e.currentTarget.style.transform = 'scale(1)'}
                 >
-                    <X size={22} />
+                    <X size={24} strokeWidth={3} />
                 </button>
 
                 <img
                     src={card.imagen}
                     alt={card.name}
                     style={{
-                        maxWidth: '100%',
-                        maxHeight: '60vh', // Reduced from 70vh to leave more room for buttons
-                        borderRadius: '16px',
-                        boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
+                        width: '100%',
+                        maxWidth: '280px', // Much smaller on mobile
+                        height: 'auto',
+                        borderRadius: '12px',
+                        boxShadow: '0 8px 24px rgba(0,0,0,0.5)',
+                        marginTop: '2rem' // Space for close button
                     }}
                 />
 
