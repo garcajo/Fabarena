@@ -100,7 +100,7 @@ const StackedDeckList = ({
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
-                                zIndex: 100,
+                                zIndex: 2000,
                                 minWidth: '160px',
                                 background: 'var(--color-bg-card)',
                                 border: '1px solid var(--color-border)',
@@ -111,6 +111,11 @@ const StackedDeckList = ({
                                 {['mainDeck', 'sideboard', 'maybeboard'].includes(section) && section !== 'mainDeck' && (
                                     <button className="popover-option" onClick={(e) => { e.stopPropagation(); onMoveCard(item, section, 'mainDeck'); setActiveCardMenu(null); }}>
                                         {t('deckBuilder.moveToDeck') || 'Move to Deck'}
+                                    </button>
+                                )}
+                                {['mainDeck', 'sideboard', 'maybeboard'].includes(section) && (item.card.tipo?.toLowerCase().includes('weapon') || item.card.tipo?.toLowerCase().includes('arma') || item.card.tipo?.toLowerCase().includes('equipment') || item.card.tipo?.toLowerCase().includes('equipamiento')) && section !== 'equipment' && (
+                                    <button className="popover-option" onClick={(e) => { e.stopPropagation(); onMoveCard(item, section, 'equipment'); setActiveCardMenu(null); }}>
+                                        {t('deckBuilder.moveToEquipment') || 'Move to Equipment'}
                                     </button>
                                 )}
                                 {(['mainDeck', 'sideboard', 'maybeboard'].includes(section) || section === 'equipment') && section !== 'sideboard' && (

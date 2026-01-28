@@ -810,6 +810,11 @@ const DeckBuilder = () => {
                                         {t('deckBuilder.moveToDeck') || 'Move to Deck'}
                                     </button>
                                 )}
+                                {isStandardSection && (card.tipo?.toLowerCase().includes('weapon') || card.tipo?.toLowerCase().includes('arma') || card.tipo?.toLowerCase().includes('equipment') || card.tipo?.toLowerCase().includes('equipamiento')) && section !== 'equipment' && (
+                                    <button className="popover-option" onClick={(e) => { e.stopPropagation(); moveCard(item, section, 'equipment'); }}>
+                                        {t('deckBuilder.moveToEquipment') || 'Move to Equipment'}
+                                    </button>
+                                )}
                                 {(isStandardSection || section === 'equipment') && section !== 'sideboard' && (
                                     <button className="popover-option" onClick={(e) => { e.stopPropagation(); moveCard(item, section, 'sideboard'); }}>
                                         {t('deckBuilder.moveToSideboard') || 'Move to Sideboard'}
@@ -873,6 +878,11 @@ const DeckBuilder = () => {
                                 {isStandardSection && section !== 'mainDeck' && (
                                     <button className="popover-option" onClick={(e) => { e.stopPropagation(); moveCard(item, section, 'mainDeck'); }}>
                                         {t('deckBuilder.moveToDeck') || 'Move to Deck'}
+                                    </button>
+                                )}
+                                {isStandardSection && (card.tipo?.toLowerCase().includes('weapon') || card.tipo?.toLowerCase().includes('arma') || card.tipo?.toLowerCase().includes('equipment') || card.tipo?.toLowerCase().includes('equipamiento')) && section !== 'equipment' && (
+                                    <button className="popover-option" onClick={(e) => { e.stopPropagation(); moveCard(item, section, 'equipment'); }}>
+                                        {t('deckBuilder.moveToEquipment') || 'Move to Equipment'}
                                     </button>
                                 )}
                                 {(isStandardSection || section === 'equipment') && section !== 'sideboard' && (
@@ -1673,6 +1683,12 @@ const DeckBuilder = () => {
                             {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && previewCard.section !== 'mainDeck' && (
                                 <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'mainDeck'); setPreviewCard(null); }}>
                                     {t('deckBuilder.moveToDeck') || 'To Main Deck'}
+                                </button>
+                            )}
+
+                            {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && (previewCard.item.card?.tipo?.toLowerCase().includes('weapon') || previewCard.item.card?.tipo?.toLowerCase().includes('arma') || previewCard.item.card?.tipo?.toLowerCase().includes('equipment') || previewCard.item.card?.tipo?.toLowerCase().includes('equipamiento')) && previewCard.section !== 'equipment' && (
+                                <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'equipment'); setPreviewCard(null); }}>
+                                    {t('deckBuilder.moveToEquipment') || 'To Equipment'}
                                 </button>
                             )}
 
