@@ -7,11 +7,25 @@ const CardPreviewModal = ({ card, onClose, onAdd, children }) => {
 
     // Lock body scroll when modal is open
     useEffect(() => {
-        const originalStyle = window.getComputedStyle(document.body).overflow;
+        // Store original styles
+        const originalBodyOverflow = document.body.style.overflow;
+        const originalBodyPosition = document.body.style.position;
+        const originalHtmlOverflow = document.documentElement.style.overflow;
+
+        // Lock scroll on both body and html
         document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.height = '100%';
+        document.documentElement.style.overflow = 'hidden';
 
         return () => {
-            document.body.style.overflow = originalStyle;
+            // Restore original styles
+            document.body.style.overflow = originalBodyOverflow;
+            document.body.style.position = originalBodyPosition;
+            document.body.style.width = '';
+            document.body.style.height = '';
+            document.documentElement.style.overflow = originalHtmlOverflow;
         };
     }, []);
 
@@ -24,25 +38,27 @@ const CardPreviewModal = ({ card, onClose, onAdd, children }) => {
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundColor: 'rgba(0,0,0,0.9)',
-            zIndex: 9999, // Ensure it's above navbar (which is typically 1000)
+            backgroundColor: 'rgba(0,0,0,0.92)',
+            zIndex: 10000, // Higher than navbar's 1000
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             padding: '1rem',
-            paddingTop: 'max(1rem, env(safe-area-inset-top))', // Account for notch on mobile
+            paddingTop: 'max(1rem, env(safe-area-inset-top))',
             paddingBottom: 'max(1rem, env(safe-area-inset-bottom))',
-            backdropFilter: 'blur(8px)',
-            overflowY: 'auto' // Allow scroll within modal if needed
+            backdropFilter: 'blur(10px)',
+            overflowY: 'auto',
+            touchAction: 'none' // Prevent touch scrolling on the overlay
         }}>
             <div className="preview-content" onClick={e => e.stopPropagation()} style={{
                 position: 'relative',
                 maxWidth: '90%',
-                maxHeight: '90vh',
+                maxHeight: '85vh', // Reduced from 90vh to ensure it doesn't touch top/bottom
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                gap: '1rem'
+                gap: '1rem',
+                touchAction: 'auto' // Allow touch on content
             }}>
                 <button
                     onClick={onClose}
@@ -75,8 +91,8 @@ const CardPreviewModal = ({ card, onClose, onAdd, children }) => {
                     alt={card.name}
                     style={{
                         maxWidth: '100%',
-                        maxHeight: '70vh',
-                        borderRadius: '16px', // Rounded corners like FAB cards
+                        maxHeight: '60vh', // Reduced from 70vh to leave more room for buttons
+                        borderRadius: '16px',
                         boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
                     }}
                 />
