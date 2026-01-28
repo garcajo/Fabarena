@@ -20,6 +20,7 @@ import BansPage from './pages/BansPage';
 import DeckGuide from './pages/DeckGuide';
 import TestDB from './pages/TestDB';
 import ProtectedRoute from './components/ProtectedRoute';
+import Help from './pages/Help';
 
 
 
@@ -41,6 +42,7 @@ function App() {
                 <Route path="/heroes" element={<HeroesPage />} />
                 <Route path="/living-legend" element={<LivingLegendPage />} />
                 <Route path="/bans" element={<BansPage />} />
+                <Route path="/help" element={<Help />} />
                 <Route
                   path="/collection"
                   element={
