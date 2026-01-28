@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Search, Plus, X, Save, ArrowLeft, MessageSquare, Beaker, BookOpen, Eye, Pencil, FileQuestion, Heart } from 'lucide-react';
+import { Search, Plus, X, Save, ArrowLeft, MessageSquare, Beaker, BookOpen, Eye, Pencil, FileQuestion, Heart, Shield, Layers, ArrowRightLeft, HelpCircle } from 'lucide-react';
 import { CardService, DeckService } from '../services/api';
 import { StorageService } from '../services/storage';
 import { useLanguage } from '../context/LanguageContext';
@@ -1717,35 +1717,39 @@ const DeckBuilder = () => {
                             onClose={() => setPreviewCard(null)}
                         >
 
-                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem', width: '100%', maxWidth: '350px' }}>
+                            <div className="preview-actions-grid">
                                 {/* Move Options */}
                                 {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && previewCard.section !== 'mainDeck' && (
                                     <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'mainDeck'); setPreviewCard(null); }}>
-                                        {t('deckBuilder.moveToDeck') || 'To Main Deck'}
+                                        <Layers size={18} />
+                                        <span>{t('deckBuilder.moveToDeck') || 'To Main Deck'}</span>
                                     </button>
                                 )}
 
                                 {['mainDeck', 'sideboard', 'maybeboard'].includes(previewCard.section) && (previewCard.item.card?.tipo?.toLowerCase().includes('weapon') || previewCard.item.card?.tipo?.toLowerCase().includes('arma') || previewCard.item.card?.tipo?.toLowerCase().includes('equipment') || previewCard.item.card?.tipo?.toLowerCase().includes('equipamiento')) && previewCard.section !== 'equipment' && (
                                     <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'equipment'); setPreviewCard(null); }}>
-                                        {t('deckBuilder.moveToEquipment') || 'To Equipment'}
+                                        <Shield size={18} />
+                                        <span>{t('deckBuilder.moveToEquipment') || 'To Equipment'}</span>
                                     </button>
                                 )}
 
                                 {(['mainDeck', 'sideboard', 'equipment'].includes(previewCard.section) || previewCard.section === 'mainDeck') && previewCard.section !== 'sideboard' && (
                                     <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'sideboard'); setPreviewCard(null); }}>
-                                        {t('deckBuilder.moveToSideboard') || 'To Sideboard'}
+                                        <ArrowRightLeft size={18} />
+                                        <span>{t('deckBuilder.moveToSideboard') || 'To Sideboard'}</span>
                                     </button>
                                 )}
 
                                 {(['mainDeck', 'sideboard', 'equipment'].includes(previewCard.section) || previewCard.section === 'equipment') && previewCard.section !== 'maybeboard' && (
                                     <button className="preview-action-btn" onClick={() => { moveCard(previewCard.item, previewCard.section, 'maybeboard'); setPreviewCard(null); }}>
-                                        {t('deckBuilder.moveToMaybeboard') || 'To Maybeboard'}
+                                        <HelpCircle size={18} />
+                                        <span>{t('deckBuilder.moveToMaybeboard') || 'To Maybeboard'}</span>
                                     </button>
                                 )}
 
-                                <button className="preview-action-btn danger" style={{ gridColumn: '1 / -1', background: 'rgba(220, 38, 38, 0.8)' }} onClick={() => { removeCard(previewCard.item.card?.id || previewCard.item.id, previewCard.section); setPreviewCard(null); }}>
-                                    <X size={16} style={{ marginRight: '5px' }} />
-                                    {t('deckBuilder.remove') || 'Remove'}
+                                <button className="preview-action-btn danger" style={{ gridColumn: '1 / -1' }} onClick={() => { removeCard(previewCard.item.card?.id || previewCard.item.id, previewCard.section); setPreviewCard(null); }}>
+                                    <X size={18} />
+                                    <span>{t('deckBuilder.remove') || 'Remove'}</span>
                                 </button>
                             </div>
                         </CardPreviewModal>

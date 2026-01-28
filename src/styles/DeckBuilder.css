@@ -1870,3 +1870,81 @@
     color: rgba(255, 255, 255, 0.4);
     font-weight: 500;
 }
+/* Mobile Preview Modal Actions */
+.preview-actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    width: 100%;
+    max-width: 350px;
+    margin-top: 1.5rem;
+}
+
+.preview-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1rem 0.5rem;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    color: var(--color-text-main);
+    font-size: 0.75rem;
+    font-weight: 600;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    line-height: 1.2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.preview-action-btn:active {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(0.96);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.preview-action-btn svg {
+    color: var(--color-primary-gold);
+    transition: transform 0.2s ease;
+}
+
+.preview-action-btn:active svg {
+    transform: scale(1.1);
+}
+
+.preview-action-btn.danger {
+    background: linear-gradient(145deg, rgba(220, 38, 38, 0.15), rgba(220, 38, 38, 0.05));
+    border-color: rgba(220, 38, 38, 0.4);
+    color: #ff9d9d;
+    margin-top: 0.5rem;
+}
+
+.preview-action-btn.danger svg {
+    color: #ef4444;
+}
+
+.preview-action-btn.danger:active {
+    background: rgba(220, 38, 38, 0.3);
+    border-color: #ef4444;
+}
+
+/* Light Mode Support */
+[data-theme='light'] .preview-action-btn {
+    background: linear-gradient(145deg, #ffffff, #f3f4f6);
+    border-color: #e5e7eb;
+    color: #374151;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .preview-action-btn:active {
+    background: #e5e7eb;
+}
+
+[data-theme='light'] .preview-action-btn.danger {
+    background: linear-gradient(145deg, #fee2e2, #fef2f2);
+    border-color: #fca5a5;
+    color: #991b1b;
+}
