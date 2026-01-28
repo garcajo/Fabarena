@@ -411,17 +411,19 @@ const DeckList = ({ mode }) => {
                             {isOwner && (
                                 <div className="flex items-center gap-2">
                                     <button
-                                        className="list-delete-btn"
+                                        className="list-action-btn"
                                         style={{ color: '#f97316' }}
                                         onClick={(e) => openMoveModal(e, deck.id)}
                                         title={t('folders.moveTo') || "Move to Folder"}
+                                        data-label={t('folders.moveTo') || "Move to Folder"}
                                     >
                                         <FolderInput size={18} />
                                     </button>
                                     <button
-                                        className="list-delete-btn"
+                                        className="list-action-btn list-action-btn-danger"
                                         onClick={(e) => handleDeleteDeck(e, deck.id, deck.name)}
                                         title={t('common.delete') || "Delete"}
+                                        data-label={t('common.delete') || "Delete"}
                                     >
                                         <Trash2 size={18} />
                                     </button>
