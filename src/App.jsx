@@ -22,6 +22,7 @@ import DeckGuide from './pages/DeckGuide';
 import TestDB from './pages/TestDB';
 import ProtectedRoute from './components/ProtectedRoute';
 import Help from './pages/Help';
+import ScrollToTop from './components/common/ScrollToTop';
 
 
 
@@ -33,6 +34,7 @@ function App() {
         <ToastProvider>
           <DataPreloadProvider>
             <Router>
+              <ScrollToTop />
               <Layout>
                 <Routes>
                   <Route path="/test-db" element={<TestDB />} />

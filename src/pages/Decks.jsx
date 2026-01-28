@@ -14,6 +14,11 @@ const Decks = ({ mode = 'public' }) => {
     const { user } = useAuth();
     const location = useLocation();
 
+    // Force scroll to top on mount or mode change
+    React.useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [mode]);
+
     return (
         <div className="decks-page">
             <div className="container mx-auto">
