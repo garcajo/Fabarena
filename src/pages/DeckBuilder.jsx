@@ -1466,9 +1466,9 @@ const DeckBuilder = () => {
                     )
                 }
 
-                {/* Main Hero Selection Prompt - Only show if NO HERO and NO LOADING */}
+                {/* Main Hero Selection Prompt - Only show if NO HERO and NO LOADING and user CAN EDIT */}
                 {
-                    !deckData.hero && !loading && !authLoading && (
+                    !deckData.hero && !loading && !authLoading && canEdit && (
                         <div className="select-hero-prompt fade-in">
                             <div className="prompt-content">
                                 <h2>{t('deckBuilder.selectHeroTitle') || "Choose Your Hero"}</h2>
@@ -1496,11 +1496,15 @@ const DeckBuilder = () => {
                                                 style={{
                                                     width: viewMode === 'stacked' ? '130px' : 'auto', // Match StackedView.css width
                                                     margin: '0',
-                                                    padding: viewMode === 'text' ? '0.5rem' : '0' // Add padding in Text Mode
+                                                    padding: viewMode === 'text' ? '0.5rem' : '0', // Add padding in Text Mode
+                                                    cursor: canEdit ? 'pointer' : 'default' // Visual feedback for interactivity
                                                 }}
                                                 onMouseEnter={(e) => handleCardMouseEnter(e, deckData.hero.imagen)}
                                                 onMouseLeave={() => setHoveredCard(null)}
                                                 onClick={(e) => {
+                                                    // Only allow hero changes if user has edit permissions
+                                                    if (!canEdit) return;
+
                                                     e.stopPropagation();
                                                     if (showHeroActions) {
                                                         openHeroModal();
