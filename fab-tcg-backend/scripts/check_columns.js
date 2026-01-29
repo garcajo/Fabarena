@@ -1,35 +1,49 @@
-require('dotenv').config();
 const { createClient } = require('@supabase/supabase-js');
+require('dotenv').config();
 
-const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 async function checkColumns() {
-    console.log('Checking columns for "cards" table...');
+    console.log('=== Verificando Columnas de Decks ===\n');
 
-    // Attempt to insert a dummy record with JUST the artista column to see specific error
-    // Or just select it
-    const { data, error } = await supabase
-        .from('cards')
-        .select('card_type, artist')
+    // Intentar obtener solo las columnas básicas
+    const { data: decks, error } = await supabase
+        .from('decks')
+        .select('id, name, likes_count')
         .limit(1);
 
     if (error) {
-        console.log('❌ Error selecting "card_type, artist":', error.message);
-        console.log('Full error:', JSON.stringify(error, null, 2));
-    } else {
-        console.log('✅ Column "artista" exists and is selectable.');
+        console.error('❌ Error:', error.message);
+        return;
     }
 
-    // Also check if we can insert generally
-    const { error: insertError } = await supabase
-        .from('cards')
-        .insert([{ nombre: 'Test', artista: 'Test Artist' }]);
+    console.log('✅ likes_count existe');
 
-    if (insertError) {
-        console.log('❌ Insert failed:', insertError.message);
+    // Probar views_count
+    const { error: viewsError } = await supabase
+        .from('decks')
+        .select('views_count')
+        .limit(1);
+
+    if (viewsError) {
+        console.log('❌ views_count NO existe');
     } else {
-        console.log('✅ Insert worked (cleaned up automatically if RLS blocks, or remains if not)');
+        console.log('✅ views_count existe');
+    }
+
+    // Probar comments_count
+    const { error: commentsError } = await supabase
+        .from('decks')
+        .select('comments_count')
+        .limit(1);
+
+    if (commentsError) {
+        console.log('❌ comments_count NO existe');
+    } else {
+        console.log('✅ comments_count existe');
     }
 }
 
-checkColumns();
+checkColumns().catch(console.error);
