@@ -143,10 +143,17 @@ const Wants = () => {
 
         try {
             await WantsService.deleteList(listId);
-            setLists(prev => prev.filter(l => l.id !== listId));
-            if (selectedList?.id === listId) {
-                setSelectedList(lists[0] || null);
-            }
+            setLists(prev => {
+                const updatedLists = prev.filter(l => l.id !== listId);
+
+                // Si la lista eliminada era la seleccionada, volvemos al estado vacío
+                if (selectedList?.id === listId) {
+                    setSelectedList(null);
+                    setListItems([]);
+                }
+
+                return updatedLists;
+            });
             addToast(t('wants.list_deleted') || 'List deleted', 'success');
         } catch (error) {
             console.error('Error deleting list:', error);
@@ -426,6 +433,14 @@ const Wants = () => {
                         <Heart size={64} />
                         <h2>{t('wants.select_list') || 'Select a list'}</h2>
                         <p>{t('wants.select_hint') || 'Choose a list from the sidebar or create a new one'}</p>
+                        <button
+                            className="btn-primary"
+                            style={{ marginTop: '1.5rem' }}
+                            onClick={() => setShowNewListModal(true)}
+                        >
+                            <Plus size={18} />
+                            {t('wants.new_list') || 'New List'}
+                        </button>
                     </div>
                 )}
             </main>
