@@ -393,8 +393,14 @@
 }
 
 .add-to-wants-modal {
-    max-width: 400px;
+    max-width: 450px;
     width: 90%;
+    padding: 2rem;
+    position: relative;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .add-to-wants-modal .modal-header {
@@ -649,7 +655,7 @@
     display: flex;
     gap: 0.75rem;
     justify-content: flex-end;
-    margin-top: 1.5rem;
+    margin-top: 2rem;
 }
 
 /* ========================================
@@ -762,23 +768,39 @@
    ======================================== */
 
 .modal-content.small {
-    max-width: 360px;
+    max-width: 420px;
+    width: 95%;
+    padding: 2rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 .modal-content.small h2 {
-    margin: 0 0 1rem;
-    font-size: 1.2rem;
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
 }
 
 .modal-content.small input {
     width: 100%;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--color-border);
-    border-radius: 6px;
-    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    padding: 1rem;
     color: var(--color-text);
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    transition: border-color 0.2s;
+}
+
+.modal-content.small input:focus {
+    outline: none;
+    border-color: var(--color-primary-gold);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .modal-content.small input::placeholder {
