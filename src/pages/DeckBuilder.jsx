@@ -743,31 +743,18 @@ const DeckBuilder = () => {
     };
 
     const handleGemExport = () => {
-        let text = `${deckData.hero?.name || 'Unknown Hero'}\n\n`;
+        let text = '';
 
-        // Weapons and Equipment (using equipment array)
-        // Ensure we check types safely
-        const weaponsList = deckData.equipment.filter(c =>
-            c.tipo?.toLowerCase().includes('weapon') ||
-            c.tipo?.toLowerCase().includes('arma') ||
-            c.type?.toLowerCase().includes('weapon')
-        );
-        const equipmentList = deckData.equipment.filter(c => !weaponsList.includes(c));
-
-        if (weaponsList.length > 0) {
-            text += "Weapons:\n";
-            weaponsList.forEach(c => text += `${c.name}\n`);
-            text += "\n";
-        }
-
-        if (equipmentList.length > 0) {
-            text += "Equipment:\n";
-            equipmentList.forEach(c => text += `${c.name}\n`);
-            text += "\n";
-        }
-
-        // Main Deck - Flat list with keys
+        // Flatten all sections into one list
         // Format: Count Name (color)
+
+        // 1. Weapons & Equipment
+        // We assume count 1 for equipment unless specified otherwise (usually is unique objects in array)
+        deckData.equipment.forEach(c => {
+            text += `1 ${c.name}\n`;
+        });
+
+        // 2. Main Deck
         deckData.mainDeck.forEach(item => {
             const card = item.card;
             let pColor = '';
@@ -778,11 +765,8 @@ const DeckBuilder = () => {
             text += `${item.count} ${card.name}${pColor ? ` (${pColor})` : ''}\n`;
         });
 
-        text += "\n";
-
-        // Sideboard
+        // 3. Sideboard
         if (deckData.sideboard && deckData.sideboard.length > 0) {
-            text += "Sideboard:\n";
             deckData.sideboard.forEach(item => {
                 const card = item.card;
                 let pColor = '';
