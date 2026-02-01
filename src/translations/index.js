@@ -79,6 +79,7 @@ export const translations = {
             label_search: 'Search',
             label_set: 'Set',
             label_class: 'Class',
+            label_talent: 'Talent',
             label_format: 'Format',
             label_hero: 'Hero',
             label_username: 'Creator',
@@ -119,7 +120,9 @@ export const translations = {
             action: 'Action',
             banned: 'BANNED',
             max: 'MAX',
-            hero: 'Hero'
+            hero: 'Hero',
+            stats: 'Stats',
+            zoom: 'Zoom'
         },
         auth: {
             register_title: 'Create Account',
@@ -579,6 +582,7 @@ export const translations = {
             label_search: 'Buscar',
             label_set: 'Set',
             label_class: 'Clase',
+            label_talent: 'Talento',
             label_format: 'Formato',
             label_hero: 'Héroe',
             label_username: 'Creator',
@@ -620,7 +624,8 @@ export const translations = {
             banned: 'BANEADA',
             max: 'MAX',
             hero: 'Héroe',
-            stats: 'Estadísticas'
+            stats: 'Estadísticas',
+            zoom: 'Zoom'
         },
         auth: {
             register_title: 'Crear Cuenta',
