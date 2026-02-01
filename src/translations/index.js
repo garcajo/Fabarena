@@ -65,6 +65,7 @@ export const translations = {
         filters: {
             search_placeholder: 'Search by name...',
             all_classes: 'All Classes',
+            all_talents: 'All Talents',
             any_color: 'Any Color',
             any_cost: 'Any Cost',
             any_set: 'Any Set',
@@ -570,6 +571,7 @@ export const translations = {
         filters: {
             search_placeholder: 'Buscar por nombre...',
             all_classes: 'Todas las Clases',
+            all_talents: 'Todos los Talentos',
             any_color: 'Cualquier Color',
             any_cost: 'Cualquier Coste',
             any_set: 'Cualquier Set',
