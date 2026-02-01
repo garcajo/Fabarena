@@ -29,6 +29,14 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
     // Initial load: Ideally we would fetch the qty from an API
     // For now we start at 0 and just allow incrementing
 
+    // Block background scroll when modal is open
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, []);
+
     // Update local state if prop changes
     useEffect(() => {
         setCard(initialCard);
