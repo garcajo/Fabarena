@@ -61,7 +61,6 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
         };
 
         fetchVersions();
-        fetchVersions();
     }, [card.name]);
 
     // Fetch Signature Weapon if Hero
@@ -170,22 +169,12 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
 
                         {/* Version/Set Selector */}
                         {versions.length > 1 && (
-                            <div className="version-selector" style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap', justifyContent: 'center' }}>
+                            <div className="version-selector">
                                 {versions.map((v) => (
                                     <button
-                                        key={v.id || v.collection_id} // Fallback to avoid key error
+                                        key={v.id || v.collection_id}
                                         onClick={() => handleVersionChange(v)}
-                                        className={card.id === v.id ? 'active' : ''}
-                                        style={{
-                                            padding: '4px 8px',
-                                            fontSize: '0.8rem',
-                                            cursor: 'pointer',
-                                            opacity: card.id === v.id ? 1 : 0.6,
-                                            border: card.id === v.id ? '1px solid var(--color-primary-gold)' : '1px solid var(--color-border)',
-                                            background: 'rgba(0,0,0,0.3)',
-                                            color: 'var(--color-text)',
-                                            borderRadius: '4px'
-                                        }}
+                                        className={`version-btn ${card.id === v.id ? 'active' : ''}`}
                                         title={`${v.set_code} - ${v.rareza} - ${v.pitch ? `Pitch ${v.pitch}` : ''}`}
                                     >
                                         {v.set_code} {v.pitch ? `(P${v.pitch})` : ''}
@@ -279,12 +268,11 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
 
                         {/* Market Data Section */}
                         {user && (
-                            <div className="collection-controls" style={{ marginTop: '1rem', padding: '1rem', background: 'rgba(255,255,255,0.05)', borderRadius: '8px' }}>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                    <h4 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--color-primary-gold)' }}>{t('collection.manage')}</h4>
-                                    {/* <span style={{fontSize: '0.8rem'}}>You own: {collectionQty}</span> */}
+                            <div className="collection-controls">
+                                <div className="controls-header">
+                                    <h4>{t('collection.manage')}</h4>
                                 </div>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                <div className="controls-buttons">
                                     <button
                                         onClick={async () => {
                                             try {
@@ -296,21 +284,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
                                                 addToast(t('common.error') || 'Error', 'error');
                                             }
                                         }}
-                                        id="add-btn"
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.5rem',
-                                            border: '1px solid var(--color-primary-brown)',
-                                            background: 'rgba(0,0,0,0.3)',
-                                            color: '#fff',
-                                            borderRadius: '4px',
-                                            cursor: 'pointer',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            gap: '0.5rem',
-                                            transition: 'all 0.2s'
-                                        }}
+                                        className="add-btn"
                                     >
                                         + {t('collection.add_to_collection')}
                                     </button>
@@ -325,38 +299,15 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
                                                 addToast(t('common.error') || 'Error', 'error');
                                             }
                                         }}
-                                        id="remove-btn"
-                                        style={{
-                                            padding: '0.5rem 1rem',
-                                            border: '1px solid rgba(255,100,100,0.5)',
-                                            background: 'rgba(50,0,0,0.3)',
-                                            color: '#ffcccc',
-                                            borderRadius: '4px',
-                                            cursor: 'pointer'
-                                        }}
+                                        className="remove-btn-outline"
                                         title={t('collection.remove_success')}
                                     >
                                         - {t('common.remove')}
                                     </button>
                                 </div>
-                                {/* Add to Wants Button */}
                                 <button
                                     onClick={() => setShowAddToWants(true)}
-                                    style={{
-                                        marginTop: '0.5rem',
-                                        width: '100%',
-                                        padding: '0.5rem',
-                                        border: '1px solid rgba(200, 50, 50, 0.5)',
-                                        background: 'rgba(100, 0, 0, 0.2)',
-                                        color: '#ffaa99',
-                                        borderRadius: '4px',
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '0.5rem',
-                                        transition: 'all 0.2s'
-                                    }}
+                                    className="add-wants-btn"
                                 >
                                     <Heart size={16} />
                                     {t('wants.add_to_wants') || 'Add to Wants'}
