@@ -31,9 +31,14 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
 
     // Block background scroll when modal is open
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
+        const scrollY = window.scrollY;
+        document.body.style.top = `-${scrollY}px`;
+        document.body.classList.add('no-scroll');
+
         return () => {
-            document.body.style.overflow = 'unset';
+            document.body.classList.remove('no-scroll');
+            document.body.style.top = '';
+            window.scrollTo(0, scrollY);
         };
     }, []);
 

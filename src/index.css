@@ -98,6 +98,14 @@ body {
 }
 
 /* Prevent text selection in UI elements for app-like feel */
+/* Prevent scroll when modal is open */
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+  width: 100% !important;
+  position: fixed !important;
+}
+
 .navbar,
 button,
 .card-grid,
