@@ -51,6 +51,8 @@ const StackedDeckList = ({
                         className={`stacked-card-group ${isMenuOpen ? 'menu-open' : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
+                            // Logic: If IS owner AND Desktop -> Show Menu
+                            // Otherwise (Not owner OR Mobile) -> Open Modal via onCardClick
                             if (isOwner && setActiveCardMenu && window.innerWidth >= 768) {
                                 setActiveCardMenu(isMenuOpen ? null : menuKey);
                             } else if (onCardClick) {

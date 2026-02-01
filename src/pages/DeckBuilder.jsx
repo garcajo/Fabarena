@@ -805,12 +805,12 @@ const DeckBuilder = () => {
                         className={`deck-card-visual ${isMenuOpen ? 'menu-open' : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (window.innerWidth < 768 || !canEdit) {
+                            // If user is NOT the owner OR is on mobile, always show the CardModal.
+                            // If user IS owner AND on desktop, toggle the fast-editing popover menu.
+                            if (!canEdit || window.innerWidth < 768) {
                                 setPreviewCard({ item, section });
                             } else {
-                                if (canEdit) {
-                                    setActiveCardMenu(isMenuOpen ? null : menuKey);
-                                }
+                                setActiveCardMenu(isMenuOpen ? null : menuKey);
                             }
                         }}
                         onMouseEnter={(e) => handleCardMouseEnter(e, card.imagen)}
@@ -854,12 +854,12 @@ const DeckBuilder = () => {
                         className={`deck-card-row ${isMenuOpen ? 'menu-open' : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (window.innerWidth < 768 || !canEdit) {
+                            // If user is NOT the owner OR is on mobile, always show the CardModal.
+                            // If user IS owner AND on desktop, toggle the fast-editing popover menu.
+                            if (!canEdit || window.innerWidth < 768) {
                                 setPreviewCard({ item, section });
                             } else {
-                                if (canEdit) {
-                                    setActiveCardMenu(isMenuOpen ? null : menuKey);
-                                }
+                                setActiveCardMenu(isMenuOpen ? null : menuKey);
                             }
                         }}
                         onMouseEnter={(e) => handleCardMouseEnter(e, card.imagen)}
@@ -1014,10 +1014,9 @@ const DeckBuilder = () => {
                 <StackedDeckList
                     cards={getSortedCards(cardList)}
                     onCardClick={(item) => {
-                        // Mobile Preview for Stacked View
-                        if (window.innerWidth < 768) {
-                            setPreviewCard({ item, section: sectionName });
-                        }
+                        // For Stacked View, we always open the preview if it's NOT handled by the internal menu logic.
+                        // In StackedDeckList, we already check for owner + desktop for the menu.
+                        setPreviewCard({ item, section: sectionName });
                     }}
                     onDragStart={(e, card) => handleDragStart(e, card, sectionName)}
                     isOwner={canEdit}
