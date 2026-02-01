@@ -682,7 +682,24 @@ const DeckBuilder = () => {
         }
 
         setDeckData(prev => {
-            const currentList = prev[section];
+            // Handle Equipment (Flat Array of Card Objects)
+            if (section === 'equipment') {
+                const targetIndex = currentList.findIndex(c => c.id === cardId);
+                if (targetIndex === -1) return prev;
+
+                const newList = [...currentList];
+                // Remove old
+                newList.splice(targetIndex, 1);
+                // Add new (Equipment is separate items, just push)
+                newList.push(newVersionCard);
+
+                return {
+                    ...prev,
+                    equipment: newList
+                };
+            }
+
+            // Handle Standard Sections (Main, Side, Maybe - { card, count } objects)
             const targetIndex = currentList.findIndex(c => c.card.id === cardId);
 
             if (targetIndex === -1) return prev;
