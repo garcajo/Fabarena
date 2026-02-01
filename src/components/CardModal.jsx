@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, Shield, Zap, Swords, ExternalLink, ShoppingCart, Heart } from 'lucide-react';
+import { X, Shield, Zap, Swords, ExternalLink, ShoppingCart, Heart, ZoomIn } from 'lucide-react';
 import { StorageService } from '../services/storage';
 import { CollectionService, CardService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -27,6 +27,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
     const [loadingVersions, setLoadingVersions] = useState(false);
     const [signatureWeapon, setSignatureWeapon] = useState(null);
     const [showAddToWants, setShowAddToWants] = useState(false);
+    const [showEnlarged, setShowEnlarged] = useState(false);
 
     // Initial load: Ideally we would fetch the qty from an API
     // For now we start at 0 and just allow incrementing
@@ -181,6 +182,17 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                                 <span>{card.name}</span>
                             </div>
                         )}
+
+                        <button
+                            className="zoom-btn"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setShowEnlarged(true);
+                            }}
+                            title={t('common.zoom') || "Zoom"}
+                        >
+                            <ZoomIn size={20} />
+                        </button>
 
                         {/* Version/Set Selector */}
                         {versions.length > 1 && (
@@ -388,6 +400,27 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                     card={card}
                     onClose={() => setShowAddToWants(false)}
                 />
+            )}
+
+            {/* Enlarged Image Overlay */}
+            {showEnlarged && (
+                <div
+                    className="enlarged-view-overlay"
+                    onClick={() => setShowEnlarged(false)}
+                >
+                    <button
+                        className="enlarged-close-btn"
+                        onClick={() => setShowEnlarged(false)}
+                    >
+                        <X size={32} />
+                    </button>
+                    <img
+                        src={card.imagen}
+                        alt={card.name}
+                        className="enlarged-image"
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                </div>
             )}
         </div>
     );

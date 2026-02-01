@@ -169,6 +169,7 @@ export const CardService = {
             pageSize = 20,
             search = '',
             clase = '',
+            talento = '',
             set = '',
             rareza = '',
             pitch = '',
@@ -201,6 +202,16 @@ export const CardService = {
                         query = query.or(orCondition);
                     } else if (typeof clase === 'string' && clase) {
                         query = query.ilike('clase', `%${clase}%`);
+                    }
+                }
+
+                // 3.1 Filter by Talent (new)
+                if (talento) {
+                    if (Array.isArray(talento) && talento.length > 0) {
+                        const orCondition = talento.map(t => `clase.ilike.%${t}%`).join(',');
+                        query = query.or(orCondition);
+                    } else if (typeof talento === 'string' && talento) {
+                        query = query.ilike('clase', `%${talento}%`);
                     }
                 }
 

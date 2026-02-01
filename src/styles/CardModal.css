@@ -453,6 +453,105 @@
     }
 }
 
+/* Zoom Button */
+.zoom-btn {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.zoom-btn:hover {
+    background: var(--color-primary-gold);
+    color: black;
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .zoom-btn {
+        width: 36px;
+        height: 36px;
+        bottom: 1rem;
+        right: 1rem;
+    }
+}
+
+/* Enlarged View Overlay */
+.enlarged-view-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.enlarged-image {
+    max-width: 95vw;
+    max-height: 95vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+    cursor: default;
+}
+
+.enlarged-close-btn {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+}
+
+.enlarged-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+@media (max-width: 768px) {
+    .enlarged-close-btn {
+        top: 1.5rem;
+        right: 1.5rem;
+        width: 44px;
+        height: 44px;
+        background: rgba(0, 0, 0, 0.5);
+        /* Improved visibility on mobile */
+    }
+
+    .enlarged-image {
+        max-width: 100vw;
+        max-height: 90vh;
+        border-radius: 0;
+    }
+}
+
 @keyframes slideUp {
     from {
         transform: translateY(30px);

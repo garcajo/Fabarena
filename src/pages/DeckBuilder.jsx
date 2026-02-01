@@ -805,12 +805,12 @@ const DeckBuilder = () => {
                         className={`deck-card-visual ${isMenuOpen ? 'menu-open' : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            // If user is NOT the owner OR is on mobile, always show the CardModal.
-                            // If user IS owner AND on desktop, toggle the fast-editing popover menu.
-                            if (!canEdit || window.innerWidth < 768) {
-                                setPreviewCard({ item, section });
-                            } else {
+                            // If user IS owner (canEdit), toggle the fast-editing popover menu.
+                            // Otherwise, show the CardModal.
+                            if (canEdit) {
                                 setActiveCardMenu(isMenuOpen ? null : menuKey);
+                            } else {
+                                setPreviewCard({ item, section });
                             }
                         }}
                         onMouseEnter={(e) => handleCardMouseEnter(e, card.imagen)}
@@ -854,12 +854,12 @@ const DeckBuilder = () => {
                         className={`deck-card-row ${isMenuOpen ? 'menu-open' : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            // If user is NOT the owner OR is on mobile, always show the CardModal.
-                            // If user IS owner AND on desktop, toggle the fast-editing popover menu.
-                            if (!canEdit || window.innerWidth < 768) {
-                                setPreviewCard({ item, section });
-                            } else {
+                            // If user IS owner (canEdit), toggle the fast-editing popover menu.
+                            // Otherwise, show the CardModal.
+                            if (canEdit) {
                                 setActiveCardMenu(isMenuOpen ? null : menuKey);
+                            } else {
+                                setPreviewCard({ item, section });
                             }
                         }}
                         onMouseEnter={(e) => handleCardMouseEnter(e, card.imagen)}

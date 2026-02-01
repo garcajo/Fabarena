@@ -31,6 +31,7 @@ export const useCards = () => {
         search: searchParams.get('search') || '',
         set: getParam('set'),
         clase: getParam('clase'),
+        talento: getParam('talento'),
         rareza: getParam('rareza')
     });
 

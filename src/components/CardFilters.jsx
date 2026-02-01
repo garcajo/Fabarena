@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { CardService } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
+import { CLASSES, TALENTS } from '../data/constants';
 import CustomSelect from './common/CustomSelect'; // Import our new component
 import '../styles/CardFilters.css';
 
@@ -20,15 +21,12 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
     const [availableSets, setAvailableSets] = useState([]);
     const [availableClasses, setAvailableClasses] = useState([]);
 
-    // Cargar sets y clases disponibles al montar
+    // Cargar sets disponibles al montar (Classes & Talents are now static)
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const setsResponse = await CardService.getSets();
                 setAvailableSets(setsResponse.data || []);
-
-                const classesResponse = await CardService.getClasses();
-                setAvailableClasses(classesResponse.data || []);
             } catch (error) {
                 console.error('Error loading metadata:', error);
             }
@@ -85,10 +83,17 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
         { value: 'X', label: 'X' }
     ];
 
-    // Class Options
+
+    // Class Options (Static)
     const classOptions = [
         { value: '', label: t('filters.all_classes') },
-        ...availableClasses.map(cls => ({ value: cls, label: cls }))
+        ...CLASSES.map(cls => ({ value: cls, label: cls }))
+    ];
+
+    // Talent Options (Static)
+    const talentOptions = [
+        { value: '', label: t('filters.all_talents') || 'All Talents' },
+        ...TALENTS.map(tal => ({ value: tal, label: tal }))
     ];
 
     // Set Options
@@ -162,9 +167,19 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
         }
     };
 
+    const handleTalentChange = (val) => {
+        if (val === undefined) return;
+        const current = Array.isArray(filters.talento) ? filters.talento : (filters.talento ? [filters.talento] : []);
+        if (!current.includes(val) && val !== '') {
+            onFilterChange({ ...filters, talento: [...current, val] });
+        } else if (val === '') {
+            onFilterChange({ ...filters, talento: [] });
+        }
+    };
+
     const handleClearFilters = () => {
         setLocalSearch(''); // Limpiar estado local también
-        onFilterChange({ pitch: '', costo: '', search: '', set: '', clase: '' });
+        onFilterChange({ pitch: '', costo: '', search: '', set: '', clase: '', talento: '' });
     };
 
     const handleRemoveFilter = (key, valueToRemove) => {
@@ -183,7 +198,7 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
         }
     };
 
-    const hasActiveFilters = filters.pitch || filters.costo || filters.search || filters.set || filters.clase;
+    const hasActiveFilters = filters.pitch || filters.costo || filters.search || filters.set || filters.clase || filters.talento;
 
     return (
         <div className="card-filters">
@@ -205,9 +220,19 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
                 <div className="filter-select-wrapper">
                     <CustomSelect
                         options={classOptions}
-                        value="" // Always show placeholder/label since selection moves to tags
+                        value=""
                         placeholder={t('filters.all_classes')}
                         onChange={handleClassChange}
+                        disabled={isLoading}
+                    />
+                </div>
+
+                <div className="filter-select-wrapper">
+                    <CustomSelect
+                        options={talentOptions}
+                        value=""
+                        placeholder={t('filters.all_talents') || "Talents"}
+                        onChange={handleTalentChange}
                         disabled={isLoading}
                     />
                 </div>
@@ -265,6 +290,8 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
                                     label = `${t('filters.label_set')}: ${val}`;
                                 } else if (key === 'clase') {
                                     label = `${t('filters.label_class')}: ${val}`;
+                                } else if (key === 'talento') {
+                                    label = `${t('filters.label_talent') || 'Talent'}: ${val}`;
                                 }
 
                                 return (
