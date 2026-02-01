@@ -14,7 +14,7 @@ import { WantsService } from '../services/api';
 import CardModal from '../components/CardModal';
 import {
     Heart, Plus, Trash2, Share2, Copy, Check, Edit2,
-    X, ExternalLink, RefreshCw, Eye, EyeOff, List
+    X, ExternalLink, RefreshCw, Eye, EyeOff, List, Search, Loader2
 } from 'lucide-react';
 import '../styles/Wants.css';
 
@@ -42,6 +42,12 @@ const Wants = () => {
     const [editName, setEditName] = useState('');
     const [copiedLink, setCopiedLink] = useState(false);
 
+    // Búsqueda de cartas
+    const [cardSearchTerm, setCardSearchTerm] = useState('');
+    const [cardSearchResults, setCardSearchResults] = useState([]);
+    const [isSearchingCards, setIsSearchingCards] = useState(false);
+    const [showSearchResults, setShowSearchResults] = useState(false);
+
     // Cargar listas al montar
     useEffect(() => {
         if (user) {
@@ -57,6 +63,29 @@ const Wants = () => {
             setListItems([]);
         }
     }, [selectedList]);
+
+    // Búsqueda debounced de cartas
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            if (cardSearchTerm.length >= 2) {
+                setIsSearchingCards(true);
+                setShowSearchResults(true);
+                try {
+                    const { data } = await WantsService.getCards({ search: cardSearchTerm, pageSize: 8 });
+                    setCardSearchResults(data || []);
+                } catch (error) {
+                    console.error('Error searching cards:', error);
+                } finally {
+                    setIsSearchingCards(false);
+                }
+            } else {
+                setCardSearchResults([]);
+                if (cardSearchTerm.length === 0) setShowSearchResults(false);
+            }
+        }, 300);
+
+        return () => clearTimeout(timer);
+    }, [cardSearchTerm]);
 
     /**
      * Obtiene todas las listas del usuario
@@ -162,6 +191,45 @@ const Wants = () => {
     };
 
     /**
+     * Añade una carta buscada a la lista
+     */
+    const handleAddCardToList = async (card) => {
+        if (!selectedList) return;
+
+        try {
+            await WantsService.addCardToList(selectedList.id, card.id, 1);
+
+            // Actualizar UI localmente o recargar cards
+            // Si ya está en la lista, aumentamos cantidad, si no, añadimos
+            setListItems(prev => {
+                const existing = prev.find(item => item.id === card.id);
+                if (existing) {
+                    return prev.map(item =>
+                        item.id === card.id
+                            ? { ...item, quantity: (item.quantity || 0) + 1 }
+                            : item
+                    );
+                }
+                return [{ ...card, quantity: 1 }, ...prev];
+            });
+
+            // Actualizar contador en la sidebar
+            setLists(prev => prev.map(l =>
+                l.id === selectedList.id
+                    ? { ...l, card_count: (l.card_count || 0) + 1 }
+                    : l
+            ));
+
+            addToast(t('wants.card_added') || 'Card added!', 'success');
+            setCardSearchTerm('');
+            setShowSearchResults(false);
+        } catch (error) {
+            console.error('Error adding card:', error);
+            addToast(t('common.error'), 'error');
+        }
+    };
+
+    /**
      * Elimina una carta de la lista actual
      */
     const handleRemoveCard = async (cardId) => {
@@ -170,6 +238,14 @@ const Wants = () => {
         try {
             await WantsService.removeCardFromList(selectedList.id, cardId);
             setListItems(prev => prev.filter(item => item.id !== cardId));
+
+            // Actualizar contador en la sidebar
+            setLists(prev => prev.map(l =>
+                l.id === selectedList.id
+                    ? { ...l, card_count: Math.max(0, (l.card_count || 0) - 1) }
+                    : l
+            ));
+
             addToast(t('wants.card_removed') || 'Card removed', 'success');
         } catch (error) {
             console.error('Error removing card:', error);
@@ -339,6 +415,49 @@ const Wants = () => {
                         <div className="content-header">
                             <h1>{selectedList.name}</h1>
                             <div className="header-actions">
+                                {/* Nuevo Buscador de Cartas */}
+                                <div className="card-quick-search">
+                                    <div className="search-input-wrapper">
+                                        <Search size={16} className="search-icon" />
+                                        <input
+                                            type="text"
+                                            placeholder={t('wants.search_cards_placeholder') || "Add card..."}
+                                            value={cardSearchTerm}
+                                            onChange={(e) => setCardSearchTerm(e.target.value)}
+                                            onFocus={() => cardSearchTerm.length >= 2 && setShowSearchResults(true)}
+                                        />
+                                        {isSearchingCards && <Loader2 size={16} className="spinner" />}
+                                        {cardSearchTerm && (
+                                            <button className="clear-search" onClick={() => { setCardSearchTerm(''); setShowSearchResults(false); }}>
+                                                <X size={14} />
+                                            </button>
+                                        )}
+                                    </div>
+
+                                    {showSearchResults && (cardSearchResults.length > 0 || isSearchingCards) && (
+                                        <div className="search-results-dropdown">
+                                            {cardSearchResults.map(card => (
+                                                <div
+                                                    key={card.id}
+                                                    className="search-result-item"
+                                                    onClick={() => handleAddCardToList(card)}
+                                                >
+                                                    <img src={card.imagen} alt={card.name} />
+                                                    <div className="result-info">
+                                                        <span className="result-name">{card.name}</span>
+                                                        <span className="result-details">{card.set_code} • {card.rareza}</span>
+                                                    </div>
+                                                    <Plus size={16} className="add-icon" />
+                                                </div>
+                                            ))}
+                                            {!isSearchingCards && cardSearchResults.length === 0 && cardSearchTerm.length >= 2 && (
+                                                <div className="no-results-hint">{t('common.no_results')}</div>
+                                            )}
+                                        </div>
+                                    )}
+                                    {showSearchResults && <div className="dropdown-backdrop" onClick={() => setShowSearchResults(false)} />}
+                                </div>
+
                                 {selectedList.is_public ? (
                                     <>
                                         <button
