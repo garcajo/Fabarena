@@ -4,6 +4,7 @@ import { ArrowLeft, Save, Plus, Trash2, Image as ImageIcon, Type, AlignLeft, Edi
 import { DeckService } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
+import MarkdownContent from '../components/common/MarkdownContent';
 import Toast from '../components/common/Toast';
 import '../styles/DeckBuilder.css'; // Reusing some basic styles
 
@@ -461,13 +462,7 @@ const DeckGuide = () => {
 
                                     {section.content && (
                                         <div className="guide-text-content" style={{ fontSize: '1.1rem', color: 'var(--color-text-main)' }}>
-                                            {section.content.split('\n').map((paragraph, pIndex) => (
-                                                paragraph.trim() ? (
-                                                    <p key={pIndex} style={{ marginBottom: '1.2rem', lineHeight: '1.7', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
-                                                        {paragraph}
-                                                    </p>
-                                                ) : <br key={pIndex} />
-                                            ))}
+                                            <MarkdownContent text={section.content} />
                                         </div>
                                     )}
                                 </div>

@@ -8,6 +8,7 @@ import { useToast } from '../context/ToastContext';
 import { useState } from 'react';
 import { getHeroSignature } from '../utils/heroSignatures';
 import AddToWantsModal from './AddToWantsModal';
+import MarkdownContent from './common/MarkdownContent';
 import '../styles/CardModal.css';
 
 /**
@@ -246,7 +247,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
 
                         {(card.texto || card.efecto) && (
                             <div className="modal-text">
-                                <p>{card.texto || card.efecto}</p>
+                                <MarkdownContent text={card.texto || card.efecto} />
                             </div>
                         )}
 
