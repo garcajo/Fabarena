@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Search, Plus, X, Save, ArrowLeft, MessageSquare, Beaker, BookOpen, Eye, Pencil, FileQuestion, Heart, Shield, Layers, ArrowRightLeft, HelpCircle } from 'lucide-react';
+import { Search, Plus, X, Save, ArrowLeft, MessageSquare, Beaker, BookOpen, Eye, Pencil, FileQuestion, Heart, Shield, Layers, ArrowRightLeft, HelpCircle, FileText } from 'lucide-react';
 import { CardService, DeckService } from '../services/api';
 import { StorageService } from '../services/storage';
 import { useLanguage } from '../context/LanguageContext';
@@ -742,6 +742,63 @@ const DeckBuilder = () => {
         setShowToast(true);
     };
 
+    const handleGemExport = () => {
+        let text = `${deckData.hero?.name || 'Unknown Hero'}\n\n`;
+
+        // Weapons and Equipment (using equipment array)
+        // Ensure we check types safely
+        const weaponsList = deckData.equipment.filter(c =>
+            c.tipo?.toLowerCase().includes('weapon') ||
+            c.tipo?.toLowerCase().includes('arma') ||
+            c.type?.toLowerCase().includes('weapon')
+        );
+        const equipmentList = deckData.equipment.filter(c => !weaponsList.includes(c));
+
+        if (weaponsList.length > 0) {
+            text += "Weapons:\n";
+            weaponsList.forEach(c => text += `${c.name}\n`);
+            text += "\n";
+        }
+
+        if (equipmentList.length > 0) {
+            text += "Equipment:\n";
+            equipmentList.forEach(c => text += `${c.name}\n`);
+            text += "\n";
+        }
+
+        // Main Deck - Flat list with keys
+        // Format: Count Name (color)
+        deckData.mainDeck.forEach(item => {
+            const card = item.card;
+            let pColor = '';
+            if (card.pitch === 1) pColor = 'red';
+            else if (card.pitch === 2) pColor = 'yel';
+            else if (card.pitch === 3) pColor = 'blu';
+
+            text += `${item.count} ${card.name}${pColor ? ` (${pColor})` : ''}\n`;
+        });
+
+        text += "\n";
+
+        // Sideboard
+        if (deckData.sideboard && deckData.sideboard.length > 0) {
+            text += "Sideboard:\n";
+            deckData.sideboard.forEach(item => {
+                const card = item.card;
+                let pColor = '';
+                if (card.pitch === 1) pColor = 'red';
+                else if (card.pitch === 2) pColor = 'yel';
+                else if (card.pitch === 3) pColor = 'blu';
+                text += `${item.count} ${card.name}${pColor ? ` (${pColor})` : ''}\n`;
+            });
+        }
+
+        navigator.clipboard.writeText(text);
+        setToastMessage(t('deckBuilder.exportedGem') || "Decklist copied to clipboard!");
+        setToastType('success');
+        setShowToast(true);
+    };
+
     const moveCard = (cardItem, fromSection, toSection) => {
         const card = cardItem.card || cardItem; // Handle both wrapped and raw
 
@@ -1238,6 +1295,29 @@ const DeckBuilder = () => {
                                 <Beaker size={18} />
                             </button>
                         )}
+
+                        {/* Export GEM Button */}
+                        <button
+                            className="gem-export-btn"
+                            onClick={handleGemExport}
+                            style={{
+                                background: 'rgba(255, 255, 255, 0.05)',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                color: 'var(--color-text-main)',
+                                padding: '0.5rem',
+                                borderRadius: '8px',
+                                cursor: 'pointer',
+                                fontSize: '0.9rem',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: '36px',
+                                height: '36px'
+                            }}
+                            title={t('deckBuilder.exportGem') || 'Export for GEM'}
+                        >
+                            <FileText size={18} />
+                        </button>
 
 
                         {/* Save/Clone Button (Moved) */}
