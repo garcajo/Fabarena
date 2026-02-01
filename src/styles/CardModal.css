@@ -488,12 +488,15 @@
 }
 
 /* Enlarged View Overlay */
+/* Enlarged View Overlay */
 .enlarged-view-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
+    /* Use dynamic viewport height for mobile browsers */
     background: rgba(0, 0, 0, 0.95);
     z-index: 2000;
     display: flex;
@@ -501,11 +504,14 @@
     justify-content: center;
     cursor: zoom-out;
     animation: fadeIn 0.2s ease-out;
+    padding: 20px;
+    /* Ensure image doesn't touch edges */
+    box-sizing: border-box;
 }
 
 .enlarged-image {
-    max-width: 95vw;
-    max-height: 95vh;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
     border-radius: 8px;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
@@ -537,18 +543,21 @@
 
 @media (max-width: 768px) {
     .enlarged-close-btn {
-        top: 1.5rem;
-        right: 1.5rem;
+        top: 1rem;
+        right: 1rem;
         width: 44px;
         height: 44px;
         background: rgba(0, 0, 0, 0.5);
         /* Improved visibility on mobile */
+        z-index: 2005;
+        /* Ensure above image */
     }
 
     .enlarged-image {
-        max-width: 100vw;
-        max-height: 90vh;
-        border-radius: 0;
+        max-width: 100%;
+        max-height: 85dvh;
+        /* Leave room for UI bars/safe areas */
+        border-radius: 4px;
     }
 }
 
