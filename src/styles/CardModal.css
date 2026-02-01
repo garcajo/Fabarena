@@ -123,12 +123,6 @@
     gap: 0.5rem;
 }
 
-@media (min-width: 768px) {
-    .modal-type-row {
-        margin-bottom: 1.5rem;
-    }
-}
-
 .modal-header-stats {
     display: flex;
     gap: 1rem;
@@ -200,7 +194,7 @@
 .modal-stats {
     display: flex;
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.25rem;
     flex-wrap: wrap;
 }
 
@@ -242,11 +236,11 @@
 
 .modal-text {
     background-color: var(--bg-primary);
-    padding: 1.5rem;
+    padding: 1.25rem;
     border-radius: var(--radius-md);
     border: 1px solid var(--border-color);
-    margin-bottom: 2rem;
-    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
     color: var(--text-primary);
     font-style: italic;
 }
@@ -305,7 +299,7 @@
         width: 65%;
         max-height: 85vh;
         overflow-y: auto;
-        padding: 2.5rem 3rem;
+        padding: 1.5rem 2rem;
     }
 }
 
@@ -340,8 +334,8 @@
 
 /* Collection Controls */
 .collection-controls {
-    margin-top: 1.5rem;
-    padding: 1.25rem;
+    margin-top: 1rem;
+    padding: 1rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
     border: 1px solid var(--border-color);
