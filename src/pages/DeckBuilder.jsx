@@ -9,6 +9,7 @@ import { isCardBanned } from '../data/bannedCards';
 import { isCardLegalForHero } from '../utils/deckValidation';
 import FormatSelection from '../components/deck-builder/FormatSelection';
 import CardSearchModal from '../components/deck-builder/CardSearchModal';
+import CardVersionPicker from '../components/deck-builder/CardVersionPicker';
 import StackedDeckList from '../components/deck-builder/StackedDeckList';
 import CommentSection from '../components/comments/CommentSection';
 import CardModal from '../components/CardModal';
@@ -347,6 +348,8 @@ const DeckBuilder = () => {
     const [lastAddedId, setLastAddedId] = useState(null); // For flash animation
     const [previewCard, setPreviewCard] = useState(null); // Mobile Preview State
     const [showPlaytester, setShowPlaytester] = useState(false); // Playtester State
+    const [showVersionPicker, setShowVersionPicker] = useState(false); // Version Picker Modal State
+    const [versionPickerTarget, setVersionPickerTarget] = useState(null); // Target card for version change
 
     // Click outside to close menus
     // Click outside to close menus
@@ -666,6 +669,60 @@ const DeckBuilder = () => {
         if (activeCardMenu?.id === cardId) setActiveCardMenu(null);
     };
 
+    const handleVersionChange = (newVersionCard) => {
+        if (!versionPickerTarget) return;
+        const { cardId, section } = versionPickerTarget;
+
+        console.log("[DeckBuilder] Changing version", { from: cardId, to: newVersionCard.id, section });
+
+        // If version is the same, do nothing
+        if (cardId === newVersionCard.id) {
+            setShowVersionPicker(false);
+            return;
+        }
+
+        setDeckData(prev => {
+            const currentList = prev[section];
+            const targetIndex = currentList.findIndex(c => c.card.id === cardId);
+
+            if (targetIndex === -1) return prev;
+
+            const targetItem = currentList[targetIndex];
+            const newList = [...currentList];
+
+            // 1. Decrease count of old version
+            if (targetItem.count > 1) {
+                newList[targetIndex] = { ...targetItem, count: targetItem.count - 1 };
+            } else {
+                newList.splice(targetIndex, 1);
+            }
+
+            // 2. Add new version (Check if it already exists in the list to merge stats)
+            const existingNewVersionIndex = newList.findIndex(c => c.card.id === newVersionCard.id);
+            if (existingNewVersionIndex !== -1) {
+                // Increment existing new version
+                newList[existingNewVersionIndex] = {
+                    ...newList[existingNewVersionIndex],
+                    count: newList[existingNewVersionIndex].count + 1
+                };
+            } else {
+                // Add new entry
+                newList.push({ card: newVersionCard, count: 1 });
+            }
+
+            return {
+                ...prev,
+                [section]: newList
+            };
+        });
+
+        setShowVersionPicker(false);
+        setVersionPickerTarget(null);
+        setToastMessage(t('deckBuilder.versionChanged') || "Card version updated");
+        setToastType('success');
+        setShowToast(true);
+    };
+
     const moveCard = (cardItem, fromSection, toSection) => {
         const card = cardItem.card || cardItem; // Handle both wrapped and raw
 
@@ -842,7 +899,15 @@ const DeckBuilder = () => {
                                         {t('deckBuilder.moveToMaybeboard') || 'Move to Maybeboard'}
                                     </button>
                                 )}
-                                {(isStandardSection || section === 'equipment') && <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '2px 0' }}></div>}
+                                <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '2px 0' }}></div>
+                                <button className="popover-option" onClick={(e) => {
+                                    e.stopPropagation();
+                                    setVersionPickerTarget({ cardId: card.id, cardName: card.name, section });
+                                    setShowVersionPicker(true);
+                                    setActiveCardMenu(null);
+                                }}>
+                                    {t('deckBuilder.changeVersion') || 'Change Version'}
+                                </button>
                                 <button className="popover-option danger" onClick={(e) => { e.stopPropagation(); removeCard(card.id, section); }}>
                                     <X size={14} /> {t('deckBuilder.remove') || 'Remove'}
                                 </button>
@@ -866,7 +931,9 @@ const DeckBuilder = () => {
                         onMouseLeave={() => setHoveredCard(null)}
                     >
                         {section !== 'hero' && (
-                            <div className="card-count-badge" style={section === 'sideboard' ? { borderColor: '#fbbf24', background: 'rgba(251, 191, 36, 0.2)' } : section === 'maybeboard' ? { borderColor: '#60a5fa', background: 'rgba(96, 165, 250, 0.2)' } : {}}>{item.count}</div>
+                            <div className="card-count-badge" style={section === 'sideboard' ? { borderColor: '#fbbf24', background: 'rgba(251, 191, 36, 0.2)' } : section === 'maybeboard' ? { borderColor: '#60a5fa', background: 'rgba(96, 165, 250, 0.2)' } : {}}>
+                                {item.count}
+                            </div>
                         )}
                         <span className="deck-card-name" style={{ flex: 1 }}>{card.name}</span>
 
@@ -912,6 +979,15 @@ const DeckBuilder = () => {
                                         {t('deckBuilder.moveToMaybeboard') || 'Move to Maybeboard'}
                                     </button>
                                 )}
+                                <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '2px 0' }}></div>
+                                <button className="popover-option" onClick={(e) => {
+                                    e.stopPropagation();
+                                    setVersionPickerTarget({ cardId: card.id, cardName: card.name, section });
+                                    setShowVersionPicker(true);
+                                    setActiveCardMenu(null); // Close current menu
+                                }}>
+                                    {t('deckBuilder.changeVersion') || 'Change Version'}
+                                </button>
                                 {(isStandardSection || section === 'equipment') && <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '2px 0' }}></div>}
                                 <button className="popover-option danger" onClick={(e) => { e.stopPropagation(); removeCard(card.id, section); }}>
                                     <X size={14} /> {t('deckBuilder.remove') || 'Remove'}
@@ -1026,6 +1102,11 @@ const DeckBuilder = () => {
                     onMoveCard={moveCard}
                     onRemoveCard={removeCard}
                     onHoverCard={handleCardMouseEnter}
+                    onShowVersionPicker={(card) => {
+                        setVersionPickerTarget({ cardId: card.id, cardName: card.name, section: sectionName });
+                        setShowVersionPicker(true);
+                        setActiveCardMenu(null);
+                    }}
                 />
             );
         }
@@ -1612,6 +1693,11 @@ const DeckBuilder = () => {
                                                             onMoveCard={moveCard}
                                                             onRemoveCard={removeCard}
                                                             onHoverCard={handleCardMouseEnter}
+                                                            onShowVersionPicker={(card) => {
+                                                                setVersionPickerTarget({ cardId: card.id, cardName: card.name, section: 'equipment' });
+                                                                setShowVersionPicker(true);
+                                                                setActiveCardMenu(null);
+                                                            }}
                                                         />
                                                     );
                                                 }
@@ -1717,6 +1803,20 @@ const DeckBuilder = () => {
                             type={modalType}
                             heroClass={deckData.hero?.clase} // Pass hero class string for filtering
                             format={deckData.format}
+                        />
+                    )
+                }
+
+                {
+                    showVersionPicker && versionPickerTarget && (
+                        <CardVersionPicker
+                            cardName={versionPickerTarget.cardName}
+                            currentId={versionPickerTarget.cardId}
+                            onSelect={handleVersionChange}
+                            onClose={() => {
+                                setShowVersionPicker(false);
+                                setVersionPickerTarget(null);
+                            }}
                         />
                     )
                 }

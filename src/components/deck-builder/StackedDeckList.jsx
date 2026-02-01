@@ -12,7 +12,8 @@ const StackedDeckList = ({
     section,
     onMoveCard,
     onRemoveCard,
-    onHoverCard
+    onHoverCard,
+    onShowVersionPicker
 }) => {
     const { t } = useLanguage();
 
@@ -131,6 +132,11 @@ const StackedDeckList = ({
                                     </button>
                                 )}
                                 <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '4px 0' }}></div>
+                                {onShowVersionPicker && (
+                                    <button className="popover-option" onClick={(e) => { e.stopPropagation(); onShowVersionPicker(item.card); }}>
+                                        {t('deckBuilder.changeVersion') || 'Change Version'}
+                                    </button>
+                                )}
                                 <button className="popover-option danger" onClick={(e) => { e.stopPropagation(); onRemoveCard(item.card.id, section); setActiveCardMenu(null); }}>
                                     {t('deckBuilder.remove') || 'Remove'}
                                 </button>
