@@ -1234,3 +1234,296 @@ export const FolderService = {
         }
     }
 };
+
+/**
+ * Servicio para listas de cartas buscadas (Wants Lists)
+ */
+export const WantsService = {
+    /**
+     * Obtiene todas las listas de wants del usuario
+     */
+    async getLists() {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) return [];
+
+            const { data, error } = await supabase
+                .from('wants_lists')
+                .select('*, wants_items(count)')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            // Transform to include card count
+            return data.map(list => ({
+                ...list,
+                card_count: list.wants_items?.[0]?.count || 0
+            }));
+        } catch (error) {
+            console.error('Error fetching wants lists:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Crea una nueva lista de wants
+     */
+    async createList(name) {
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('Must be logged in');
+
+            const { data, error } = await supabase
+                .from('wants_lists')
+                .insert({ name, user_id: user.id })
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error creating wants list:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Actualiza una lista de wants
+     */
+    async updateList(id, updates) {
+        try {
+            const { data, error } = await supabase
+                .from('wants_lists')
+                .update(updates)
+                .eq('id', id)
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error updating wants list:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Elimina una lista de wants
+     */
+    async deleteList(id) {
+        try {
+            const { error } = await supabase
+                .from('wants_lists')
+                .delete()
+                .eq('id', id);
+
+            if (error) throw error;
+            return true;
+        } catch (error) {
+            console.error('Error deleting wants list:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Obtiene los items de una lista con datos completos de cartas
+     */
+    async getListItems(listId) {
+        try {
+            const { data, error } = await supabase
+                .from('wants_items')
+                .select(`
+                    id,
+                    quantity,
+                    notes,
+                    created_at,
+                    card:cards(*)
+                `)
+                .eq('list_id', listId)
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            // Flatten card data
+            return data.map(item => ({
+                ...item.card,
+                item_id: item.id,
+                quantity: item.quantity,
+                notes: item.notes,
+                added_at: item.created_at
+            }));
+        } catch (error) {
+            console.error('Error fetching wants items:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Añade una carta a una lista de wants
+     */
+    async addCardToList(listId, cardId, quantity = 1, notes = '') {
+        try {
+            // Check if card already in list
+            const { data: existing } = await supabase
+                .from('wants_items')
+                .select('id, quantity')
+                .eq('list_id', listId)
+                .eq('card_id', cardId)
+                .single();
+
+            if (existing) {
+                // Update quantity
+                const { data, error } = await supabase
+                    .from('wants_items')
+                    .update({ quantity: existing.quantity + quantity, notes })
+                    .eq('id', existing.id)
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                return data;
+            } else {
+                // Insert new
+                const { data, error } = await supabase
+                    .from('wants_items')
+                    .insert({ list_id: listId, card_id: cardId, quantity, notes })
+                    .select()
+                    .single();
+
+                if (error) throw error;
+                return data;
+            }
+        } catch (error) {
+            console.error('Error adding card to wants list:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Elimina una carta de una lista de wants
+     */
+    async removeCardFromList(listId, cardId) {
+        try {
+            const { error } = await supabase
+                .from('wants_items')
+                .delete()
+                .eq('list_id', listId)
+                .eq('card_id', cardId);
+
+            if (error) throw error;
+            return true;
+        } catch (error) {
+            console.error('Error removing card from wants list:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Actualiza la cantidad de una carta en la lista
+     */
+    async updateCardQuantity(listId, cardId, quantity) {
+        try {
+            const { data, error } = await supabase
+                .from('wants_items')
+                .update({ quantity })
+                .eq('list_id', listId)
+                .eq('card_id', cardId)
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error updating wants item quantity:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Regenera el token de compartir de una lista
+     */
+    async regenerateShareToken(listId) {
+        try {
+            // Generate new UUID in client-side (crypto API available in modern browsers)
+            const newToken = crypto.randomUUID();
+
+            const { data, error } = await supabase
+                .from('wants_lists')
+                .update({ share_token: newToken, is_public: true })
+                .eq('id', listId)
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error regenerating share token:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Desactiva el enlace compartido de una lista
+     */
+    async disableSharing(listId) {
+        try {
+            const { data, error } = await supabase
+                .from('wants_lists')
+                .update({ is_public: false })
+                .eq('id', listId)
+                .select()
+                .single();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error('Error disabling sharing:', error);
+            throw error;
+        }
+    },
+
+    /**
+     * Obtiene una lista compartida por su token (público)
+     */
+    async getSharedList(shareToken) {
+        try {
+            // Fetch list by token (public access via RLS policy)
+            const { data: list, error: listError } = await supabase
+                .from('wants_lists')
+                .select('id, name, created_at, updated_at')
+                .eq('share_token', shareToken)
+                .eq('is_public', true)
+                .single();
+
+            if (listError) throw listError;
+            if (!list) throw new Error('List not found or not public');
+
+            // Fetch items
+            const { data: items, error: itemsError } = await supabase
+                .from('wants_items')
+                .select(`
+                    id,
+                    quantity,
+                    notes,
+                    card:cards(*)
+                `)
+                .eq('list_id', list.id)
+                .order('created_at', { ascending: false });
+
+            if (itemsError) throw itemsError;
+
+            return {
+                ...list,
+                cards: items.map(item => ({
+                    ...item.card,
+                    quantity: item.quantity,
+                    notes: item.notes
+                }))
+            };
+        } catch (error) {
+            console.error('Error fetching shared list:', error);
+            throw error;
+        }
+    }
+};

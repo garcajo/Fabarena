@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { X, Shield, Zap, Swords, ExternalLink, ShoppingCart } from 'lucide-react';
+import { X, Shield, Zap, Swords, ExternalLink, ShoppingCart, Heart } from 'lucide-react';
 import { StorageService } from '../services/storage';
 import { CollectionService, CardService } from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useToast } from '../context/ToastContext';
 import { useState } from 'react';
 import { getHeroSignature } from '../utils/heroSignatures';
+import AddToWantsModal from './AddToWantsModal';
 import '../styles/CardModal.css';
 
 /**
@@ -23,6 +24,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
     const [versions, setVersions] = useState([]);
     const [loadingVersions, setLoadingVersions] = useState(false);
     const [signatureWeapon, setSignatureWeapon] = useState(null);
+    const [showAddToWants, setShowAddToWants] = useState(false);
 
     // Initial load: Ideally we would fetch the qty from an API
     // For now we start at 0 and just allow incrementing
@@ -337,6 +339,28 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
                                         - {t('common.remove')}
                                     </button>
                                 </div>
+                                {/* Add to Wants Button */}
+                                <button
+                                    onClick={() => setShowAddToWants(true)}
+                                    style={{
+                                        marginTop: '0.5rem',
+                                        width: '100%',
+                                        padding: '0.5rem',
+                                        border: '1px solid rgba(200, 50, 50, 0.5)',
+                                        background: 'rgba(100, 0, 0, 0.2)',
+                                        color: '#ffaa99',
+                                        borderRadius: '4px',
+                                        cursor: 'pointer',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '0.5rem',
+                                        transition: 'all 0.2s'
+                                    }}
+                                >
+                                    <Heart size={16} />
+                                    {t('wants.add_to_wants') || 'Add to Wants'}
+                                </button>
                             </div>
                         )}
 
@@ -380,6 +404,14 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
                     </div>
                 </div>
             </div>
+
+            {/* Add to Wants Modal */}
+            {showAddToWants && (
+                <AddToWantsModal
+                    card={card}
+                    onClose={() => setShowAddToWants(false)}
+                />
+            )}
         </div>
     );
 };

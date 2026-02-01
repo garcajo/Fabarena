@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Menu, X, Layers, Box, Layout as LayoutIcon, LogOut, Search, Package, PlusCircle, Settings, BookOpen, User, Crown, ShieldBan, Camera, Home } from 'lucide-react';
+import { Menu, X, Layers, Box, Layout as LayoutIcon, LogOut, Search, Package, PlusCircle, Settings, BookOpen, User, Crown, ShieldBan, Camera, Home, Heart } from 'lucide-react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -474,6 +474,10 @@ const Navbar = () => {
                     <LayoutIcon size={16} />
                     <span>{t('nav.your_decks') || 'Your Decks'}</span>
                   </Link>
+                  <Link to="/wants" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
+                    <Heart size={16} />
+                    <span>{t('nav.wants') || 'Wants'}</span>
+                  </Link>
                   <Link to="/settings" className="dropdown-link" onClick={() => setIsUserOpen(false)}>
                     <Settings size={16} />
                     <span>{t('nav.settings') || 'Settings'}</span>
@@ -640,6 +644,10 @@ const Navbar = () => {
             <Link to="/my-decks" className="mobile-item" onClick={closeMobileMenu}>
               <LayoutIcon size={18} />
               <span>{t('nav.your_decks') || 'Your Decks'}</span>
+            </Link>
+            <Link to="/wants" className="mobile-item" onClick={closeMobileMenu}>
+              <Heart size={18} />
+              <span>{t('nav.wants') || 'Wants'}</span>
             </Link>
             <Link to="/settings" className="mobile-item" onClick={closeMobileMenu}>
               <Settings size={18} />
