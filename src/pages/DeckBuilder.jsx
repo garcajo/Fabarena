@@ -1501,15 +1501,19 @@ const DeckBuilder = () => {
                                                 onMouseEnter={(e) => handleCardMouseEnter(e, deckData.hero.imagen)}
                                                 onMouseLeave={() => setHoveredCard(null)}
                                                 onClick={(e) => {
-                                                    // Only allow hero changes if user has edit permissions
-                                                    if (!canEdit) return;
-
                                                     e.stopPropagation();
-                                                    if (showHeroActions) {
-                                                        openHeroModal();
-                                                        setShowHeroActions(false);
+
+                                                    // If user is owner AND on desktop, toggle hero actions (Change Hero)
+                                                    if (canEdit && window.innerWidth >= 768) {
+                                                        if (showHeroActions) {
+                                                            openHeroModal();
+                                                            setShowHeroActions(false);
+                                                        } else {
+                                                            setShowHeroActions(true);
+                                                        }
                                                     } else {
-                                                        setShowHeroActions(true);
+                                                        // For everyone else (mobile or visitors), open the CardModal
+                                                        setPreviewCard({ item: deckData.hero, section: 'hero' });
                                                     }
                                                 }}
                                             >
@@ -1597,7 +1601,9 @@ const DeckBuilder = () => {
                                                     return (
                                                         <StackedDeckList
                                                             cards={groupedEquipment}
-                                                            onCardClick={(item) => { }}
+                                                            onCardClick={(item) => {
+                                                                setPreviewCard({ item, section: 'equipment' });
+                                                            }}
                                                             onDragStart={(e, card) => handleDragStart(e, card, 'equipment')}
                                                             isOwner={canEdit}
                                                             activeCardMenu={activeCardMenu}
