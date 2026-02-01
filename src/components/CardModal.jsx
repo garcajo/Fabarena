@@ -15,8 +15,9 @@ import '../styles/CardModal.css';
  * @param {Object} props
  * @param {Object} props.card - The card object to display
  * @param {Function} props.onClose - Function to close the modal
+ * @param {React.ReactNode} [props.children] - Optional custom actions to render
  */
-const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
+const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children }) => {
     const { user } = useAuth();
     const { t } = useLanguage();
     const { addToast } = useToast();
@@ -325,6 +326,17 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate }) => {
                                     <Heart size={16} />
                                     {t('wants.add_to_wants') || 'Add to Wants'}
                                 </button>
+
+                                {children && (
+                                    <div className="custom-modal-actions" style={{
+                                        marginTop: '1rem',
+                                        paddingTop: '1rem',
+                                        borderTop: '1px solid rgba(255,255,255,0.1)',
+                                        width: '100%'
+                                    }}>
+                                        {children}
+                                    </div>
+                                )}
                             </div>
                         )}
 

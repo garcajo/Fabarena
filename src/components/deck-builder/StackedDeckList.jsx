@@ -51,7 +51,7 @@ const StackedDeckList = ({
                         className={`stacked-card-group ${isMenuOpen ? 'menu-open' : ''}`}
                         onClick={(e) => {
                             e.stopPropagation();
-                            if (isOwner && setActiveCardMenu) {
+                            if (isOwner && setActiveCardMenu && window.innerWidth >= 768) {
                                 setActiveCardMenu(isMenuOpen ? null : menuKey);
                             } else if (onCardClick) {
                                 onCardClick(item);
