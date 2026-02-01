@@ -682,6 +682,8 @@ const DeckBuilder = () => {
         }
 
         setDeckData(prev => {
+            const currentList = prev[section];
+
             // Handle Equipment (Flat Array of Card Objects)
             if (section === 'equipment') {
                 const targetIndex = currentList.findIndex(c => c.id === cardId);
