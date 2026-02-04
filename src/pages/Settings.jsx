@@ -41,11 +41,12 @@ const Settings = () => {
     const handleProfileUpdate = async (e) => {
         e.preventDefault();
         try {
-            // Mock update - in real app would call API
-            // await AuthService.updateProfile(profile);
-            addToast('Profile updated (Simulation)', 'success');
+            await AuthService.updateProfile(profile);
+            addToast(t('settings.profile_updated') || 'Profile updated successfully', 'success');
+            // Refresh user data in context might be handled by auth listener, but for immediate UI validation:
+            // updateUser({ ...user, user_metadata: { ...user.user_metadata, ...profile } }); // Optional manual sync
         } catch (error) {
-            addToast('Failed to update profile', 'error');
+            addToast(error.message || 'Failed to update profile', 'error');
         }
     };
 
@@ -253,7 +254,7 @@ const Settings = () => {
                                         type="text"
                                         value={profile.username}
                                         onChange={(e) => setProfile({ ...profile, username: e.target.value })}
-                                        disabled
+                                        placeholder={t('auth.username')}
                                     />
                                 </div>
                                 <div className="form-group">

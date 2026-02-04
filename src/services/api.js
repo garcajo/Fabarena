@@ -23,6 +23,22 @@ export const AuthService = {
      */
     async register(userData) {
         try {
+            // 1. Check Username Uniqueness
+            if (userData.username) {
+                const { data: existing, error: checkError } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .ilike('username', userData.username)
+                    .maybeSingle();
+
+                if (checkError && checkError.code !== 'PGRST116') throw checkError;
+
+                if (existing) {
+                    throw new Error('Username already taken');
+                }
+            }
+
+            // 2. Register User
             const { data, error } = await supabase.auth.signUp({
                 email: userData.email,
                 password: userData.password,
@@ -50,11 +66,59 @@ export const AuthService = {
      */
     async updateProfile(profileData) {
         try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (!user) throw new Error('User not authenticated');
+
+            // 1. Check Username Uniqueness if changing
+            if (profileData.username) {
+                // Fetch current profile or just check collision
+                const { data: existing, error: checkError } = await supabase
+                    .from('profiles')
+                    .select('id')
+                    .ilike('username', profileData.username) // Case insensitive check
+                    .maybeSingle();
+
+                if (checkError && checkError.code !== 'PGRST116') throw checkError;
+
+                // If exists and not me
+                if (existing && existing.id !== user.id) {
+                    throw new Error('Username already taken');
+                }
+            }
+
+            // 2. Update Auth Metadata
+            const metadataUpdates = {};
+            if (profileData.username) metadataUpdates.username = profileData.username;
+            if (profileData.fullName) metadataUpdates.full_name = profileData.fullName;
+            if (profileData.birthDate) metadataUpdates.birth_date = profileData.birthDate;
+
             const { data, error } = await supabase.auth.updateUser({
-                data: profileData
+                data: metadataUpdates
             });
 
             if (error) throw error;
+
+            // 3. Sync with Profiles Table (Public)
+            // Ideally triggered by DB, but explicit update ensures consistency
+            const profileUpdates = {};
+            if (profileData.username) profileUpdates.username = profileData.username;
+            if (profileData.fullName) profileUpdates.full_name = profileData.fullName;
+            // Add other fields as needed if they exist in profiles schema
+
+            // Only update if we have fields to update
+            if (Object.keys(profileUpdates).length > 0) {
+                const { error: profileError } = await supabase
+                    .from('profiles')
+                    .update(profileUpdates)
+                    .eq('id', user.id);
+
+                if (profileError) {
+                    console.warn('Failed to sync profile table (non-critical if metadata updated):', profileError);
+                    // We don't throw, as Auth is the source of truth for login. 
+                    // But for social features, profiles table is key.
+                }
+            }
+
             return data;
         } catch (error) {
             console.error('Update profile error:', error);
