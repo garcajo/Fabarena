@@ -272,19 +272,21 @@ const DeckList = ({ mode }) => {
                 </div>
             </div>
 
-            {/* Username Filter */}
-            <div className="filter-group">
-                <label>
-                    {t('filters.label_username') || 'Creator'}
-                </label>
-                <input
-                    type="text"
-                    placeholder={t('filters.placeholder_username')}
-                    value={tempFilters.username}
-                    onChange={(e) => handleInputChange('username', e.target.value)}
-                    onKeyDown={handleKeyDown}
-                />
-            </div>
+            {/* Username Filter - Only show in public mode */}
+            {mode !== 'mine' && (
+                <div className="filter-group">
+                    <label>
+                        {t('filters.label_username') || 'Creator'}
+                    </label>
+                    <input
+                        type="text"
+                        placeholder={t('filters.placeholder_username')}
+                        value={tempFilters.username}
+                        onChange={(e) => handleInputChange('username', e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
+                </div>
+            )}
 
             {/* Format Filter */}
             <div className="filter-group">

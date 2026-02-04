@@ -578,9 +578,13 @@ export const DeckService = {
                 .from('decks')
                 .select('*', { count: 'exact' });
 
-            if (scope === 'user') {
+            if (scope === 'user' || scope === 'mine') {
                 const { data: { user } } = await supabase.auth.getUser();
-                if (user) query = query.eq('user_id', user.id);
+                if (user) {
+                    query = query.eq('user_id', user.id);
+                } else {
+                    return { data: [], count: 0 };
+                }
             } else if (scope === 'public') {
                 query = query.eq('visibility', 'public');
             }
