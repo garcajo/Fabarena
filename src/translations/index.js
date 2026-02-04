@@ -376,7 +376,11 @@ export const translations = {
             type_to_confirm: 'Type',
             to_confirm: 'to confirm',
             cancel: 'Cancel',
-            delete_confirmation_keyword: 'delete'
+            delete_confirmation_keyword: 'delete',
+            account_settings: 'Account Settings',
+            personal_details: 'Personal Details',
+            username_unique_desc: 'This is your unique identifier on FabArena.',
+            profile_updated: 'Profile updated successfully'
         },
         folders: {
             title: 'Folders',
@@ -876,7 +880,11 @@ export const translations = {
             type_to_confirm: 'Escribe',
             to_confirm: 'para confirmar',
             cancel: 'Cancelar',
-            delete_confirmation_keyword: 'eliminar'
+            delete_confirmation_keyword: 'eliminar',
+            account_settings: 'Ajustes de Cuenta',
+            personal_details: 'Detalles Personales',
+            username_unique_desc: 'Este es tu identificador único en FabArena.',
+            profile_updated: 'Perfil actualizado exitosamente'
         },
         help: {
             title: 'Centro de Ayuda',
