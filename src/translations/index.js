@@ -329,6 +329,10 @@ export const translations = {
             viewPublic: 'View Public Version',
             notFoundTitle: 'Deck Not Found',
             notFoundDesc: 'This deck may have been deleted by the author or does not exist.',
+            saving: 'Saving...',
+            saved: 'Changes saved',
+            saveError: 'Error autosaving',
+            allChangesSaved: 'All changes saved',
         },
         guide: {
             title: 'Deck Guide',
@@ -833,6 +837,10 @@ export const translations = {
             viewPublic: 'Ver Vista Pública',
             notFoundTitle: 'Mazo No Encontrado',
             notFoundDesc: 'Este mazo puede haber sido eliminado por su autor o no existe.',
+            saving: 'Guardando...',
+            saved: 'Cambios guardados',
+            saveError: 'Error al autoguardar',
+            allChangesSaved: 'Cambios guardados',
         },
         guide: {
             title: 'Guía del Mazo',

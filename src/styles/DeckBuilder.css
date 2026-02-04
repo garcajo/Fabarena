@@ -1948,3 +1948,7 @@
     border-color: #fca5a5;
     color: #991b1b;
 }
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}

@@ -351,6 +351,7 @@ const DeckBuilder = () => {
     const [showPlaytester, setShowPlaytester] = useState(false); // Playtester State
     const [showVersionPicker, setShowVersionPicker] = useState(false); // Version Picker Modal State
     const [versionPickerTarget, setVersionPickerTarget] = useState(null); // Target card for version change
+    const [autoSaveStatus, setAutoSaveStatus] = useState('idle'); // 'idle' | 'saving' | 'saved' | 'error'
 
     // Click outside to close menus
     // Click outside to close menus
@@ -388,56 +389,84 @@ const DeckBuilder = () => {
         navigate('/my-decks');
     };
 
-    const handleSaveDeck = async () => {
+    const handleSaveDeck = async (isAuto = false) => {
         if (!deckData.name) {
-            setToastMessage(t('deckBuilder.nameRequired') || 'Please enter a deck name');
-            setToastType('error');
-            setShowToast(true);
+            if (!isAuto) {
+                setToastMessage(t('deckBuilder.nameRequired') || 'Please enter a deck name');
+                setToastType('error');
+                setShowToast(true);
+            }
             return;
         }
 
         if (!deckData.hero) {
-            setToastMessage(t('deckBuilder.heroRequired') || 'Please select a hero');
-            setToastType('error');
-            setShowToast(true);
+            if (!isAuto) {
+                setToastMessage(t('deckBuilder.heroRequired') || 'Please select a hero');
+                setToastType('error');
+                setShowToast(true);
+            }
             return;
         }
 
         try {
+            if (isAuto) setAutoSaveStatus('saving');
+
             // Derive username from auth context
             const username = user?.user_metadata?.full_name || user?.user_metadata?.username || user?.email?.split('@')[0] || 'Unknown';
 
             const payload = {
                 ...deckData,
                 username, // Send username to backend
-                // Ensure array structures match backend expectation if needed
             };
-
-            console.log("[DeckBuilder] SAVING DECK PAYLOAD:", payload);
-            console.log("[DeckBuilder] mainDeck length:", payload.mainDeck?.length);
 
             let savedDeck;
             if (deckId) {
                 savedDeck = await DeckService.updateDeck(deckId, payload);
-                setToastMessage(t('deckBuilder.deckSaved') || 'Deck saved successfully!');
+                if (!isAuto) setToastMessage(t('deckBuilder.deckSaved') || 'Deck saved successfully!');
             } else {
                 savedDeck = await DeckService.createDeck(payload);
                 setDeckId(savedDeck.id);
-                setToastMessage(t('deckBuilder.deckCreated') || 'Deck created successfully!');
+                if (!isAuto) setToastMessage(t('deckBuilder.deckCreated') || 'Deck created successfully!');
                 // Update URL for new decks without reloading the page
                 navigate(`/decks/${savedDeck.id}`, { replace: true });
             }
-            setToastType('success');
-            setShowToast(true);
-            // Exit Edit Mode on successful save
-            setIsEditMode(false);
+
+            if (isAuto) {
+                setAutoSaveStatus('saved');
+                setTimeout(() => setAutoSaveStatus('idle'), 3000);
+            } else {
+                setToastType('success');
+                setShowToast(true);
+                // Exit Edit Mode ONLY if manual save
+                setIsEditMode(false);
+            }
         } catch (error) {
             console.error('Error saving deck:', error);
-            setToastMessage(`${t('deckBuilder.deckError') || 'Error saving deck'}: ${error.message}`);
-            setToastType('error');
-            setShowToast(true);
+            if (isAuto) {
+                setAutoSaveStatus('error');
+            } else {
+                setToastMessage(`${t('deckBuilder.deckError') || 'Error saving deck'}: ${error.message}`);
+                setToastType('error');
+                setShowToast(true);
+            }
         }
     };
+
+    // Auto-save Effect
+    useEffect(() => {
+        // Only auto-save if in Edit Mode and has minimal data
+        if (!canEdit || !deckData.name || !deckData.hero) return;
+
+        // Skip if everything is empty (initial state)
+        if (deckData.mainDeck.length === 0 && deckData.equipment.length === 0 && !deckId) return;
+
+        const timer = setTimeout(() => {
+            handleSaveDeck(true);
+        }, 2000); // 2 second debounce
+
+        return () => clearTimeout(timer);
+    }, [deckData.name, deckData.hero, deckData.equipment, deckData.mainDeck, deckData.sideboard, deckData.maybeboard, deckData.visibility]);
+
 
     // Debounced search for main card adding
     React.useEffect(() => {
@@ -1401,23 +1430,51 @@ const DeckBuilder = () => {
                                     </button>
                                 )}
 
-                                {/* Save Button - Only visible in Edit Mode */}
+                                {/* Auto-save Status Indicator */}
                                 {canEdit && (
-                                    <button
-                                        className="save-deck-btn"
-                                        onClick={handleSaveDeck}
-                                        style={{
-                                            padding: '0.5rem 1rem',
-                                            borderRadius: '8px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '0.5rem',
-                                            cursor: 'pointer'
-                                        }}
-                                    >
-                                        <Save size={18} />
-                                        <span className="hide-mobile">{t('common.save') || 'Save'}</span>
-                                    </button>
+                                    <div className={`autosave-indicator ${autoSaveStatus}`} style={{
+                                        fontSize: '0.85rem',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '0.5rem',
+                                        color: autoSaveStatus === 'error' ? '#ef4444' :
+                                            autoSaveStatus === 'saving' ? 'var(--color-primary-red)' :
+                                                autoSaveStatus === 'saved' ? '#4ade80' : 'var(--color-text-muted)',
+                                        padding: '0.5rem 1rem',
+                                        borderRadius: '20px',
+                                        background: 'rgba(255, 255, 255, 0.03)',
+                                        border: '1px solid rgba(255, 255, 255, 0.05)',
+                                        transition: 'all 0.3s ease'
+                                    }}>
+                                        {autoSaveStatus === 'saving' ? (
+                                            <>
+                                                <div className="saving-spinner" style={{
+                                                    width: '12px',
+                                                    height: '12px',
+                                                    border: '2px solid currentColor',
+                                                    borderTopColor: 'transparent',
+                                                    borderRadius: '50%',
+                                                    animation: 'spin 1s linear infinite'
+                                                }} />
+                                                <span>{t('deckBuilder.saving') || 'Saving...'}</span>
+                                            </>
+                                        ) : autoSaveStatus === 'saved' ? (
+                                            <>
+                                                <Save size={14} />
+                                                <span>{t('deckBuilder.saved') || 'Saved'}</span>
+                                            </>
+                                        ) : autoSaveStatus === 'error' ? (
+                                            <>
+                                                <X size={14} />
+                                                <span>{t('deckBuilder.saveError') || 'Save Error'}</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Save size={14} style={{ opacity: 0.5 }} />
+                                                <span style={{ opacity: 0.5 }}>{t('deckBuilder.allChangesSaved') || 'All changes saved'}</span>
+                                            </>
+                                        )}
+                                    </div>
                                 )}
                             </>
                         )}
