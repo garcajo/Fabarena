@@ -599,6 +599,8 @@ export const DeckService = {
                 query = query.order('created_at', { ascending: true });
             } else if (filters.sort === 'likes') {
                 query = query.order('likes_count', { ascending: false });
+            } else if (filters.sort === 'views') {
+                query = query.order('views_count', { ascending: false });
             } else {
                 query = query.order('created_at', { ascending: false });
             }

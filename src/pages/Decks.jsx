@@ -314,6 +314,7 @@ const DeckList = ({ mode }) => {
                     options={[
                         { value: 'newest', label: t('filters.sort_newest') },
                         { value: 'likes', label: t('filters.sort_likes') || 'Most Liked' },
+                        { value: 'views', label: t('filters.sort_views') || 'Most Viewed' },
                         { value: 'oldest', label: t('filters.sort_oldest') }
                     ]}
                     value={tempFilters.sort}
