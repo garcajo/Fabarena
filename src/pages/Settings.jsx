@@ -248,30 +248,47 @@ const Settings = () => {
                             </div>
 
                             <form onSubmit={handleProfileUpdate} className="settings-form">
-                                <div className="form-group">
-                                    <label>{t('auth.username')}</label>
-                                    <input
-                                        type="text"
-                                        value={profile.username}
-                                        onChange={(e) => setProfile({ ...profile, username: e.target.value })}
-                                        placeholder={t('auth.username')}
-                                    />
+                                {/* Account Settings Section */}
+                                <div className="settings-subsection" style={{ marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
+                                    <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>
+                                        {t('settings.account_settings') || 'Account Settings'}
+                                    </h3>
+                                    <div className="form-group">
+                                        <label>{t('auth.username')}</label>
+                                        <input
+                                            type="text"
+                                            value={profile.username}
+                                            onChange={(e) => setProfile({ ...profile, username: e.target.value })}
+                                            placeholder={t('auth.username')}
+                                            style={{ borderColor: 'var(--color-primary-red)' }} // Highlight slightly
+                                        />
+                                        <small style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem', display: 'block' }}>
+                                            {t('settings.username_unique_desc') || 'This is your unique identifier on FabArena.'}
+                                        </small>
+                                    </div>
                                 </div>
-                                <div className="form-group">
-                                    <label>{t('settings.full_name')}</label>
-                                    <input
-                                        type="text"
-                                        value={profile.fullName}
-                                        onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
-                                    />
-                                </div>
-                                <div className="form-group">
-                                    <label>{t('settings.birth_date')}</label>
-                                    <input
-                                        type="date"
-                                        value={profile.birthDate}
-                                        onChange={(e) => setProfile({ ...profile, birthDate: e.target.value })}
-                                    />
+
+                                {/* Personal Info Section */}
+                                <div className="settings-subsection">
+                                    <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>
+                                        {t('settings.personal_details') || 'Personal Details'}
+                                    </h3>
+                                    <div className="form-group">
+                                        <label>{t('settings.full_name')}</label>
+                                        <input
+                                            type="text"
+                                            value={profile.fullName}
+                                            onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>{t('settings.birth_date')}</label>
+                                        <input
+                                            type="date"
+                                            value={profile.birthDate}
+                                            onChange={(e) => setProfile({ ...profile, birthDate: e.target.value })}
+                                        />
+                                    </div>
                                 </div>
                                 <button type="submit" className="save-btn">
                                     <Save size={18} />
