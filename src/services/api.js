@@ -1153,6 +1153,7 @@ export const CollectionService = {
             // In-memory filter for now (safer than complex queries without verifying schema)
             let result = flattened;
             if (filters.search) result = result.filter(c => c.name.toLowerCase().includes(filters.search.toLowerCase()));
+            if (filters.cardId) result = result.filter(c => c.id === filters.cardId);
 
             return { data: result, count: result.length };
         } catch (error) {

@@ -104,11 +104,26 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
 
 
     // Add to history on mount
+    const [isInCollection, setIsInCollection] = useState(false);
+
+    const checkCollectionStatus = async () => {
+        if (!user || !card.id) return;
+        try {
+            const { data } = await CollectionService.getCollection({ cardId: card.id });
+            // If data is an array, check length or if it contains our card
+            const found = data && data.length > 0;
+            setIsInCollection(found);
+        } catch (error) {
+            console.error("Error checking collection status:", error);
+        }
+    };
+
     useEffect(() => {
         if (card) {
             StorageService.addToHistory(card);
+            checkCollectionStatus();
         }
-    }, [card]);
+    }, [card, user]);
 
     // Handle ESC key to close
     useEffect(() => {
@@ -305,6 +320,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                                             try {
                                                 await CollectionService.addCard(card.id, 1, false);
                                                 addToast(t('collection.add_success') || 'Added to collection', 'success');
+                                                setIsInCollection(true);
                                                 if (onCollectionUpdate) onCollectionUpdate();
                                             } catch (e) {
                                                 console.error(e);
@@ -315,22 +331,26 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                                     >
                                         + {t('collection.add_to_collection')}
                                     </button>
-                                    <button
-                                        onClick={async () => {
-                                            try {
-                                                await CollectionService.removeCard(card.id, 1, false);
-                                                addToast(t('collection.remove_success') || 'Removed from collection', 'success');
-                                                if (onCollectionUpdate) onCollectionUpdate();
-                                            } catch (e) {
-                                                console.error(e);
-                                                addToast(t('common.error') || 'Error', 'error');
-                                            }
-                                        }}
-                                        className="remove-btn-outline"
-                                        title={t('collection.remove_success')}
-                                    >
-                                        - {t('common.remove')}
-                                    </button>
+                                    {isInCollection && (
+                                        <button
+                                            onClick={async () => {
+                                                try {
+                                                    await CollectionService.removeCard(card.id, 1, false);
+                                                    addToast(t('collection.remove_success') || 'Removed from collection', 'success');
+                                                    // Re-check status to see if still in collection (if qty > 1)
+                                                    checkCollectionStatus();
+                                                    if (onCollectionUpdate) onCollectionUpdate();
+                                                } catch (e) {
+                                                    console.error(e);
+                                                    addToast(t('common.error') || 'Error', 'error');
+                                                }
+                                            }}
+                                            className="remove-btn-outline"
+                                            title={t('collection.remove_success')}
+                                        >
+                                            - {t('common.remove')}
+                                        </button>
+                                    )}
                                 </div>
                                 <button
                                     onClick={() => setShowAddToWants(true)}
