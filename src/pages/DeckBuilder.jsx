@@ -310,16 +310,17 @@ const DeckBuilder = () => {
     const [toastType, setToastType] = useState('success');
 
 
-    // Sort helper: Always default (Cost -> Pitch -> Name) for deck building standard
+    // Sort helper: Alphabetical -> Pitch (Red > Yellow > Blue)
     const getSortedCards = (cards) => {
         return [...cards].sort((a, b) => {
-            const costA = a.card.costo === null ? 0 : a.card.costo;
-            const costB = b.card.costo === null ? 0 : b.card.costo;
-            if (costA !== costB) return costA - costB;
+            // 1. Alphabetical by Name
+            const nameCompare = a.card.name.localeCompare(b.card.name);
+            if (nameCompare !== 0) return nameCompare;
+
+            // 2. By Pitch (Color): Red (1) -> Yellow (2) -> Blue (3)
             const pitchA = a.card.pitch || 0;
             const pitchB = b.card.pitch || 0;
-            if (pitchA !== pitchB) return pitchA - pitchB;
-            return a.card.name.localeCompare(b.card.name);
+            return pitchA - pitchB;
         });
     };
 
@@ -991,7 +992,22 @@ const DeckBuilder = () => {
                         onMouseLeave={() => setHoveredCard(null)}
                     >
                         {section !== 'hero' && (
-                            <div className="card-count-badge" style={section === 'sideboard' ? { borderColor: '#fbbf24', background: 'rgba(251, 191, 36, 0.2)' } : section === 'maybeboard' ? { borderColor: '#60a5fa', background: 'rgba(96, 165, 250, 0.2)' } : {}}>
+                            <div className="card-count-badge" style={(() => {
+                                const pitch = item.card.pitch;
+                                let color = null;
+                                let bg = null;
+
+                                if (pitch === 1) { color = '#ef4444'; bg = 'rgba(239, 68, 68, 0.2)'; }
+                                else if (pitch === 2) { color = '#fbbf24'; bg = 'rgba(251, 191, 36, 0.2)'; }
+                                else if (pitch === 3) { color = '#3b82f6'; bg = 'rgba(59, 130, 246, 0.2)'; }
+
+                                if (color) return { borderColor: color, background: bg, color: color };
+
+                                // Fallback for previous logic if needed, or default
+                                if (section === 'sideboard') return { borderColor: '#fbbf24', background: 'rgba(251, 191, 36, 0.2)' };
+                                if (section === 'maybeboard') return { borderColor: '#60a5fa', background: 'rgba(96, 165, 250, 0.2)' };
+                                return {};
+                            })()}>
                                 {item.count}
                             </div>
                         )}

@@ -17,11 +17,8 @@ const StackedDeckList = ({
 }) => {
     const { t } = useLanguage();
 
-    // Sort logic handled by parent usually, but we can enforce it: Cost -> Name -> Pitch
+    // Sort logic: Name -> Pitch (Red > Yellow > Blue)
     const sortedCards = [...cards].sort((a, b) => {
-        const costA = a.card.costo ?? 0;
-        const costB = b.card.costo ?? 0;
-        if (costA !== costB) return costA - costB;
         if (a.card.name !== b.card.name) return a.card.name.localeCompare(b.card.name);
         return (a.card.pitch || 0) - (b.card.pitch || 0);
     });
