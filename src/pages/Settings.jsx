@@ -247,10 +247,10 @@ const Settings = () => {
                                 </div>
                             </div>
 
-                            <form onSubmit={handleProfileUpdate} className="settings-form">
+                            <form onSubmit={handleProfileUpdate} className="settings-form" style={{ gap: '2rem' }}>
                                 {/* Account Settings Section */}
-                                <div className="settings-subsection" style={{ marginBottom: '2rem', paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
-                                    <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>
+                                <div className="settings-subsection" style={{ borderBottom: '1px solid var(--color-border)', paddingBottom: '1.5rem' }}>
+                                    <h3>
                                         {t('settings.account_settings') || 'Account Settings'}
                                     </h3>
                                     <div className="form-group">
@@ -260,9 +260,8 @@ const Settings = () => {
                                             value={profile.username}
                                             onChange={(e) => setProfile({ ...profile, username: e.target.value })}
                                             placeholder={t('auth.username')}
-                                            style={{ borderColor: 'var(--color-primary-red)' }} // Highlight slightly
                                         />
-                                        <small style={{ color: 'var(--color-text-muted)', marginTop: '0.5rem', display: 'block' }}>
+                                        <small style={{ color: 'var(--color-text-muted)', fontSize: '0.8rem' }}>
                                             {t('settings.username_unique_desc') || 'This is your unique identifier on FabArena.'}
                                         </small>
                                     </div>
@@ -270,7 +269,7 @@ const Settings = () => {
 
                                 {/* Personal Info Section */}
                                 <div className="settings-subsection">
-                                    <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', color: 'var(--color-text-main)' }}>
+                                    <h3>
                                         {t('settings.personal_details') || 'Personal Details'}
                                     </h3>
                                     <div className="form-group">

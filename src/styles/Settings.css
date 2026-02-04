@@ -74,6 +74,19 @@
     gap: 0.5rem;
 }
 
+.settings-subsection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.settings-subsection h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--color-text-main);
+    font-family: 'Cinzel', serif;
+}
+
 .form-group label {
     font-size: 0.9rem;
     font-weight: 500;
