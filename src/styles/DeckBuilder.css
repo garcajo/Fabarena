@@ -462,7 +462,7 @@
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    z-index: 2000;
+    z-index: 10000;
     min-width: 160px;
     padding: 0.5rem;
     display: flex;
@@ -975,10 +975,9 @@
     animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Ensure card with open menu stays on top of others */
 .deck-card-visual.menu-open,
 .deck-card-row.menu-open {
-    z-index: 50 !important;
+    z-index: 9999 !important;
 }
 
 /* Hero Section Specifics */
@@ -1356,7 +1355,7 @@
 }
 
 .deck-cards-list.text-mode-columns .deck-card-row.menu-open {
-    z-index: 200 !important;
+    z-index: 9999 !important;
     /* Force menu on top */
     background: rgba(255, 255, 255, 0.1);
 }
@@ -1870,6 +1869,7 @@
     color: rgba(255, 255, 255, 0.4);
     font-weight: 500;
 }
+
 /* Mobile Preview Modal Actions */
 .preview-actions-grid {
     display: grid;

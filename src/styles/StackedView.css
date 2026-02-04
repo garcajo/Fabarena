@@ -21,7 +21,7 @@
 }
 
 .stacked-card-group.menu-open {
-    z-index: 1000 !important;
+    z-index: 9999 !important;
 }
 
 .stacked-card-group:hover {

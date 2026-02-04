@@ -100,7 +100,7 @@ const StackedDeckList = ({
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
-                                zIndex: 2000,
+                                zIndex: 10000,
                                 minWidth: '160px',
                                 background: 'var(--color-bg-card)',
                                 border: '1px solid var(--color-border)',
