@@ -227,20 +227,23 @@
 /* Stats Dashboard - The Core Grid */
 .modal-stats-dashboard {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    gap: 1.25rem;
-    margin-bottom: 2.5rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 2rem;
 }
 
 .dashboard-stat {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 16px;
-    padding: 1rem;
+    border-radius: 12px;
+    padding: 0.75rem;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    justify-content: center;
+    gap: 0.5rem;
     transition: all 0.2s;
+    text-align: center;
 }
 
 .dashboard-stat:hover {
@@ -249,9 +252,9 @@
 }
 
 .stat-icon-wrapper {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -328,17 +331,31 @@
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid rgba(255, 255, 255, 0.04);
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 2rem;
     margin-bottom: 2.5rem;
     flex: 1;
-    min-height: 120px;
-    position: relative;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .text-scroll-area {
     line-height: 1.7;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 1.05rem;
+    width: 100%;
+}
+
+.text-scroll-area p {
+    margin: 0.5rem 0;
+}
+
+.text-scroll-area strong {
+    display: block;
+    margin-top: 1rem;
+    color: white;
 }
 
 /* Meta Data Grid (Set, Rarity) */
