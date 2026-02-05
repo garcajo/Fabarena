@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { ChevronRight, Crown, Zap, Shield, Download } from 'lucide-react';
+import { ChevronRight, Crown, Zap, Shield, Download, PenSquare } from 'lucide-react';
 import { CardService, DeckService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/FormatSelection.css';
@@ -184,14 +184,17 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     </p>
 
                     <div className="name-input-section">
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder={t('deckBuilder.deckNamePlaceholder') || "Choose your deck name..."}
-                            className="setup-name-input"
-                            autoFocus
-                        />
+                        <div className="premium-input-wrapper">
+                            <PenSquare size={24} className="input-icon" />
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder={t('deckBuilder.deckNamePlaceholder') || "Choose your deck name..."}
+                                className="setup-name-input"
+                                autoFocus
+                            />
+                        </div>
                     </div>
 
                     <div className="setup-actions">
@@ -288,22 +291,44 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                 .name-input-section {
                     margin-bottom: 2.5rem;
                 }
+                .premium-input-wrapper {
+                    position: relative;
+                    display: flex;
+                    align-items: center;
+                    background: rgba(255, 255, 255, 0.04);
+                    border: 1px solid rgba(255, 255, 255, 0.08);
+                    border-radius: 16px;
+                    padding: 0 1.5rem;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    margin: 0 auto;
+                    max-width: 500px;
+                }
+                .premium-input-wrapper:focus-within {
+                    background: rgba(255, 255, 255, 0.06);
+                    border-color: var(--color-primary-red, #ef4444);
+                    box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);
+                    transform: translateY(-2px);
+                }
+                .input-icon {
+                    color: rgba(255, 255, 255, 0.3);
+                    transition: color 0.3s;
+                }
+                .premium-input-wrapper:focus-within .input-icon {
+                    color: var(--color-primary-red, #ef4444);
+                }
                 .setup-name-input {
                     width: 100%;
                     background: transparent;
                     border: none;
-                    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-                    padding: 1rem 0;
-                    font-size: 1.8rem;
+                    padding: 1.5rem 1rem;
+                    font-size: 1.5rem;
                     color: white;
-                    text-align: center;
                     transition: all 0.3s;
                     font-family: 'Inter', sans-serif;
-                }
-                .setup-name-input:focus {
                     outline: none;
-                    border-bottom-color: var(--color-primary-red, #ef4444);
-                    background: rgba(255, 255, 255, 0.02);
+                }
+                .setup-name-input::placeholder {
+                    color: rgba(255, 255, 255, 0.2);
                 }
                 .format-options-grid {
                     display: grid;
