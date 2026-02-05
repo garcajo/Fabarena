@@ -42,9 +42,9 @@ export const isCardLegalForHero = (cardClass, heroClass) => {
         // Cleanse specific patterns by inserting space before capitals
         let cleanedOption = optionStr.replace(/([a-z])([A-Z])/g, '$1 $2').toLowerCase();
 
-        // Split each option by Space (AND traits)
-        // Spaces represent combined requirements like Talent + Class (Hero must match ALL traits in the option).
-        const traits = cleanedOption.split(/\s+/)
+        // Split each option by Space or Comma (AND traits)
+        // Spaces/Commas represent combined requirements like Talent + Class (Hero must match ALL traits in the option).
+        const traits = cleanedOption.split(/[\s,]+/)
             .filter(s => s && s !== 'generic' && !nonTraitWords.includes(s));
 
         if (traits.length === 0) return true; // Effectively generic or just meta-words
