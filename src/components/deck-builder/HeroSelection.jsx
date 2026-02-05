@@ -40,11 +40,18 @@ const HeroSelection = ({ onSelect, onBack, format }) => {
                 const seen = new Set();
 
                 (data || []).forEach(hero => {
-                    const key = `${hero.name}-${hero.imagen}`;
-                    if (!seen.has(key)) {
-                        // Filter by format rules
-                        const isYoung = hero.tipo?.toLowerCase().includes('young');
-                        const isBannedLL = format === 'cc' && excludedNames.includes(hero.name);
+                    // 1. One entry per Hero Name
+                    const heroName = hero.name;
+                    if (!seen.has(heroName)) {
+                        // 2. Filter out transformations (Demi-Heroes, Tokens, etc)
+                        const typeLine = (hero.tipo || hero.card_type || '').toLowerCase();
+                        const isTransformation = typeLine.includes('demi') || typeLine.includes('transformation');
+
+                        if (isTransformation) return;
+
+                        // 3. Filter by format rules
+                        const isYoung = typeLine.includes('young');
+                        const isBannedLL = format === 'cc' && excludedNames.includes(heroName);
 
                         let isFormatLegal = true;
                         if (format === 'cc' && isYoung) isFormatLegal = false;
@@ -52,7 +59,7 @@ const HeroSelection = ({ onSelect, onBack, format }) => {
                         if (format === 'silver' && !isYoung) isFormatLegal = false;
 
                         if (isFormatLegal) {
-                            seen.add(key);
+                            seen.add(heroName);
                             uniqueHeroes.push(hero);
                         }
                     }
