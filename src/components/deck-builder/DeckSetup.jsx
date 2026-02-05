@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLanguage } from '../../context/LanguageContext';
-import { ChevronRight, Crown, Zap, Shield, Download, PenSquare } from 'lucide-react';
+import { ChevronRight, Crown, Zap, Shield, Download } from 'lucide-react';
 import { CardService, DeckService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/FormatSelection.css';
@@ -185,7 +185,6 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
 
                     <div className="name-input-section">
                         <div className="premium-input-wrapper">
-                            <PenSquare size={24} className="input-icon" />
                             <input
                                 type="text"
                                 value={name}
@@ -295,11 +294,10 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     position: relative;
                     display: flex;
                     align-items: center;
-                    gap: 2rem;
                     background: rgba(255, 255, 255, 0.04);
                     border: 1px solid rgba(255, 255, 255, 0.08);
                     border-radius: 16px;
-                    padding: 0 2.5rem;
+                    padding: 0 1.5rem;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     margin: 0 auto;
                     max-width: 600px;
@@ -310,22 +308,15 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     box-shadow: 0 0 25px rgba(239, 68, 68, 0.15);
                     transform: translateY(-2px);
                 }
-                .input-icon {
-                    color: rgba(255, 255, 255, 0.3);
-                    transition: color 0.3s;
-                    flex-shrink: 0;
-                }
-                .premium-input-wrapper:focus-within .input-icon {
-                    color: var(--color-primary-red, #ef4444);
-                }
                 .setup-name-input {
                     flex: 1;
                     width: 100%;
                     background: transparent;
                     border: none;
-                    padding: 1.5rem 0;
-                    font-size: 1.5rem;
+                    padding: 1.5rem;
+                    font-size: 1.6rem;
                     color: white;
+                    text-align: center;
                     transition: all 0.3s;
                     font-family: 'Inter', sans-serif;
                     outline: none;
