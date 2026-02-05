@@ -1211,27 +1211,29 @@ const DeckBuilder = () => {
         return null;
     }
 
-    // Error View
+    // Error View (Deck Not Found)
     if (error) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-8">
-                <div className="bg-red-500/10 p-6 rounded-full mb-6 relative">
-                    <FileQuestion size={64} className="text-red-500 opacity-80" />
-                    <div className="absolute inset-0 bg-red-500/20 blur-xl rounded-full animate-pulse"></div>
+            <div className="error-view-container fade-in">
+                <div className="error-view-content">
+                    <div className="error-view-icon-wrapper">
+                        <FileQuestion size={80} className="error-view-icon" />
+                        <div className="error-view-glow"></div>
+                    </div>
+                    <h2 className="error-view-title">
+                        {t('deckBuilder.notFoundTitle') || 'Deck Not Found'}
+                    </h2>
+                    <p className="error-view-text">
+                        {t('deckBuilder.notFoundDesc') || 'This mazo may have been deleted by the author or does not exist.'}
+                    </p>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="error-view-button"
+                    >
+                        <ArrowLeft size={20} />
+                        <span>{t('common.returnHome') || 'Return to Home'}</span>
+                    </button>
                 </div>
-                <h2 className="text-3xl font-bold text-white mb-2 font-cinzel tracking-wide">
-                    {t('deckBuilder.notFoundTitle') || 'Deck Not Found'}
-                </h2>
-                <p className="text-white/50 text-lg mb-8 max-w-md">
-                    {t('deckBuilder.notFoundDesc') || 'This deck may have been deleted by the author or does not exist.'}
-                </p>
-                <button
-                    onClick={() => navigate('/')}
-                    className="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-white transition-all flex items-center gap-2 group"
-                >
-                    <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-                    {t('common.returnHome') || 'Return to Home'}
-                </button>
             </div>
         );
     }
