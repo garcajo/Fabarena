@@ -248,8 +248,16 @@ export const translations = {
         },
         deckBuilder: {
             deckName: 'Deck Name',
+            deckNamePlaceholder: 'Epic Deck Name...',
+            setup: {
+                title: 'Begin Your Journey',
+                subtitle: 'Give your deck a name and choose your battle format.',
+                chooseHero: 'Choose Hero',
+            },
             searchCards: 'Add cards',
             hero: 'HERO',
+            chooseYourHero: 'Choose Your Hero',
+            heroSelectSubtitle: 'Select the champion who will carry your banners into battle.',
             equipment: 'EQUIPMENT',
             mainDeck: 'DECK',
             selectHeroTitle: 'Choose Your Hero',
@@ -760,8 +768,16 @@ export const translations = {
         },
         deckBuilder: {
             deckName: 'Nombre del Mazo',
+            deckNamePlaceholder: 'Nombre Épico del Mazo...',
+            setup: {
+                title: 'Comienza tu Viaje',
+                subtitle: 'Dale un nombre a tu mazo y elige el formato de batalla.',
+                chooseHero: 'Elegir Héroe',
+            },
             searchCards: 'Añade cartas',
             hero: 'HÉROE',
+            chooseYourHero: 'Elige tu Héroe',
+            heroSelectSubtitle: 'Selecciona al campeón que llevará tus estandartes a la batalla.',
             equipment: 'EQUIPAMIENTO',
             mainDeck: 'MAZO',
             selectHeroTitle: 'Elige tu Héroe',

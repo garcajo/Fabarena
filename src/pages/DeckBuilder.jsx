@@ -14,11 +14,14 @@ import StackedDeckList from '../components/deck-builder/StackedDeckList';
 import CommentSection from '../components/comments/CommentSection';
 import CardModal from '../components/CardModal';
 import DeckPlaytester from '../components/deck-builder/DeckPlaytester';
+import DeckSetup from '../components/deck-builder/DeckSetup';
+import HeroSelection from '../components/deck-builder/HeroSelection';
 import Toast from '../components/common/Toast';
 import '../styles/DeckBuilder.css';
 
 const STEPS = {
-    FORMAT: 'FORMAT',
+    SETUP: 'SETUP',
+    HERO: 'HERO',
     BUILDER: 'BUILDER'
 };
 
@@ -28,7 +31,7 @@ const DeckBuilder = () => {
     const navigate = useNavigate();
     const { deckId: paramDeckId } = useParams();
 
-    const [step, setStep] = useState(paramDeckId ? STEPS.BUILDER : STEPS.FORMAT);
+    const [step, setStep] = useState(paramDeckId ? STEPS.BUILDER : STEPS.SETUP);
     const [deckId, setDeckId] = useState(paramDeckId || null);
     // Default to Edit Mode ONLY if creating a new deck (!paramDeckId). 
     // If viewing existing deck, default to View Mode (false).
@@ -1145,9 +1148,41 @@ const DeckBuilder = () => {
         );
     }
 
-    // Initial Format Selection View
-    if (step === STEPS.FORMAT) {
-        return <FormatSelection onSelect={handleFormatSelect} />;
+    // --------------------------------------------------------------------------------
+    // NEW SEQUENTIAL STEPS
+    // --------------------------------------------------------------------------------
+
+    // Step 1: Name and Format
+    if (step === STEPS.SETUP) {
+        return (
+            <DeckSetup
+                initialData={deckData}
+                onNext={(data) => {
+                    setDeckData(prev => ({ ...prev, ...data }));
+                    setStep(STEPS.HERO);
+                }}
+            />
+        );
+    }
+
+    // Step 2: Dedicated Hero Selection
+    if (step === STEPS.HERO) {
+        return (
+            <HeroSelection
+                format={deckData.format}
+                onBack={() => setStep(STEPS.SETUP)}
+                onSelect={(hero) => {
+                    setDeckData(prev => ({ ...prev, hero }));
+                    setStep(STEPS.BUILDER);
+                }}
+            />
+        );
+    }
+
+    // Heritage: Redirect to Home if something is weird
+    if (step === 'FORMAT') { // Legacy safety
+        setStep(STEPS.SETUP);
+        return null;
     }
 
     // Error View
@@ -1228,9 +1263,9 @@ const DeckBuilder = () => {
                 {/* Top Bar - Buttons Only */}
                 <div className="deck-top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                     <button
-                        onClick={handleBackToFormat}
+                        onClick={() => setStep(STEPS.HERO)}
                         className="back-format-btn"
-                        title={t('deckBuilder.changeFormat') || "Change Format"}
+                        title={t('deckBuilder.changeHero') || "Change Hero"}
                     >
                         <ArrowLeft size={18} />
                     </button>
