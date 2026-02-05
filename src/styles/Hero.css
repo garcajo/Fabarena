@@ -5,7 +5,8 @@
     text-align: center;
     padding: 6rem 0;
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    /* Allow autocomplete dropdown to show */
 }
 
 .hero-content {
@@ -300,4 +301,57 @@
     color: white;
     border-color: var(--color-primary-red);
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+/* Hero Autocomplete Overrides */
+.hero-autocomplete-wrapper {
+    width: 100%;
+    padding: 0.625rem 1.25rem 0.625rem 1.25rem;
+    /* Adjust padding to match hero input */
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 999px !important;
+    /* Force pill shape */
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    height: auto !important;
+    /* Override standard height */
+    min-height: 58px;
+    /* Match hero input height */
+    gap: 1.25rem !important;
+    /* Gap for icon */
+}
+
+.hero-autocomplete-wrapper:focus-within {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08));
+    border-color: rgba(220, 38, 38, 0.6);
+    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-autocomplete-input {
+    font-size: 1.1rem !important;
+    padding: 0 !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme='light'] .hero-autocomplete-wrapper {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme='light'] .hero-autocomplete-wrapper:focus-within {
+    border-color: var(--color-primary-red);
+    box-shadow: 0 0 0 4px rgba(197, 34, 34, 0.1);
+}
+
+[data-theme='light'] .hero-autocomplete-input {
+    color: #111 !important;
+}
+
+/* Ensure dropdown respects rounded corners or stays below */
+.hero-autocomplete-wrapper+.card-autocomplete-dropdown {
+    border-radius: 12px;
+    margin-top: 8px;
+    overflow: hidden;
 }
