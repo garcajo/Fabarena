@@ -1294,9 +1294,17 @@ const DeckBuilder = () => {
                 {/* Top Bar - Buttons Only */}
                 <div className="deck-top-bar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                     <button
-                        onClick={() => setStep(STEPS.HERO)}
+                        onClick={() => {
+                            // If editing an existing deck, navigate to user's deck list
+                            // If creating a new deck, go back to hero selection step
+                            if (deckId) {
+                                navigate('/my-decks');
+                            } else {
+                                setStep(STEPS.HERO);
+                            }
+                        }}
                         className="back-format-btn"
-                        title={t('deckBuilder.changeHero') || "Change Hero"}
+                        title={deckId ? (t('deckBuilder.backToDecks') || "Back to Decks") : (t('deckBuilder.changeHero') || "Change Hero")}
                     >
                         <ArrowLeft size={18} />
                     </button>
