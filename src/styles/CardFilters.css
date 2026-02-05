@@ -15,9 +15,10 @@
 }
 
 /* Controls Grid */
+/* Controls Grid */
 .card-filters__controls {
     display: grid;
-    grid-template-columns: 220px 1.5fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     align-items: center;
 }
