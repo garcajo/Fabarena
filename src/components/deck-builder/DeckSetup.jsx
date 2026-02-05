@@ -8,6 +8,7 @@ import '../../styles/FormatSelection.css';
 const DeckSetup = ({ onNext, initialData = {} }) => {
     const { t } = useLanguage();
     const { user } = useAuth();
+    const [setupStep, setSetupStep] = useState('FORMAT');
     const [name, setName] = useState(initialData.name || '');
     const [format, setFormat] = useState(initialData.format || 'cc');
     const [isAnimating, setIsAnimating] = useState(false);
@@ -17,6 +18,11 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
     const [importText, setImportText] = useState('');
     const [importError, setImportError] = useState('');
     const [isImporting, setIsImporting] = useState(false);
+
+    const handleFormatSelect = (selectedFormat) => {
+        setFormat(selectedFormat);
+        setSetupStep('NAME');
+    };
 
     const handleProceed = () => {
         if (!name.trim()) return;
@@ -110,62 +116,78 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
     return (
         <div className={`deck-setup-container ${isAnimating ? 'slide-out' : 'fade-in'}`}>
             <div className="setup-card">
-                <h1 className="setup-title">{t('deckBuilder.setup.title') || 'Begin Your Journey'}</h1>
-                <p className="setup-subtitle">{t('deckBuilder.setup.subtitle') || 'Give your deck a name and choose your battle format.'}</p>
+                {setupStep === 'FORMAT' ? (
+                    <>
+                        <h1 className="setup-title">{t('deckBuilder.chooseFormat') || 'Choose Your Arena'}</h1>
+                        <p className="setup-subtitle">{t('deckBuilder.chooseFormatDesc') || 'Select the battle format for your next match.'}</p>
 
-                <div className="name-input-section">
-                    <input
-                        type="text"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder={t('deckBuilder.deckNamePlaceholder') || "Epic Deck Name..."}
-                        className="setup-name-input"
-                        autoFocus
-                    />
-                </div>
+                        <div className="format-options-grid">
+                            <div
+                                className={`setup-format-card ${format === 'cc' ? 'active' : ''}`}
+                                onClick={() => handleFormatSelect('cc')}
+                            >
+                                <div className="format-icon-wrapper">
+                                    <Crown size={24} />
+                                </div>
+                                <h3>Classic Constructed</h3>
+                                <p>{t('deckBuilder.formats.cc.description') || '80-card decks with Adult Heroes.'}</p>
+                            </div>
 
-                <div className="format-options-grid">
-                    <div
-                        className={`setup-format-card ${format === 'cc' ? 'active' : ''}`}
-                        onClick={() => setFormat('cc')}
-                    >
-                        <div className="format-icon-wrapper">
-                            <Crown size={24} />
+                            <div
+                                className={`setup-format-card ${format === 'silver' ? 'active' : ''}`}
+                                onClick={() => handleFormatSelect('silver')}
+                            >
+                                <div className="format-icon-wrapper">
+                                    <Zap size={24} />
+                                </div>
+                                <h3>Silver Age</h3>
+                                <p>{t('deckBuilder.formats.sa.description') || 'Common and Rare cards with Young Heroes.'}</p>
+                            </div>
                         </div>
-                        <h3>Classic Constructed</h3>
-                        <p>{t('deckBuilder.formats.cc.description') || '80-card decks with Adult Heroes.'}</p>
-                    </div>
 
-                    <div
-                        className={`setup-format-card ${format === 'silver' ? 'active' : ''}`}
-                        onClick={() => setFormat('silver')}
-                    >
-                        <div className="format-icon-wrapper">
-                            <Zap size={24} />
+                        <div className="setup-actions">
+                            <button
+                                className="setup-import-btn"
+                                onClick={() => setShowImport(true)}
+                            >
+                                <Download size={18} />
+                                <span>{t('deckBuilder.importDeck') || 'Import Deck'}</span>
+                            </button>
                         </div>
-                        <h3>Silver Age</h3>
-                        <p>{t('deckBuilder.formats.sa.description') || 'Common and Rare cards with Young Heroes.'}</p>
-                    </div>
-                </div>
+                    </>
+                ) : (
+                    <>
+                        <h1 className="setup-title">{t('deckBuilder.setup.title') || 'Name Your Deck'}</h1>
+                        <p className="setup-subtitle">
+                            {format === 'cc' ? 'Classic Constructed' : 'Silver Age'} •
+                            <button onClick={() => setSetupStep('FORMAT')} className="change-format-link" style={{ background: 'none', border: 'none', color: 'var(--color-primary-red, #ef4444)', cursor: 'pointer', marginLeft: '0.5rem', fontSize: '0.9rem', textDecoration: 'underline' }}>
+                                {t('common.change') || 'Change Format'}
+                            </button>
+                        </p>
 
-                <div className="setup-actions">
-                    <button
-                        className={`setup-next-btn ${!name.trim() ? 'disabled' : ''}`}
-                        onClick={handleProceed}
-                        disabled={!name.trim()}
-                    >
-                        <span>{t('deckBuilder.setup.chooseHero') || 'Choose Hero'}</span>
-                        <ChevronRight size={20} />
-                    </button>
+                        <div className="name-input-section">
+                            <input
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                placeholder={t('deckBuilder.deckNamePlaceholder') || "Choose your deck name..."}
+                                className="setup-name-input"
+                                autoFocus
+                            />
+                        </div>
 
-                    <button
-                        className="setup-import-btn"
-                        onClick={() => setShowImport(true)}
-                    >
-                        <Download size={18} />
-                        <span>{t('deckBuilder.importDeck') || 'Import Deck'}</span>
-                    </button>
-                </div>
+                        <div className="setup-actions">
+                            <button
+                                className={`setup-next-btn ${!name.trim() ? 'disabled' : ''}`}
+                                onClick={handleProceed}
+                                disabled={!name.trim()}
+                            >
+                                <span>{t('deckBuilder.setup.chooseHero') || 'Choose Hero'}</span>
+                                <ChevronRight size={20} />
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
 
             {showImport && (
