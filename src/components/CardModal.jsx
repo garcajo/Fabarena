@@ -60,10 +60,16 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                 // Ideally backend provides a simpler way, but searching by name works
                 const results = await CardService.getCardsByName(card.name);
 
-                // Filter to ensure exact name match and exclude current one if needed, 
-                // but usually we want all to map them to buttons.
-                // We group by set_code to show unique set options.
-                const validVersions = results.filter(c => c.name === card.name && c.set_code);
+                // Filter to ensure:
+                // 1. Exact name match
+                // 2. Has a set code
+                // 3. Same pitch value (important for FAB)
+                const currentPitch = card.pitch;
+                const validVersions = results.filter(c =>
+                    c.name === card.name &&
+                    c.set_code &&
+                    ((!currentPitch && !c.pitch) || (String(c.pitch) === String(currentPitch)))
+                );
 
                 // Sort by set code or date if possible
                 validVersions.sort((a, b) => a.set_code.localeCompare(b.set_code));
