@@ -14,6 +14,7 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [llHeroes, setLlHeroes] = useState([]); // List of hero names with 'Living Legend' / 'Ascended' status
     const [activeTab, setActiveTab] = useState('weapon'); // 'weapon', 'head', 'chest', 'arms', 'legs', 'off-hand'
 
     // Feature: Class / Talent / Generic Filters (Only for Equipment)
@@ -44,6 +45,29 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
             isGeneric: false
         });
     }, [heroClass, type]);
+
+    // Fetch Living Legend Hero list on mount
+    useEffect(() => {
+        if (type !== 'hero') return;
+
+        const fetchLLStatus = async () => {
+            try {
+                const { data } = await CardService.getLivingLegendData();
+                if (data) {
+                    // Collect names of Ascended heroes
+                    const names = data
+                        .filter(h => h.status === 'Ascended')
+                        .map(h => h.name);
+                    setLlHeroes(names);
+                    console.log("[CardSearchModal] Loaded LL Heroes:", names.length);
+                }
+            } catch (err) {
+                console.error("Error fetching LL data for modal:", err);
+            }
+        };
+
+        fetchLLStatus();
+    }, [type]);
 
     const toggleFilter = (filterType) => {
         setActiveFilters(prev => ({
@@ -173,6 +197,11 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                 if (type === 'hero' && format) {
                     if (format === 'cc') {
                         processingResults = processingResults.filter(c => !c.tipo.toLowerCase().includes('young'));
+
+                        // Filter out Living Legend heroes for CC
+                        if (llHeroes.length > 0) {
+                            processingResults = processingResults.filter(c => !llHeroes.includes(c.name));
+                        }
                     } else if (format === 'blitz') {
                         processingResults = processingResults.filter(c => c.tipo.toLowerCase().includes('young'));
                     }
