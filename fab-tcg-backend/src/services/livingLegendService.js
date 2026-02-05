@@ -44,6 +44,91 @@ const LivingLegendService = {
     ],
 
     /**
+     * Comprehensive mapper of heroes to their primary class/type.
+     * Used to enrich scraped data.
+     */
+    HERO_CLASS_MAP: {
+        "Arakni": "Assassin",
+        "Aurora": "Elemental Runeblade",
+        "Azalea": "Ranger",
+        "Benji": "Ninja",
+        "Betsy": "Guardian",
+        "Blasmophet": "Shadow Demi",
+        "Blaze": "Wizard",
+        "Bolfar": "Guardian",
+        "Boltyn": "Light Warrior",
+        "Bravo": "Guardian",
+        "Brevant": "Guardian",
+        "Briar": "Elemental Runeblade",
+        "Chane": "Shadow Runeblade",
+        "Cindra": "Draconic Ninja",
+        "Dash": "Mechanologist",
+        "Data Doll": "Mechanologist",
+        "Dorinthea": "Warrior",
+        "Dromai": "Draconic Illusionist",
+        "Emperor": "Royal Draconic Warrior Wizard",
+        "Enigma": "Mystic Illusionist",
+        "Fai": "Draconic Ninja",
+        "Fang": "Warrior",
+        "Florian": "Elemental Runeblade",
+        "Genis Wotchuneed": "Merchant",
+        "Ira": "Ninja",
+        "Iyslander": "Elemental Wizard",
+        "Jarl": "Elemental Guardian",
+        "Kano": "Wizard",
+        "Kassai": "Warrior",
+        "Katsu": "Ninja",
+        "Kavdaen": "Merchant",
+        "Kayo": "Brute",
+        "Levia": "Shadow Brute",
+        "Lexi": "Elemental Ranger",
+        "Maxx Nitro": "Mechanologist",
+        "Maxx 'The Hype' Nitro": "Mechanologist",
+        "Melody": "Bard",
+        "Nuu": "Mystic Assassin",
+        "Oldhim": "Elemental Guardian",
+        "Olympia": "Warrior",
+        "Oscilio": "Elemental Wizard",
+        "Prism": "Light Illusionist",
+        "Pleiades": "Guardian",
+        "Puffin": "Mechanologist",
+        "Marlynn": "Ranger",
+        "Lyath Goldmane": "Guardian",
+        "Gravy Bones": "Brute",
+        "Rhinar": "Brute",
+        "Riptide": "Ranger",
+        "Shiyana": "Shapeshifter",
+        "Teklovossen": "Mechanologist",
+        "Terra": "Elemental Guardian",
+        "Uzuri": "Assassin",
+        "Zen": "Mystic Ninja",
+        "Valda": "Guardian",
+        "Verdance": "Elemental Wizard",
+        "Victor": "Guardian",
+        "Viserai": "Runeblade",
+        "Vynnset": "Shadow Runeblade",
+        "Yoji": "Guardian"
+    },
+
+    /**
+     * Infers the hero class from their name.
+     */
+    getHeroClass(heroName) {
+        if (!heroName) return 'Unknown';
+
+        // Try exact match or base name (before comma)
+        const baseName = heroName.split(',')[0].trim();
+        if (this.HERO_CLASS_MAP[baseName]) return this.HERO_CLASS_MAP[baseName];
+
+        // Try substring match in common names
+        for (const [key, value] of Object.entries(this.HERO_CLASS_MAP)) {
+            if (heroName.includes(key)) return value;
+        }
+
+        return 'Unknown';
+    },
+
+    /**
      * Helper to decode HTML entities
      */
     decodeHtmlEntities(text) {
@@ -135,7 +220,7 @@ const LivingLegendService = {
                             points: points,
                             rank: rank,
                             status: status,
-                            class: 'Unknown', // We rely on frontend mapping or simple inference later
+                            class: this.getHeroClass(heroName),
                             updated_at: new Date()
                         });
                     }
