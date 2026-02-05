@@ -13,8 +13,8 @@ const CardVersionPicker = ({ cardName, currentId, onSelect, onClose }) => {
         const fetchVersions = async () => {
             setLoading(true);
             try {
-                // Fetch all versions with exact name (exclude white border)
-                const results = await CardService.getCardsByName(cardName, false);
+                // Fetch all versions with exact name (allow white border for explicit selection)
+                const results = await CardService.getCardsByName(cardName, true);
 
                 // Filter to ensure exact name match and sort by set code
                 // Only show cards that have a set code (valid printings)

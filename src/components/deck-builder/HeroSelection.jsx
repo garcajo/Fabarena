@@ -31,7 +31,8 @@ const HeroSelection = ({ onSelect, onBack, format }) => {
                 // 2. Fetch Heroes
                 const { data, error: fetchError } = await CardService.getCards({
                     type: 'Hero',
-                    pageSize: 500 // Fetch plenty to filter client-side
+                    pageSize: 500, // Fetch plenty to filter client-side
+                    includeWhiteBorder: false
                 });
 
                 if (fetchError) throw new Error(fetchError);
