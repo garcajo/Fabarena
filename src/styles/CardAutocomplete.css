@@ -3,7 +3,7 @@
 .card-autocomplete-container {
     position: relative;
     width: 100%;
-    z-index: 50;
+    z-index: 1000;
     /* Ensure dropdown appears above other content */
 }
 

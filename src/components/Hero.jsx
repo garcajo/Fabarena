@@ -91,8 +91,10 @@ const Hero = () => {
                                 onChange={(val) => setSearchTerm(val)}
                                 onSearch={(val) => {
                                     setSearchTerm(val);
-                                    // Navigate immediately if search triggered from autocomplete
-                                    navigate(`/cards?search=${encodeURIComponent(val)}`);
+                                    // Navigate immediately if search triggered from autocomplete (only if valid)
+                                    if (val && val.trim().length > 0) {
+                                        navigate(`/cards?search=${encodeURIComponent(val)}`);
+                                    }
                                 }}
                                 placeholder={t('hero.search_cards_placeholder')}
                                 wrapperClassName="hero-autocomplete-wrapper"
