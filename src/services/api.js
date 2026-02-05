@@ -414,23 +414,35 @@ export const CardService = {
      */
     async getLivingLegendData() {
         const FALLBACK_LL_DATA = [
+            // Active Heroes
+            { name: "Kayo, Armed and Dangerous", points: 959, rank: "1", status: "Active", class: "Brute" },
+            { name: "Verdance, Thorn of the Rose", points: 876, rank: "2", status: "Active", class: "Wizard" },
+            { name: "Prism, Awakener of Sol", points: 874, rank: "3", status: "Active", class: "Illusionist" },
+            { name: "Fai, Rising Rebellion", points: 821, rank: "4", status: "Active", class: "Ninja" },
+            { name: "Cindra, Dracai of Retribution", points: 778, rank: "5", status: "Active", class: "Dracai" },
+            { name: "Bravo, Showstopper", points: 769, rank: "6", status: "Active", class: "Guardian" },
+            { name: "Dorinthea Ironsong", points: 708, rank: "7", status: "Active", class: "Warrior" },
+            { name: "Katsu, the Wanderer", points: 690, rank: "8", status: "Active", class: "Ninja" },
+            { name: "Kassai of the Golden Sand", points: 688, rank: "9", status: "Active", class: "Warrior" },
+
+            // Ascended Heroes
             { name: "Zen, Tamer of Purpose", points: 1000, rank: "Ascended", status: "Ascended", class: "Ninja" },
-            { name: "Kayo, Armed and Dangerous", points: 1000, rank: "Ascended", status: "Ascended", class: "Brute" },
-            { name: "Prism, Awakener of Sol", points: 1000, rank: "Ascended", status: "Ascended", class: "Illusionist" },
-            { name: "Dromai, Ash Artist", points: 1000, rank: "Ascended", status: "Ascended", class: "Illusionist" },
-            { name: "Fai, Rising Rebellion", points: 1000, rank: "Ascended", status: "Ascended", class: "Ninja" },
-            { name: "Oldhim, Grandfather of Eternity", points: 1000, rank: "Ascended", status: "Ascended", class: "Guardian" },
-            { name: "Iyslander, Stormbind", points: 1000, rank: "Ascended", status: "Ascended", class: "Wizard" },
-            { name: "Briar, Warden of Thorns", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
-            { name: "Viserai, Rune Blood", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
-            { name: "Chane, Bound by Shadow", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
-            { name: "Starvo", points: 1000, rank: "Ascended", status: "Ascended", class: "Guardian" },
-            { name: "Prism, Sculptor of Arc Light", points: 1000, rank: "Ascended", status: "Ascended", class: "Illusionist" },
-            { name: "Lexi, Livewire", points: 1000, rank: "Ascended", status: "Ascended", class: "Ranger" },
-            { name: "Kano, Dracai of Aether", points: 500, rank: "1", status: "Active", class: "Wizard" },
-            { name: "Dash, Inventor Extraordinaire", points: 400, rank: "2", status: "Active", class: "Mechanologist" },
-            { name: "Rhinar, Reckless Rampage", points: 300, rank: "3", status: "Active", class: "Brute" },
-            { name: "Dorinthea Ironsong", points: 300, rank: "4", status: "Active", class: "Warrior" }
+            { name: "Bravo, Star of the Show", points: 1582, rank: "Ascended", status: "Ascended", class: "Guardian" },
+            { name: "Briar, Warden of Thorns", points: 1158, rank: "Ascended", status: "Ascended", class: "Runeblade" },
+            { name: "Chane, Bound by Shadow", points: 1102, rank: "Ascended", status: "Ascended", class: "Runeblade" },
+            { name: "Dromai, Ash Artist", points: 1096, rank: "Ascended", status: "Ascended", class: "Illusionist" },
+            { name: "Lexi, Livewire", points: 1276, rank: "Ascended", status: "Ascended", class: "Ranger" },
+            { name: "Oldhim, Grandfather of Eternity", points: 1186, rank: "Ascended", status: "Ascended", class: "Guardian" },
+            { name: "Prism, Sculptor of Arc Light", points: 1098, rank: "Ascended", status: "Ascended", class: "Illusionist" },
+            { name: "Iyslander, Stormbind", points: 1012, rank: "Ascended", status: "Ascended", class: "Wizard" },
+            { name: "Kano, Dracai of Aether", points: 1028, rank: "Ascended", status: "Ascended", class: "Wizard" },
+            { name: "Viserai, Rune Blood", points: 1016, rank: "Ascended", status: "Ascended", class: "Runeblade" },
+            { name: "Dash, Inventor Extraordinaire", points: 1013, rank: "Ascended", status: "Ascended", class: "Mechanologist" },
+            { name: "Nuu, Alluring Desire", points: 1004, rank: "Ascended", status: "Ascended", class: "Assassin" },
+            { name: "Enigma, Ledger of Ancestry", points: 1046, rank: "Ascended", status: "Ascended", class: "Illusionist" },
+            { name: "Azalea, Ace in the Hole", points: 1036, rank: "Ascended", status: "Ascended", class: "Ranger" },
+            { name: "Florian, Rotwood Harbinger", points: 1029, rank: "Ascended", status: "Ascended", class: "Runeblade" },
+            { name: "Aurora, Shooting Star", points: 1051, rank: "Ascended", status: "Ascended", class: "Runeblade" }
         ];
 
         try {

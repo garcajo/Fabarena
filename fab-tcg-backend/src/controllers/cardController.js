@@ -150,161 +150,17 @@ const getCardsByNames = async (req, res) => {
 /**
  * Scrapes the official Living Legend Leaderboard
  */
-// Fallback data in case scraping fails
-const FALLBACK_LL_DATA = [
-    { name: "Zen, Tamer of Purpose", points: 1000, rank: "Ascended", status: "Ascended", class: "Ninja" },
-    { name: "Kayo, Armed and Dangerous", points: 1000, rank: "Ascended", status: "Ascended", class: "Brute" },
-    { name: "Prism, Awakener of Sol", points: 1000, rank: "Ascended", status: "Ascended", class: "Illusionist" },
-    { name: "Dromai, Ash Artist", points: 1000, rank: "Ascended", status: "Ascended", class: "Illusionist" },
-    { name: "Fai, Rising Rebellion", points: 1000, rank: "Ascended", status: "Ascended", class: "Ninja" },
-    { name: "Oldhim, Grandfather of Eternity", points: 1000, rank: "Ascended", status: "Ascended", class: "Guardian" },
-    { name: "Iyslander, Stormbind", points: 1000, rank: "Ascended", status: "Ascended", class: "Wizard" },
-    { name: "Briar, Warden of Thorns", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
-    { name: "Viserai, Rune Blood", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
-    { name: "Chane, Bound by Shadow", points: 1000, rank: "Ascended", status: "Ascended", class: "Runeblade" },
-    { name: "Starvo", points: 1000, rank: "Ascended", status: "Ascended", class: "Guardian" },
-    { name: "Prism, Sculptor of Arc Light", points: 1000, rank: "Ascended", status: "Ascended", class: "Illusionist" },
-    { name: "Lexi, Livewire", points: 1000, rank: "Ascended", status: "Ascended", class: "Ranger" },
-    { name: "Kano, Dracai of Aether", points: 500, rank: "1", status: "Active", class: "Wizard" },
-    { name: "Dash, Inventor Extraordinaire", points: 400, rank: "2", status: "Active", class: "Mechanologist" },
-    { name: "Rhinar, Reckless Rampage", points: 300, rank: "3", status: "Active", class: "Brute" },
-    { name: "Dorinthea Ironsong", points: 300, rank: "4", status: "Active", class: "Warrior" }
-];
+const livingLegendService = require('../services/livingLegendService');
 
 const getLivingLegendData = async (req, res) => {
     try {
-        console.log("Checking DB Cache for Living Legend data...");
-        // 1. Check DB Cache
-        const { data: cachedData, error: dbError } = await supabase
-            .from('living_legend_leaderboard')
-            .select('*')
-            .order('points', { ascending: false });
-
-        // If updated_at is missing (old logic) assume stale
-        const lastUpdated = (cachedData && cachedData.length > 0 && cachedData[0].updated_at)
-            ? new Date(cachedData[0].updated_at) : new Date(0);
-
-        const isStale = (new Date() - lastUpdated) > (7 * 24 * 60 * 60 * 1000); // 7 days check
-
-        // Normalize DB data for frontend (hero_name -> name)
-        const normalizeCached = (data) => data.map(h => ({
-            name: h.hero_name,
-            points: h.points,
-            rank: h.rank,
-            status: h.status,
-            class: h.class
-        }));
-
-        if (!isStale && cachedData.length > 0) {
-            console.log("Serving cached LL data.");
-            return res.json(normalizeCached(cachedData));
-        }
-
-        console.log("Cache miss or stale. Scraping with headers...");
-
-        // 2. Scrape with Headers
-        const url = 'https://fabtcg.com/resources/rules-and-policy-center/living-legend/';
-        const response = await fetch(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                'Accept-Language': 'en-US,en;q=0.9'
-            }
-        });
-
-        if (!response.ok) {
-            console.warn(`LL Scrape failed with status ${response.status}. Serving Cache (if any) or Fallback.`);
-            if (cachedData && cachedData.length > 0) return res.json(normalizeCached(cachedData));
-            return res.json(FALLBACK_LL_DATA);
-        }
-
-        const html = await response.text();
-        const activeHeroes = [];
-
-        // Helper to decode HTML entities
-        const decodeHtmlEntities = (text) => {
-            if (!text) return text;
-            return text
-                .replace(/&nbsp;/g, ' ')
-                .replace(/&amp;/g, '&')
-                .replace(/&lt;/g, '<')
-                .replace(/&gt;/g, '>')
-                .replace(/&quot;/g, '"')
-                .replace(/&#039;/g, "'")
-                .replace(/&#x27;/g, "'")
-                .replace(/&#8216;/g, "'")
-                .replace(/&#8217;/g, "'")
-                .replace(/&#8220;/g, '"')
-                .replace(/&#8221;/g, '"')
-                .replace(/&#8211;/g, '-')
-                .replace(/&#8212;/g, '-')
-                .replace(/&ndash;/g, '-')
-                .replace(/&mdash;/g, '-')
-                .replace(/\s+/g, ' ')
-                .trim();
-        };
-
-        const rows = html.split('<tr');
-        for (const row of rows) {
-            const cells = row.split(/<td[^>]*>/).slice(1).map(c => c.split('</td>')[0].trim());
-            if (cells.length >= 3) {
-                let rank = decodeHtmlEntities(cells[0].replace(/<[^>]*>/g, ''));
-                let heroName = decodeHtmlEntities(cells[1].replace(/<[^>]*>/g, ''));
-                let pointsStr = decodeHtmlEntities(cells[cells.length - 1].replace(/<[^>]*>/g, ''));
-
-                let status = 'Active';
-                if (rank === 'LL' || rank === 'Ascended') {
-                    status = 'Ascended';
-                }
-
-                const points = parseInt(pointsStr, 10);
-                const isValidName = heroName && heroName.length > 2 && heroName !== '-' && !heroName.includes('Season');
-
-                if (isValidName && !isNaN(points) && points > 0) {
-                    const existing = activeHeroes.find(h => h.name === heroName);
-                    if (!existing) {
-                        activeHeroes.push({
-                            hero_name: heroName,
-                            points: points,
-                            rank: rank,
-                            status: status,
-                            class: 'Unknown',
-                            updated_at: new Date()
-                        });
-                    }
-                }
-            }
-        }
-
-        // 3. Update Cache if successful scrape
-        if (activeHeroes.length > 0) {
-            console.log(`Scraped ${activeHeroes.length} heroes. Updating Cache...`);
-            // Upsert Logic
-            const { error: upsertError } = await supabase
-                .from('living_legend_leaderboard')
-                .upsert(activeHeroes, { onConflict: 'hero_name' });
-
-            if (upsertError) console.error("Cache update failed:", upsertError);
-
-            // Normalize for frontend (hero_name -> name)
-            const frontendData = activeHeroes.map(h => ({
-                name: h.hero_name,
-                points: h.points,
-                rank: h.rank,
-                status: h.status,
-                class: h.class
-            }));
-            return res.json(frontendData.sort((a, b) => b.points - a.points));
-        } else {
-            console.warn("LL Scrape returned 0 heroes (layout change?). Serving Cache/Fallback.");
-            if (cachedData && cachedData.length > 0) return res.json(normalizeCached(cachedData));
-            return res.json(FALLBACK_LL_DATA);
-        }
-
+        const { force } = req.query;
+        // Use service to get data (cache first, then scrape logic handled internally)
+        const data = await livingLegendService.getLeaderboard(force === 'true');
+        res.json(data);
     } catch (error) {
-        console.error('Error scraping LL:', error);
-        // On error, return fallback instead of failing
-        res.json(FALLBACK_LL_DATA);
+        console.error('Error fetching LL data:', error);
+        res.json(livingLegendService.FALLBACK_DATA);
     }
 };
 

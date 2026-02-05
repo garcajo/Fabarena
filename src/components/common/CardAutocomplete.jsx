@@ -4,7 +4,16 @@ import { CardService } from '../../services/api';
 import { useLanguage } from '../../context/LanguageContext';
 import '../../styles/CardAutocomplete.css';
 
-const CardAutocomplete = ({ value, onChange, onSearch, placeholder, disabled }) => {
+const CardAutocomplete = ({
+    value,
+    onChange,
+    onSearch,
+    placeholder,
+    disabled,
+    wrapperClassName = '',
+    inputClassName = '',
+    showIcon = true
+}) => {
     const { t } = useLanguage();
     const [inputValue, setInputValue] = useState(value || '');
     const [suggestions, setSuggestions] = useState([]);
@@ -120,8 +129,8 @@ const CardAutocomplete = ({ value, onChange, onSearch, placeholder, disabled }) 
 
     return (
         <div className="card-autocomplete-container" ref={containerRef}>
-            <div className="card-autocomplete-input-wrapper">
-                <Search size={18} className="autocomplete-search-icon" />
+            <div className={`card-autocomplete-input-wrapper ${wrapperClassName}`}>
+                {showIcon && <Search size={18} className="autocomplete-search-icon" />}
                 <input
                     type="text"
                     value={inputValue}
@@ -130,13 +139,14 @@ const CardAutocomplete = ({ value, onChange, onSearch, placeholder, disabled }) 
                     onFocus={() => inputValue.length >= 2 && setShowSuggestions(true)}
                     placeholder={placeholder || t('filters.search_placeholder')}
                     disabled={disabled}
-                    className="card-autocomplete-input"
+                    className={`card-autocomplete-input ${inputClassName}`}
                 />
                 {inputValue && (
                     <button
                         className="clear-search-btn"
                         onClick={clearSearch}
                         aria-label="Clear search"
+                        type="button"
                     >
                         <X size={14} />
                     </button>

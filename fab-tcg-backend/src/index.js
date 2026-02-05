@@ -181,6 +181,10 @@ app.use((err, req, res, next) => {
 // SERVER START
 // =============================================================================
 
+// Initialize Cron Jobs
+const { initCronJobs } = require('./jobs/cron');
+initCronJobs();
+
 app.listen(PORT, '0.0.0.0', () => {
     console.log('═══════════════════════════════════════════');
     console.log(`🚀 FAB Arena Backend v1.0`);

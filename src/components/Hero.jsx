@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import CardAutocomplete from './common/CardAutocomplete';
 import { useLanguage } from '../context/LanguageContext';
 import '../styles/Hero.css';
 
@@ -84,19 +85,33 @@ const Hero = () => {
 
                     <form onSubmit={handleSearch} className="hero-search">
                         <Search className="hero-search-icon" size={20} />
-                        <input
-                            type="text"
-                            className="hero-search-input"
-                            placeholder={
-                                searchMode === 'cards'
-                                    ? t('hero.search_cards_placeholder')
-                                    : deckSearchType === 'hero' ? t('hero.placeholder_hero')
+                        {searchMode === 'cards' ? (
+                            <CardAutocomplete
+                                value={searchTerm}
+                                onChange={(val) => setSearchTerm(val)}
+                                onSearch={(val) => {
+                                    setSearchTerm(val);
+                                    // Navigate immediately if search triggered from autocomplete
+                                    navigate(`/cards?search=${encodeURIComponent(val)}`);
+                                }}
+                                placeholder={t('hero.search_cards_placeholder')}
+                                wrapperClassName="hero-autocomplete-wrapper"
+                                inputClassName="hero-autocomplete-input"
+                                showIcon={false}
+                            />
+                        ) : (
+                            <input
+                                type="text"
+                                className="hero-search-input"
+                                placeholder={
+                                    deckSearchType === 'hero' ? t('hero.placeholder_hero')
                                         : deckSearchType === 'username' ? t('hero.placeholder_user')
                                             : t('hero.placeholder_title')
-                            }
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                                }
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        )}
                         <button type="submit" className="hero-search-button">
                             {t('hero.search_button')}
                         </button>
