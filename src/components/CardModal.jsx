@@ -209,19 +209,27 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                             <ZoomIn size={20} />
                         </button>
 
-                        {/* Version/Set Selector */}
+                        {/* Version/Set Selector Dropdown */}
                         {versions.length > 1 && (
-                            <div className="version-selector">
-                                {versions.map((v) => (
-                                    <button
-                                        key={v.id || v.collection_id}
-                                        onClick={() => handleVersionChange(v)}
-                                        className={`version-btn ${card.id === v.id ? 'active' : ''}`}
-                                        title={`${v.set_code} - ${v.rareza} - ${v.pitch ? `Pitch ${v.pitch}` : ''}`}
-                                    >
-                                        {v.set_code} {v.pitch ? `(P${v.pitch})` : ''}
-                                    </button>
-                                ))}
+                            <div className="version-selector-container">
+                                <label htmlFor="version-select" className="version-label">
+                                    {t('card.versions') || 'Versions'}
+                                </label>
+                                <select
+                                    id="version-select"
+                                    className="version-dropdown"
+                                    value={card.id || ''}
+                                    onChange={(e) => {
+                                        const selected = versions.find(v => String(v.id) === e.target.value);
+                                        if (selected) handleVersionChange(selected);
+                                    }}
+                                >
+                                    {versions.map((v) => (
+                                        <option key={v.id} value={v.id}>
+                                            {v.set_code} - {v.rareza} {v.pitch ? `(P${v.pitch})` : ''}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                         )}
                     </div>
