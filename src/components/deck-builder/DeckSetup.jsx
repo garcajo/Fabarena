@@ -421,7 +421,8 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    padding: 2rem;
+                    padding: 1rem;
+                    overflow-y: auto;
                 }
                 .import-modal-content {
                     background: #1a1a1a;
@@ -431,11 +432,15 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     border-radius: 16px;
                     padding: 2rem;
                     box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+                    margin: auto;
+                    position: relative;
                 }
                 .import-modal-content h2 {
                     font-family: 'Cinzel', serif;
                     color: white;
-                    margin-bottom: 1.5rem;
+                    margin: 0 0 1.5rem 0;
+                    font-size: 1.5rem;
+                    text-align: center;
                 }
                 .import-error-tag {
                     background: rgba(239, 68, 68, 0.1);
@@ -445,6 +450,7 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     border-radius: 8px;
                     margin-bottom: 1rem;
                     font-size: 0.9rem;
+                    text-align: center;
                 }
                 .import-modal-content textarea {
                     width: 100%;
@@ -458,6 +464,7 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     font-size: 0.9rem;
                     margin-bottom: 1.5rem;
                     resize: none;
+                    box-sizing: border-box;
                 }
                 .import-modal-content textarea:focus {
                     outline: none;
@@ -467,6 +474,7 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     display: flex;
                     justify-content: flex-end;
                     gap: 1rem;
+                    align-items: center;
                 }
                 .cancel-btn {
                     background: transparent;
@@ -475,6 +483,11 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     padding: 0.6rem 1.2rem;
                     border-radius: 6px;
                     cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .cancel-btn:hover {
+                    background: rgba(255, 255, 255, 0.05);
+                    color: white;
                 }
                 .confirm-btn {
                     background: var(--color-primary-red);
@@ -484,9 +497,15 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     border-radius: 6px;
                     font-weight: 600;
                     cursor: pointer;
+                    transition: all 0.2s;
+                }
+                .confirm-btn:hover:not(:disabled) {
+                    background: #dc2626;
+                    transform: translateY(-1px);
                 }
                 .confirm-btn:disabled {
                     opacity: 0.5;
+                    cursor: not-allowed;
                 }
 
                 @keyframes setupFadeIn {
