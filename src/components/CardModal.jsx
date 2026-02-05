@@ -227,53 +227,73 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                     </div>
 
                     <div className="modal-details-section">
-                        {/* Header: Title + Cost/Pitch */}
-                        <div className="modal-header-row">
+                        {/* Header: Title + Type */}
+                        <div className="modal-header-main">
                             <h2 className="modal-card-title">{card.name}</h2>
-                            <div className="modal-header-stats">
-                                {card.costo !== undefined && card.costo !== null && (
-                                    <div className="header-stat">
-                                        <span className="header-stat-label">{t('card.cost')}</span>
-                                        <span className="header-stat-value">{card.costo}</span>
-                                    </div>
-                                )}
-                                {card.pitch && (
-                                    <div className="header-stat">
-                                        <span className="header-stat-label">{t('card.pitch')}</span>
-                                        <span className={`header-stat-value ${getPitchColor(card.pitch)}`}>
-                                            |
-                                        </span>
-                                    </div>
-                                )}
-                            </div>
+                            <span className="modal-card-type">{card.tipo || card.clase}</span>
                         </div>
 
-                        <span className="modal-card-type">{card.tipo || card.clase}</span>
-
-                        <div className="modal-stats">
-                            {card.defensa && (
-                                <div className="stat-item">
-                                    <span className="stat-label">{t('card.defense')}</span>
-                                    <div className="stat-value">
-                                        <Shield size={20} className="text-gray-400" />
-                                        {card.defensa}
+                        {/* Stats Dashboard - Unified area for Pitch, Cost, Power, Defense */}
+                        <div className="modal-stats-dashboard">
+                            {card.costo !== undefined && card.costo !== null && (
+                                <div className="dashboard-stat">
+                                    <span className="stat-icon-wrapper cost">
+                                        <Zap size={16} fill="currentColor" />
+                                    </span>
+                                    <div className="stat-info">
+                                        <span className="stat-label">{t('card.cost')}</span>
+                                        <span className="stat-value">{card.costo}</span>
                                     </div>
                                 </div>
                             )}
+
+                            {card.pitch && (
+                                <div className="dashboard-stat">
+                                    <span className={`stat-icon-wrapper pitch ${getPitchColor(card.pitch)}`}>
+                                        <div className="pitch-dots">
+                                            {[...Array(parseInt(card.pitch))].map((_, i) => (
+                                                <div key={i} className="pitch-dot" />
+                                            ))}
+                                        </div>
+                                    </span>
+                                    <div className="stat-info">
+                                        <span className="stat-label">{t('card.pitch')}</span>
+                                        <span className="stat-value">{card.pitch}</span>
+                                    </div>
+                                </div>
+                            )}
+
                             {card.poder && (
-                                <div className="stat-item">
-                                    <span className="stat-label">{t('card.power')}</span>
-                                    <div className="stat-value">
-                                        <Swords size={20} className="text-yellow-500" />
-                                        {card.poder}
+                                <div className="dashboard-stat">
+                                    <span className="stat-icon-wrapper power">
+                                        <Swords size={18} />
+                                    </span>
+                                    <div className="stat-info">
+                                        <span className="stat-label">{t('card.power')}</span>
+                                        <span className="stat-value">{card.poder}</span>
+                                    </div>
+                                </div>
+                            )}
+
+                            {card.defensa && (
+                                <div className="dashboard-stat">
+                                    <span className="stat-icon-wrapper defense">
+                                        <Shield size={18} />
+                                    </span>
+                                    <div className="stat-info">
+                                        <span className="stat-label">{t('card.defense')}</span>
+                                        <span className="stat-value">{card.defensa}</span>
                                     </div>
                                 </div>
                             )}
                         </div>
 
+                        {/* Card Text Area */}
                         {(card.texto || card.efecto) && (
-                            <div className="modal-text">
-                                <MarkdownContent text={card.texto || card.efecto} />
+                            <div className="modal-text-content">
+                                <div className="text-scroll-area">
+                                    <MarkdownContent text={card.texto || card.efecto} />
+                                </div>
                             </div>
                         )}
 
@@ -297,12 +317,14 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                             </div>
                         )}
 
-                        <div className="modal-meta-info">
-                            <div className="modal-set-info">
-                                <strong>{t('card.set')}:</strong> {card.set_code || 'Unknown'}
+                        <div className="modal-meta-grid">
+                            <div className="meta-item">
+                                <span className="meta-label">{t('card.set')}</span>
+                                <span className="meta-value">{card.set_code || '---'}</span>
                             </div>
-                            <div className="modal-rarity">
-                                <strong>{t('card.rarity')}:</strong> {getTranslatedRarity(card.rareza)}
+                            <div className="meta-item">
+                                <span className="meta-label">{t('card.rarity')}</span>
+                                <span className="meta-value rarity-badge">{getTranslatedRarity(card.rareza)}</span>
                             </div>
                         </div>
 
