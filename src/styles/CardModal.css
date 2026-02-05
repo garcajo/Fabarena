@@ -146,18 +146,21 @@
 /* Version Selector Dropdown */
 .version-selector-container {
     position: absolute;
-    top: 1.5rem;
-    left: 1.5rem;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     z-index: 10;
-    max-width: 200px;
-    background: rgba(0, 0, 0, 0.4);
+    max-width: 250px;
+    width: calc(100% - 3rem);
+    background: rgba(0, 0, 0, 0.7);
     padding: 10px;
     border-radius: 12px;
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .version-label {
