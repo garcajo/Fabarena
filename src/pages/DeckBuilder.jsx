@@ -499,7 +499,10 @@ const DeckBuilder = () => {
                     searchParams.rareza = ['Común', 'Rara', 'Common', 'Rare'];
                 }
 
-                const { data } = await CardService.getCards(searchParams);
+                const { data } = await CardService.getCards({
+                    ...searchParams,
+                    includeWhiteBorder: false
+                });
 
                 // Deduplicate results: Keep unique (Name + Pitch) combo.
                 // FAB cards are unique by Name + Pitch (Color). Rarity/Set doesn't change Deck legality/identity.

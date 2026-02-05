@@ -211,7 +211,7 @@ export const AuthService = {
 /**
  * Sets de borde blanco a filtrar por defecto
  */
-const WHITE_BORDER_SETS = ['1HP'];
+const WHITE_BORDER_SETS = ['1HP', '2HP'];
 
 /**
  * Servicio de cartas
@@ -379,13 +379,20 @@ export const CardService = {
     /**
      * Get all versions of a card by name
      */
-    async getCardsByName(name) {
+    async getCardsByName(name, includeWhiteBorder = true) {
         try {
             if (!name) return [];
-            const { data, error } = await supabase
+            let query = supabase
                 .from('cards')
                 .select('*')
                 .ilike('name', `%${name}%`);
+
+            // Filter out White Border sets if requested
+            if (!includeWhiteBorder && WHITE_BORDER_SETS.length > 0) {
+                query = query.not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
+            }
+
+            const { data, error } = await query;
 
             if (error) throw error;
             return data;

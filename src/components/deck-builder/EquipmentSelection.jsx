@@ -42,7 +42,7 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
                     clase: [...heroClassKeywords, 'Generic'],
                     pageSize: 5000,
                     type: equipmentTypes,
-                    includeWhiteBorder: true
+                    includeWhiteBorder: false
                 });
 
                 if (error) throw new Error(error);
