@@ -115,80 +115,97 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
 
     return (
         <div className={`deck-setup-container ${isAnimating ? 'slide-out' : 'fade-in'}`}>
-            <div className="setup-card">
-                {setupStep === 'FORMAT' ? (
-                    <>
-                        <h1 className="setup-title">{t('deckBuilder.chooseFormat') || 'Choose Your Arena'}</h1>
-                        <p className="setup-subtitle">{t('deckBuilder.chooseFormatDesc') || 'Select the battle format for your next match.'}</p>
+            {setupStep === 'FORMAT' ? (
+                <div className="format-selection-container" style={{ minHeight: 'auto', padding: 0 }}>
+                    <h1 className="format-title" style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>
+                        {t('deckBuilder.chooseFormat') || 'Choose Your Arena'}
+                    </h1>
+                    <p className="format-subtitle" style={{ color: 'rgba(255,255,255,0.5)', marginBottom: '3rem' }}>
+                        {t('deckBuilder.chooseFormatDesc') || 'Select the battle format for your next match.'}
+                    </p>
 
-                        <div className="format-options-grid">
-                            <div
-                                className={`setup-format-card ${format === 'cc' ? 'active' : ''}`}
-                                onClick={() => handleFormatSelect('cc')}
-                            >
-                                <div className="format-icon-wrapper">
-                                    <Crown size={24} />
-                                </div>
-                                <h3>Classic Constructed</h3>
-                                <p>{t('deckBuilder.formats.cc.description') || '80-card decks with Adult Heroes.'}</p>
+                    <div className="formats-grid">
+                        <div
+                            className="format-card"
+                            onClick={() => handleFormatSelect('cc')}
+                        >
+                            <div className="format-icon-wrapper">
+                                <Crown size={32} />
                             </div>
+                            <h2>Classic Constructed</h2>
+                            <p>{t('deckBuilder.formats.cc.description') || '80-card decks with Adult Heroes.'}</p>
+                            <ul className="format-features">
+                                <li>{t('deckBuilder.formats.cc.features.adultHero') || 'Adult Hero'}</li>
+                                <li>{t('deckBuilder.formats.cc.features.cards80') || '80-card Deck'}</li>
+                                <li>{t('deckBuilder.formats.cc.features.gameTime') || '35-50 min games'}</li>
+                            </ul>
+                        </div>
 
-                            <div
-                                className={`setup-format-card ${format === 'silver' ? 'active' : ''}`}
-                                onClick={() => handleFormatSelect('silver')}
-                            >
-                                <div className="format-icon-wrapper">
-                                    <Zap size={24} />
-                                </div>
-                                <h3>Silver Age</h3>
-                                <p>{t('deckBuilder.formats.sa.description') || 'Common and Rare cards with Young Heroes.'}</p>
+                        <div
+                            className="format-card"
+                            onClick={() => handleFormatSelect('silver')}
+                        >
+                            <div className="format-icon-wrapper">
+                                <Zap size={32} />
                             </div>
+                            <h2>Silver Age</h2>
+                            <p>{t('deckBuilder.formats.sa.description') || 'Common and Rare cards with Young Heroes.'}</p>
+                            <ul className="format-features">
+                                <li>{t('deckBuilder.formats.sa.features.youngHero') || 'Young Hero'}</li>
+                                <li>{t('deckBuilder.formats.sa.features.cards40') || '40-card Deck'}</li>
+                                <li>{t('deckBuilder.formats.sa.features.gameTime') || '20-30 min games'}</li>
+                            </ul>
                         </div>
+                    </div>
 
-                        <div className="setup-actions">
-                            <button
-                                className="setup-import-btn"
-                                onClick={() => setShowImport(true)}
-                            >
-                                <Download size={18} />
-                                <span>{t('deckBuilder.importDeck') || 'Import Deck'}</span>
-                            </button>
-                        </div>
-                    </>
-                ) : (
-                    <>
-                        <h1 className="setup-title">{t('deckBuilder.setup.title') || 'Name Your Deck'}</h1>
-                        <p className="setup-subtitle">
-                            {format === 'cc' ? 'Classic Constructed' : 'Silver Age'} •
-                            <button onClick={() => setSetupStep('FORMAT')} className="change-format-link" style={{ background: 'none', border: 'none', color: 'var(--color-primary-red, #ef4444)', cursor: 'pointer', marginLeft: '0.5rem', fontSize: '0.9rem', textDecoration: 'underline' }}>
-                                {t('common.change') || 'Change Format'}
-                            </button>
-                        </p>
+                    <div className="import-divider" style={{ marginTop: '2.5rem' }}>
+                        <span>OR</span>
+                    </div>
 
-                        <div className="name-input-section">
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                placeholder={t('deckBuilder.deckNamePlaceholder') || "Choose your deck name..."}
-                                className="setup-name-input"
-                                autoFocus
-                            />
-                        </div>
+                    <div className="setup-actions" style={{ marginTop: '0' }}>
+                        <button
+                            className="setup-import-btn"
+                            onClick={() => setShowImport(true)}
+                            style={{ background: 'rgba(255, 255, 255, 0.05)', borderColor: 'rgba(255,255,255,0.1)' }}
+                        >
+                            <Download size={18} />
+                            <span>{t('deckBuilder.importDeck') || 'Import Deck'}</span>
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div className="setup-card">
+                    <h1 className="setup-title">{t('deckBuilder.setup.title') || 'Name Your Deck'}</h1>
+                    <p className="setup-subtitle">
+                        {format === 'cc' ? 'Classic Constructed' : 'Silver Age'} •
+                        <button onClick={() => setSetupStep('FORMAT')} className="change-format-link" style={{ background: 'none', border: 'none', color: 'var(--color-primary-red, #ef4444)', cursor: 'pointer', marginLeft: '0.5rem', fontSize: '0.9rem', textDecoration: 'underline' }}>
+                            {t('common.change') || 'Change Format'}
+                        </button>
+                    </p>
 
-                        <div className="setup-actions">
-                            <button
-                                className={`setup-next-btn ${!name.trim() ? 'disabled' : ''}`}
-                                onClick={handleProceed}
-                                disabled={!name.trim()}
-                            >
-                                <span>{t('deckBuilder.setup.chooseHero') || 'Choose Hero'}</span>
-                                <ChevronRight size={20} />
-                            </button>
-                        </div>
-                    </>
-                )}
-            </div>
+                    <div className="name-input-section">
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder={t('deckBuilder.deckNamePlaceholder') || "Choose your deck name..."}
+                            className="setup-name-input"
+                            autoFocus
+                        />
+                    </div>
+
+                    <div className="setup-actions">
+                        <button
+                            className={`setup-next-btn ${!name.trim() ? 'disabled' : ''}`}
+                            onClick={handleProceed}
+                            disabled={!name.trim()}
+                        >
+                            <span>{t('deckBuilder.setup.chooseHero') || 'Choose Hero'}</span>
+                            <ChevronRight size={20} />
+                        </button>
+                    </div>
+                </div>
+            )}
 
             {showImport && (
                 <div className="import-modal-overlay" onClick={() => setShowImport(false)}>
@@ -226,9 +243,25 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
             <style dangerouslySetInnerHTML={{
                 __html: `
                 .deck-setup-container {
-                    max-width: 800px;
+                    max-width: 1000px;
                     margin: 4rem auto;
                     padding: 0 1rem;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .change-format-link {
+                    background: none;
+                    border: none;
+                    color: var(--color-primary-red, #ef4444);
+                    cursor: pointer;
+                    margin-left: 0.5rem;
+                    font-size: 0.9rem;
+                    text-decoration: underline;
+                    transition: opacity 0.2s;
+                }
+                .change-format-link:hover {
+                    opacity: 0.8;
                 }
                 .setup-card {
                     background: rgba(26, 26, 26, 0.8);
