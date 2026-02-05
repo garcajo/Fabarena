@@ -227,9 +227,9 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                     </div>
 
                     <div className="modal-details-section">
-                        <h2 className="modal-card-title">{card.name}</h2>
-                        <div className="modal-type-row">
-                            <span className="modal-card-type">{card.tipo || card.clase}</span>
+                        {/* Header: Title + Cost/Pitch */}
+                        <div className="modal-header-row">
+                            <h2 className="modal-card-title">{card.name}</h2>
                             <div className="modal-header-stats">
                                 {card.costo !== undefined && card.costo !== null && (
                                     <div className="header-stat">
@@ -241,32 +241,31 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                                     <div className="header-stat">
                                         <span className="header-stat-label">{t('card.pitch')}</span>
                                         <span className={`header-stat-value ${getPitchColor(card.pitch)}`}>
-                                            {card.pitch}
+                                            |
                                         </span>
                                     </div>
                                 )}
                             </div>
                         </div>
 
+                        <span className="modal-card-type">{card.tipo || card.clase}</span>
+
                         <div className="modal-stats">
-
-
-                            {card.poder && (
-                                <div className="stat-item">
-                                    <span className="stat-label">{t('card.power')}</span>
-                                    <div className="stat-value" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                        <Swords size={20} className="text-yellow-500" />
-                                        {card.poder}
-                                    </div>
-                                </div>
-                            )}
-
                             {card.defensa && (
                                 <div className="stat-item">
                                     <span className="stat-label">{t('card.defense')}</span>
-                                    <div className="stat-value" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <div className="stat-value">
                                         <Shield size={20} className="text-gray-400" />
                                         {card.defensa}
+                                    </div>
+                                </div>
+                            )}
+                            {card.poder && (
+                                <div className="stat-item">
+                                    <span className="stat-label">{t('card.power')}</span>
+                                    <div className="stat-value">
+                                        <Swords size={20} className="text-yellow-500" />
+                                        {card.poder}
                                     </div>
                                 </div>
                             )}
@@ -280,26 +279,25 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
 
                         {/* Signature Weapon Section */}
                         {signatureWeapon && (
-                            <div className="signature-weapon-section" style={{ marginTop: '1.5rem', marginBottom: '1.5rem' }}>
-                                <h3 className="section-title" style={{ fontSize: '1rem', color: 'var(--color-primary-gold)', marginBottom: '0.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '0.25rem' }}>
+                            <div className="signature-weapon-section">
+                                <h3 className="section-title">
                                     {t('card.signature_weapon') || 'Signature Weapon'}
                                 </h3>
-                                <div className="related-card-display" style={{ display: 'flex', gap: '1rem', alignItems: 'center', background: 'rgba(0,0,0,0.2)', padding: '0.5rem', borderRadius: '8px' }}>
+                                <div className="related-card-display">
                                     <img
                                         src={signatureWeapon.imagen}
                                         alt={signatureWeapon.name}
-                                        style={{ width: '60px', borderRadius: '4px' }}
                                     />
                                     <div>
-                                        <div style={{ fontWeight: 'bold', fontSize: '0.9rem' }}>{signatureWeapon.name}</div>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{signatureWeapon.tipo}</div>
-                                        <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{signatureWeapon.poder && `Power: ${signatureWeapon.poder}`}</div>
+                                        <div className="related-name">{signatureWeapon.name}</div>
+                                        <div className="related-meta">{signatureWeapon.tipo}</div>
+                                        <div className="related-meta">{signatureWeapon.poder && `Power: ${signatureWeapon.poder}`}</div>
                                     </div>
                                 </div>
                             </div>
                         )}
 
-                        <div className="modal-footer">
+                        <div className="modal-meta-info">
                             <div className="modal-set-info">
                                 <strong>{t('card.set')}:</strong> {card.set_code || 'Unknown'}
                             </div>
@@ -308,107 +306,75 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                             </div>
                         </div>
 
-                        {/* Market Data Section */}
-                        {user && (
-                            <div className="collection-controls">
-                                <div className="controls-header">
-                                    <h4>{t('collection.manage')}</h4>
-                                </div>
-                                <div className="controls-buttons">
-                                    <button
-                                        onClick={async () => {
-                                            try {
-                                                await CollectionService.addCard(card.id, 1, false);
-                                                addToast(t('collection.add_success') || 'Added to collection', 'success');
-                                                setIsInCollection(true);
-                                                if (onCollectionUpdate) onCollectionUpdate();
-                                            } catch (e) {
-                                                console.error(e);
-                                                addToast(t('common.error') || 'Error', 'error');
-                                            }
-                                        }}
-                                        className="add-btn"
-                                    >
-                                        + {t('collection.add_to_collection')}
-                                    </button>
-                                    {isInCollection && (
+                        {/* Actions & Market - Pushed to bottom */}
+                        <div className="modal-actions-footer">
+                            {/* Market Button - Big Blue */}
+                            <a
+                                href={`https://www.cardmarket.com/en/FleshAndBlood/Products/Search?searchString=${encodeURIComponent(card.name)}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="cardmarket-button"
+                            >
+                                <span>{t('card.check_price')}</span>
+                                <ExternalLink size={18} />
+                            </a>
+                            <p className="market-disclaimer">
+                                {t('card.market_disclaimer')}
+                            </p>
+
+                            {/* Collection Controls */}
+                            {user && (
+                                <div className="collection-controls">
+                                    <div className="controls-buttons">
                                         <button
                                             onClick={async () => {
                                                 try {
-                                                    await CollectionService.removeCard(card.id, 1, false);
-                                                    addToast(t('collection.remove_success') || 'Removed from collection', 'success');
-                                                    // Re-check status to see if still in collection (if qty > 1)
-                                                    checkCollectionStatus();
+                                                    await CollectionService.addCard(card.id, 1, false);
+                                                    addToast(t('collection.add_success') || 'Added to collection', 'success');
+                                                    setIsInCollection(true);
                                                     if (onCollectionUpdate) onCollectionUpdate();
                                                 } catch (e) {
                                                     console.error(e);
                                                     addToast(t('common.error') || 'Error', 'error');
                                                 }
                                             }}
-                                            className="remove-btn-outline"
-                                            title={t('collection.remove_success')}
+                                            className="add-btn"
                                         >
-                                            - {t('common.remove')}
+                                            + {t('collection.add_to_collection')}
                                         </button>
+                                        {isInCollection && (
+                                            <button
+                                                onClick={async () => {
+                                                    try {
+                                                        await CollectionService.removeCard(card.id, 1, false);
+                                                        addToast(t('collection.remove_success') || 'Removed from collection', 'success');
+                                                        checkCollectionStatus();
+                                                        if (onCollectionUpdate) onCollectionUpdate();
+                                                    } catch (e) {
+                                                        console.error(e);
+                                                        addToast(t('common.error') || 'Error', 'error');
+                                                    }
+                                                }}
+                                                className="remove-btn-outline"
+                                            >
+                                                - {t('common.remove')}
+                                            </button>
+                                        )}
+                                        <button
+                                            onClick={() => setShowAddToWants(true)}
+                                            className="add-wants-btn"
+                                            title={t('wants.add_to_wants')}
+                                        >
+                                            <Heart size={20} />
+                                        </button>
+                                    </div>
+                                    {children && (
+                                        <div className="custom-modal-actions">
+                                            {children}
+                                        </div>
                                     )}
                                 </div>
-                                <button
-                                    onClick={() => setShowAddToWants(true)}
-                                    className="add-wants-btn"
-                                >
-                                    <Heart size={16} />
-                                    {t('wants.add_to_wants') || 'Add to Wants'}
-                                </button>
-
-                                {children && (
-                                    <div className="custom-modal-actions" style={{
-                                        marginTop: '1rem',
-                                        paddingTop: '1rem',
-                                        borderTop: '1px solid rgba(255,255,255,0.1)',
-                                        width: '100%'
-                                    }}>
-                                        {children}
-                                    </div>
-                                )}
-                            </div>
-                        )}
-
-                        <div className="market-section" style={{ marginTop: '1.5rem', paddingTop: '1rem', borderTop: '1px solid var(--color-primary-brown)' }}>
-                            {/* Market Price Header removed as per user request */}
-                            <a
-                                href={`https://www.cardmarket.com/en/FleshAndBlood/Products/Search?searchString=${encodeURIComponent(card.name)}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cardmarket-button"
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'space-between',
-                                    padding: '0.75rem 1rem',
-                                    backgroundColor: '#004aad',
-                                    color: 'white',
-                                    borderRadius: '4px',
-                                    textDecoration: 'none',
-                                    fontWeight: '600',
-                                    transition: 'background-color 0.2s',
-                                    flexWrap: 'wrap', // Allow wrapping for small screens
-                                    gap: '0.5rem'
-                                }}
-                                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#003a8c'}
-                                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#004aad'}
-                            >
-                                <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    {t('card.check_price')}
-                                </span>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    {/* Placeholder for Price if we can fetch it later */}
-                                    {/* <span className="price-tag" style={{ background: 'rgba(255,255,255,0.2)', padding: '2px 6px', borderRadius: '4px' }}>€ --.--</span> */}
-                                    <ExternalLink size={16} />
-                                </div>
-                            </a>
-                            <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.5rem', fontStyle: 'italic' }}>
-                                {t('card.market_disclaimer')}
-                            </p>
+                            )}
                         </div>
                     </div>
                 </div>

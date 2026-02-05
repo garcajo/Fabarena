@@ -151,6 +151,8 @@
     flex: 1;
     overflow-y: auto;
     background-color: #121212;
+    display: flex;
+    flex-direction: column;
 }
 
 @media (max-width: 768px) {
@@ -159,30 +161,12 @@
     }
 }
 
-/* Typography */
-.modal-card-title {
-    font-size: 2rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-    color: white;
-    /* Clean white */
-    line-height: 1.2;
-}
-
-.modal-card-type {
-    font-size: 1rem;
-    color: #a0a0a0;
-    margin-bottom: 1.5rem;
-    font-weight: 500;
-}
-
-/* Stats and Headers */
-.modal-type-row {
+/* Header Row: Title + Stats */
+.modal-header-row {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
     gap: 1rem;
 }
 
@@ -190,45 +174,80 @@
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
 }
 
 .header-stat {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.08);
-    /* Lighter pill */
-    padding: 0.25rem 0.75rem;
-    border-radius: 4px;
-    border: none;
+    gap: 4px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #e0e0e0;
 }
 
 .header-stat-label {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
     color: #888;
-    font-weight: 600;
+    margin-right: 2px;
 }
 
 .header-stat-value {
-    font-weight: 700;
-    font-size: 0.9rem;
     color: white;
 }
 
 .header-stat-value.pitch-1 {
     color: #ff4d4d;
+    margin-left: 4px;
+    padding-left: 6px;
+    border-left: 1px solid #555;
+    height: 12px;
+    display: flex;
+    align-items: center;
 }
 
+/* Red Pitch Stripe */
 .header-stat-value.pitch-2 {
     color: #ffd700;
+    margin-left: 4px;
+    padding-left: 6px;
+    border-left: 1px solid #555;
+    height: 12px;
+    display: flex;
+    align-items: center;
 }
 
 .header-stat-value.pitch-3 {
     color: #4da6ff;
+    margin-left: 4px;
+    padding-left: 6px;
+    border-left: 1px solid #555;
+    height: 12px;
+    display: flex;
+    align-items: center;
 }
 
-/* Mid-stats (Attack/Defense) */
+/* Typography */
+.modal-card-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+    line-height: 1.1;
+}
+
+.modal-card-type {
+    font-size: 1rem;
+    color: #a0a0a0;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+    display: block;
+}
+
+/* Main Stats (Def/Pow) */
 .modal-stats {
     display: flex;
     gap: 2rem;
@@ -239,49 +258,84 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    /* Align left */
-    background: transparent;
-    padding: 0;
-    border: none;
-    min-width: auto;
+    gap: 0.25rem;
 }
 
 .stat-label {
     font-size: 0.7rem;
     text-transform: uppercase;
     color: #666;
-    margin-bottom: 0.25rem;
     letter-spacing: 0.05em;
 }
 
 .stat-value {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1.25rem;
-    font-weight: 500;
+    font-weight: 600;
     color: #e0e0e0;
 }
 
-/* Card Text */
+/* Card Text Box */
 .modal-text {
-    background-color: rgba(255, 255, 255, 0.05);
-    /* Very subtle bg */
+    background-color: #1a1a1a;
     padding: 1.5rem;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
     margin-bottom: 2rem;
     line-height: 1.6;
     color: #d1d1d1;
-    font-style: normal;
     font-size: 0.95rem;
+    border-left: 3px solid #333;
+    /* Accent line */
 }
 
-/* Collection Controls / Market Section */
-.modal-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    padding-top: 1.5rem;
-    margin-top: auto;
+/* Signature Weapon */
+.signature-weapon-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.related-card-display {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.related-card-display img {
+    width: 50px;
+    border-radius: 4px;
+}
+
+.related-name {
+    font-weight: 700;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+}
+
+.related-meta {
+    color: #888;
+    font-size: 0.8rem;
+}
+
+/* Meta Info */
+.modal-meta-info {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 1rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1.5rem;
 }
 
 .modal-set-info,
@@ -297,17 +351,91 @@
     margin-right: 0.5rem;
 }
 
+/* Footer Actions */
+.modal-actions-footer {
+    margin-top: auto;
+    /* Push to bottom */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Market Button */
 .cardmarket-button {
-    background-color: #0055cc !important;
-    /* Vivid Blue */
-    border-radius: 6px !important;
-    font-size: 1rem !important;
-    padding: 1rem !important;
-    transition: filter 0.2s !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0066cc !important;
+    /* Brighter Blue */
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: background-color 0.2s;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+    /* Ensure padding doesn't overflow width */
 }
 
 .cardmarket-button:hover {
-    filter: brightness(1.2);
+    background-color: #0052a3 !important;
+}
+
+.market-disclaimer {
+    font-size: 0.7rem;
+    color: #666;
+    margin-top: -0.5rem;
+    font-style: italic;
+}
+
+/* Collection Controls */
+.collection-controls {
+    margin-top: 0.5rem;
+    padding: 0;
+    /* Clear padding from legacy */
+    background: transparent;
+    /* Clear bg */
+    border: none;
+}
+
+.controls-buttons {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.add-btn {
+    flex: 1;
+    background: #2d2d2d;
+    border: 1px solid #404040;
+    color: #e0e0e0;
+    padding: 0.75rem;
+}
+
+.add-btn:hover {
+    background: #3d3d3d;
+}
+
+.remove-btn-outline {
+    flex: 1;
+    background: transparent;
+    border: 1px solid #d32f2f;
+    color: #ef5350;
+    padding: 0.75rem;
+}
+
+.add-wants-btn {
+    width: auto;
+    padding: 0 1rem;
+    background: transparent;
+    border: 1px solid #404040;
+    color: #888;
+}
+
+.add-wants-btn:hover {
+    color: #ffcc00;
+    border-color: #ffcc00;
 }
 
 /* Version Selector as Chips at Bottom */
