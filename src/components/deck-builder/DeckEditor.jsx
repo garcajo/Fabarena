@@ -54,7 +54,8 @@ const DeckEditor = ({ deck, setDeckData, onBack }) => {
             const response = await CardService.getCards({
                 ...filters,
                 clase: classesToFetch, // Override class filter to enforce restriction + user selection
-                pageSize: 20
+                pageSize: 20,
+                includeWhiteBorder: false
             });
             setAvailableCards(response.data || []);
         } catch (error) {
@@ -108,6 +109,7 @@ const DeckEditor = ({ deck, setDeckData, onBack }) => {
                             filters={filters}
                             onFilterChange={handleFilterChange}
                             isLoading={loading}
+                            includeWhiteBorder={false}
                         />
                     </div>
 

@@ -189,7 +189,10 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                 params.pageSize = 500;
 
                 console.log('🌐 Fetching cards with params:', params);
-                const { data } = await CardService.getCards(params);
+                const { data } = await CardService.getCards({
+                    ...params,
+                    includeWhiteBorder: false
+                });
                 console.log(`📥 Received ${data?.length || 0} cards from API`);
                 let processingResults = data || [];
 
