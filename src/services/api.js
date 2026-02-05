@@ -254,9 +254,12 @@ export const CardService = {
                     query = query.not('set_code', 'in', `(${WHITE_BORDER_SETS.join(',')})`);
                 }
 
-                // 2. Search by name
+                // 2. Search by name (Smarter multi-word handling)
                 if (search) {
-                    query = query.ilike('name', `%${search}%`);
+                    const terms = search.trim().split(/\s+/).filter(Boolean);
+                    terms.forEach(term => {
+                        query = query.ilike('name', `%${term}%`);
+                    });
                 }
 
                 // 3. Filter by Class (can be array or string)

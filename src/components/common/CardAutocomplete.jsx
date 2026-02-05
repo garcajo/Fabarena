@@ -45,141 +45,147 @@ const CardAutocomplete = ({
             return;
         }
 
-        setLoading(true);
-        try {
-            // Fetch a small number of results for autocomplete
-            const response = await CardService.getCards({
-                search: term,
-                pageSize: 10
+        if (response.data) {
+            // First pass: Deduplicate by name
+            response.data.forEach(card => {
+                if (!seenNames.has(card.name)) {
+                    seenNames.add(card.name);
+                    uniqueCards.push(card);
+                }
             });
-            // Deduplicate by name for the suggestion list
-            const uniqueCards = [];
-            const seenNames = new Set();
 
-            if (response.data) {
-                response.data.forEach(card => {
-                    if (!seenNames.has(card.name)) {
-                        seenNames.add(card.name);
-                        uniqueCards.push(card);
-                    }
-                });
-            }
+            // Second pass: Smart sorting to prioritize "Starts with" or "Exact match"
+            const lowerTerm = term.toLowerCase();
+            uniqueCards.sort((a, b) => {
+                const aName = a.name.toLowerCase();
+                const bName = b.name.toLowerCase();
 
-            setSuggestions(uniqueCards);
-            setShowSuggestions(true);
-        } catch (error) {
-            console.error("Error fetching suggestions:", error);
-            setSuggestions([]);
-        } finally {
-            setLoading(false);
+                const aStarts = aName.startsWith(lowerTerm);
+                const bStarts = bName.startsWith(lowerTerm);
+
+                if (aStarts && !bStarts) return -1;
+                if (!aStarts && bStarts) return 1;
+
+                // If both start with it or both don't, sort alphabetically/length
+                return aName.length - bName.length || aName.localeCompare(bName);
+            });
         }
-    };
 
-    const handleInputChange = (e) => {
-        const val = e.target.value;
-        setInputValue(val);
-        onChange(val); // Propagate change to parent immediately for typing
+        setSuggestions(uniqueCards.slice(0, 10)); // Top 10 unique results
+        setShowSuggestions(true);
+    } catch (error) {
+        console.error("Error fetching suggestions:", error);
+        setSuggestions([]);
+    } finally {
+        setLoading(false);
+    }
+};
 
-        if (searchTimeout.current) clearTimeout(searchTimeout.current);
+const handleInputChange = (e) => {
+    const val = e.target.value;
+    setInputValue(val);
+    onChange(val); // Propagate change to parent immediately for typing
 
-        if (val.length >= 2) {
-            searchTimeout.current = setTimeout(() => {
-                fetchSuggestions(val);
-            }, 300);
+    if (searchTimeout.current) clearTimeout(searchTimeout.current);
+
+    if (val.length >= 2) {
+        searchTimeout.current = setTimeout(() => {
+            fetchSuggestions(val);
+        }, 300);
+    } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+    }
+};
+
+const handleKeyDown = (e) => {
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        setSelectedIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : prev));
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        setSelectedIndex(prev => (prev > 0 ? prev - 1 : -1));
+    } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+            selectSuggestion(suggestions[selectedIndex]);
         } else {
-            setSuggestions([]);
+            onSearch(inputValue);
             setShowSuggestions(false);
         }
-    };
-
-    const handleKeyDown = (e) => {
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            setSelectedIndex(prev => (prev < suggestions.length - 1 ? prev + 1 : prev));
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            setSelectedIndex(prev => (prev > 0 ? prev - 1 : -1));
-        } else if (e.key === 'Enter') {
-            e.preventDefault();
-            if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-                selectSuggestion(suggestions[selectedIndex]);
-            } else {
-                onSearch(inputValue);
-                setShowSuggestions(false);
-            }
-        } else if (e.key === 'Escape') {
-            setShowSuggestions(false);
-        }
-    };
-
-    const selectSuggestion = (card) => {
-        setInputValue(card.name);
-        onChange(card.name);
-        onSearch(card.name); // Trigger the search with the full name
+    } else if (e.key === 'Escape') {
         setShowSuggestions(false);
-        setSuggestions([]);
-    };
+    }
+};
 
-    const clearSearch = () => {
-        setInputValue('');
-        onChange('');
-        onSearch('');
-        setSuggestions([]);
-        setShowSuggestions(false);
-    };
+const selectSuggestion = (card) => {
+    setInputValue(card.name);
+    onChange(card.name);
+    onSearch(card.name); // Trigger the search with the full name
+    setShowSuggestions(false);
+    setSuggestions([]);
+};
 
-    return (
-        <div className={`card-autocomplete-container ${unstyled ? 'unstyled' : ''}`} ref={containerRef}>
-            <div className={`card-autocomplete-input-wrapper ${unstyled ? 'unstyled' : ''} ${wrapperClassName}`}>
-                {showIcon && <Search size={18} className="autocomplete-search-icon" />}
-                <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    onKeyDown={handleKeyDown}
-                    onFocus={() => inputValue.length >= 2 && setShowSuggestions(true)}
-                    placeholder={placeholder || t('filters.search_placeholder')}
-                    disabled={disabled}
-                    className={`card-autocomplete-input ${inputClassName}`}
-                />
-                {inputValue && (
-                    <button
-                        className="clear-search-btn"
-                        onClick={clearSearch}
-                        aria-label="Clear search"
-                        type="button"
-                    >
-                        <X size={14} />
-                    </button>
-                )}
-            </div>
+const clearSearch = () => {
+    setInputValue('');
+    onChange('');
+    onSearch('');
+    setSuggestions([]);
+    setShowSuggestions(false);
+};
 
-            {showSuggestions && (suggestions.length > 0 || loading) && (
-                <div className="card-autocomplete-dropdown">
-                    {loading ? (
-                        <div className="autocomplete-loading">{t('common.loading')}...</div>
-                    ) : (
-                        suggestions.map((card, index) => (
-                            <div
-                                key={card.id || index}
-                                className={`autocomplete-item ${index === selectedIndex ? 'selected' : ''}`}
-                                onClick={() => selectSuggestion(card)}
-                                onMouseEnter={() => setSelectedIndex(index)}
-                            >
-                                <span className="autocomplete-card-name">{card.name}</span>
-                                <div className="autocomplete-card-meta">
-                                    {card.pitch && (
-                                        <span className={`pitch-dot pitch-${card.pitch}`}></span>
-                                    )}
-                                    <span className="card-class-info">{card.clase} {card.tipo}</span>
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
+return (
+    <div className={`card-autocomplete-container ${unstyled ? 'unstyled' : ''}`} ref={containerRef}>
+        <div className={`card-autocomplete-input-wrapper ${unstyled ? 'unstyled' : ''} ${wrapperClassName}`}>
+            {showIcon && <Search size={18} className="autocomplete-search-icon" />}
+            <input
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                onFocus={() => inputValue.length >= 2 && setShowSuggestions(true)}
+                placeholder={placeholder || t('filters.search_placeholder')}
+                disabled={disabled}
+                className={`card-autocomplete-input ${inputClassName}`}
+            />
+            {inputValue && (
+                <button
+                    className="clear-search-btn"
+                    onClick={clearSearch}
+                    aria-label="Clear search"
+                    type="button"
+                >
+                    <X size={14} />
+                </button>
             )}
         </div>
-    );
+
+        {showSuggestions && (suggestions.length > 0 || loading) && (
+            <div className="card-autocomplete-dropdown">
+                {loading ? (
+                    <div className="autocomplete-loading">{t('common.loading')}...</div>
+                ) : (
+                    suggestions.map((card, index) => (
+                        <div
+                            key={card.id || index}
+                            className={`autocomplete-item ${index === selectedIndex ? 'selected' : ''}`}
+                            onClick={() => selectSuggestion(card)}
+                            onMouseEnter={() => setSelectedIndex(index)}
+                        >
+                            <span className="autocomplete-card-name">{card.name}</span>
+                            <div className="autocomplete-card-meta">
+                                {card.pitch && (
+                                    <span className={`pitch-dot pitch-${card.pitch}`}></span>
+                                )}
+                                <span className="card-class-info">{card.clase} {card.tipo}</span>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        )}
+    </div>
+);
 };
 
 export default CardAutocomplete;
