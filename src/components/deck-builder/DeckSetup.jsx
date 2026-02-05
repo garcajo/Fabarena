@@ -295,14 +295,14 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     position: relative;
                     display: flex;
                     align-items: center;
-                    gap: 1.25rem;
+                    gap: 2rem;
                     background: rgba(255, 255, 255, 0.04);
                     border: 1px solid rgba(255, 255, 255, 0.08);
                     border-radius: 16px;
-                    padding: 0 1.5rem;
+                    padding: 0 2.5rem;
                     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     margin: 0 auto;
-                    max-width: 500px;
+                    max-width: 600px;
                 }
                 .premium-input-wrapper:focus-within {
                     background: rgba(255, 255, 255, 0.06);
@@ -319,10 +319,11 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
                     color: var(--color-primary-red, #ef4444);
                 }
                 .setup-name-input {
+                    flex: 1;
                     width: 100%;
                     background: transparent;
                     border: none;
-                    padding: 1.5rem 0.5rem;
+                    padding: 1.5rem 0;
                     font-size: 1.5rem;
                     color: white;
                     transition: all 0.3s;
