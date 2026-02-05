@@ -82,7 +82,7 @@ const CardAutocomplete = ({
                 });
             }
 
-            setSuggestions(uniqueCards.slice(0, 10)); // Top 10 unique results
+            setSuggestions(uniqueCards.slice(0, 4)); // Top 4 unique results
             setShowSuggestions(true);
         } catch (error) {
             console.error("Error fetching suggestions:", error);
