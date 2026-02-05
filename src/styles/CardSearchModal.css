@@ -394,3 +394,40 @@
     aspect-ratio: 2.5/3.5;
     /* Ensure consistent hero aspect ratio */
 }
+/* Equipment Origin Filters */
+.equipment-origin-filters {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.filter-pill-btn {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.filter-pill-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-main);
+}
+
+.filter-pill-btn.active {
+    background: rgba(220, 38, 38, 0.15);
+    border-color: var(--color-primary-red);
+    color: var(--color-primary-red);
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.2);
+}

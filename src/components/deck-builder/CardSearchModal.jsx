@@ -6,6 +6,9 @@ import { isCardBanned } from '../../data/bannedCards';
 import { isCardLegalForHero } from '../../utils/deckValidation';
 import '../../styles/CardSearchModal.css';
 
+
+const KNOWN_TALENTS = ['Elemental', 'Ice', 'Earth', 'Lightning', 'Draconic', 'Light', 'Shadow', 'Mystic'];
+
 const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
     const { t } = useLanguage();
     const [searchTerm, setSearchTerm] = useState('');
@@ -13,8 +16,41 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('weapon'); // 'weapon', 'head', 'chest', 'arms', 'legs', 'off-hand'
 
+    // Feature: Class / Talent / Generic Filters (Only for Equipment)
+    const [parsedHero, setParsedHero] = useState({ class: '', talents: [], isGeneric: false });
+    const [activeFilters, setActiveFilters] = useState({
+        class: true,
+        talent: true,
+        generic: true
+    });
+
     // Debug: Log what type we're searching for
     console.log('CardSearchModal - Type:', type, 'Hero Class:', heroClass);
+
+    // Parse Hero Class on mount/change
+    useEffect(() => {
+        if (!heroClass || type !== 'equipment') return;
+
+        const parts = heroClass.split(/[\s\/]+/).filter(Boolean);
+        const talents = parts.filter(p => KNOWN_TALENTS.includes(p));
+        // Class is whatever is NOT a talent (and typically implies exclusion of 'Hero' if it exists, though usually clean)
+        const classes = parts.filter(p => !KNOWN_TALENTS.includes(p) && p !== 'Hero');
+        // Taking the last one usually works for "Shadow Runeblade" -> Runeblade. "Draconic Ninja" -> Ninja.
+        const primaryClass = classes.length > 0 ? classes[classes.length - 1] : '';
+
+        setParsedHero({
+            class: primaryClass,
+            talents: talents,
+            isGeneric: false
+        });
+    }, [heroClass, type]);
+
+    const toggleFilter = (filterType) => {
+        setActiveFilters(prev => ({
+            ...prev,
+            [filterType]: !prev[filterType]
+        }));
+    };
 
     // Filter results based on active tab (local filtering)
     const getFilteredResults = () => {
@@ -22,15 +58,36 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
 
         return results.filter(card => {
             const tipo = (card.tipo || '').toLowerCase();
+            const cardClassLower = (card.clase || '').toLowerCase();
+
+            // 1. Slot Filter (Tabs)
+            let matchesSlot = true;
             switch (activeTab) {
-                case 'weapon': return tipo.includes('weapon') || tipo.includes('arma');
-                case 'head': return tipo.includes('head') || tipo.includes('cabeza');
-                case 'chest': return tipo.includes('chest') || tipo.includes('pecho');
-                case 'arms': return tipo.includes('arms') || tipo.includes('brazos');
-                case 'legs': return tipo.includes('legs') || tipo.includes('piernas');
-                case 'off-hand': return tipo.includes('off-hand') || tipo.includes('mano-secundaria');
-                default: return true;
+                case 'weapon': matchesSlot = tipo.includes('weapon') || tipo.includes('arma'); break;
+                case 'head': matchesSlot = tipo.includes('head') || tipo.includes('cabeza'); break;
+                case 'chest': matchesSlot = tipo.includes('chest') || tipo.includes('pecho'); break;
+                case 'arms': matchesSlot = tipo.includes('arms') || tipo.includes('brazos'); break;
+                case 'legs': matchesSlot = tipo.includes('legs') || tipo.includes('piernas'); break;
+                case 'off-hand': matchesSlot = tipo.includes('off-hand') || tipo.includes('mano-secundaria'); break;
+                default: matchesSlot = true;
             }
+            if (!matchesSlot) return false;
+
+            // 2. Class/Talent/Generic Filter
+            // Logic: If filter is OFF, hide cards that MATCH that category.
+            const isGeneric = cardClassLower.includes('generic');
+            const matchesClass = parsedHero.class && cardClassLower.includes(parsedHero.class.toLowerCase());
+            // Check matching any hero talent
+            const matchesTalent = parsedHero.talents.some(t => cardClassLower.includes(t.toLowerCase()));
+
+            if (isGeneric && !activeFilters.generic) return false;
+            if (matchesClass && !activeFilters.class && !isGeneric) return false; // !isGeneric check to avoid hiding generic class cards if they overlap? usually distinct.
+            if (matchesTalent && !activeFilters.talent) return false;
+
+            // If card is neither generic, nor matches class, nor matches talent... (unlikely given query params, but possible)
+            // Keep it visible if it passed slot check? Or strict? 
+            // Stick to strict exclusion: If it IS X and X is OFF, hide. All else show.
+            return true;
         });
     };
 
@@ -219,6 +276,34 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                         autoFocus={window.innerWidth > 768}
                     />
                 </div>
+
+                {/* Origin Filters (Class/Talent/Generic) */}
+                {type === 'equipment' && (parsedHero.class || parsedHero.talents.length > 0) && (
+                    <div className="equipment-origin-filters">
+                        {parsedHero.class && (
+                            <button
+                                className={`filter-pill-btn ${activeFilters.class ? 'active' : ''}`}
+                                onClick={() => toggleFilter('class')}
+                            >
+                                {parsedHero.class}
+                            </button>
+                        )}
+                        {parsedHero.talents.length > 0 && (
+                            <button
+                                className={`filter-pill-btn ${activeFilters.talent ? 'active' : ''}`}
+                                onClick={() => toggleFilter('talent')}
+                            >
+                                {parsedHero.talents.join('/')}
+                            </button>
+                        )}
+                        <button
+                            className={`filter-pill-btn ${activeFilters.generic ? 'active' : ''}`}
+                            onClick={() => toggleFilter('generic')}
+                        >
+                            Generic
+                        </button>
+                    </div>
+                )}
 
                 {renderTabs()}
 
