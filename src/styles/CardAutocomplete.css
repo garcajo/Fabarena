@@ -1,0 +1,154 @@
+/* CardAutocomplete.css */
+
+.card-autocomplete-container {
+    position: relative;
+    width: 100%;
+    z-index: 50;
+    /* Ensure dropdown appears above other content */
+}
+
+.card-autocomplete-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg-card);
+    /* Fallback or match theme */
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 0 0.75rem;
+    transition: all 0.2s ease;
+    height: 42px;
+    /* Standardize height */
+}
+
+.card-autocomplete-input-wrapper:focus-within {
+    border-color: var(--color-primary-gold);
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+.card-autocomplete-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    padding: 0.5rem;
+    width: 100%;
+    outline: none;
+}
+
+.card-autocomplete-input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.search-icon {
+    color: var(--color-text-muted);
+    min-width: 18px;
+}
+
+.clear-search-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    margin-left: 0.5rem;
+    transition: all 0.2s;
+}
+
+.clear-search-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-text);
+}
+
+/* Dropdown Styles */
+.card-autocomplete-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #1a1a1a;
+    /* Dark background */
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    margin-top: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    max-height: 300px;
+    overflow-y: auto;
+    border-top: none;
+    /* Make it look connected? Optional */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border) transparent;
+}
+
+.autocomplete-loading {
+    padding: 1rem;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+.autocomplete-item {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background-color 0.15s;
+}
+
+.autocomplete-item:last-child {
+    border-bottom: none;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item.selected {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.autocomplete-card-name {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.autocomplete-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+}
+
+.pitch-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.pitch-1 {
+    background-color: var(--color-pitch-red, #ff4d4d);
+    box-shadow: 0 0 4px var(--color-pitch-red, #ff4d4d);
+}
+
+.pitch-2 {
+    background-color: var(--color-pitch-yellow, #ffd700);
+    box-shadow: 0 0 4px var(--color-pitch-yellow, #ffd700);
+}
+
+.pitch-3 {
+    background-color: var(--color-pitch-blue, #4da6ff);
+    box-shadow: 0 0 4px var(--color-pitch-blue, #4da6ff);
+}
+
+.card-class-info {
+    opacity: 0.7;
+    font-style: italic;
+}

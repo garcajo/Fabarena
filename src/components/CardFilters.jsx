@@ -3,7 +3,8 @@ import { Search } from 'lucide-react';
 import { CardService } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import { CLASSES, TALENTS } from '../data/constants';
-import CustomSelect from './common/CustomSelect'; // Import our new component
+import CustomSelect from './common/CustomSelect';
+import CardAutocomplete from './common/CardAutocomplete'; // Import Autocomplete
 import '../styles/CardFilters.css';
 
 /**
@@ -204,15 +205,10 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
         <div className="card-filters">
             <div className="card-filters__controls">
                 <div className="card-filters__search">
-                    <Search size={18} className="search-icon" />
-                    <input
-                        type="text"
-                        placeholder={t('filters.search_placeholder')}
+                    <CardAutocomplete
                         value={localSearch}
-                        onChange={handleSearchChange}
-                        onKeyDown={handleSearchCheck}
-                        onBlur={handleSearchBlur}
-                        className="card-filters__input"
+                        onChange={(val) => setLocalSearch(val)}
+                        onSearch={(val) => onFilterChange({ ...filters, search: val })}
                         disabled={isLoading}
                     />
                 </div>
