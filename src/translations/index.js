@@ -125,7 +125,8 @@ export const translations = {
             hero: 'Hero',
             stats: 'Stats',
             zoom: 'Zoom',
-            export: 'Export'
+            export: 'Export',
+            change: 'Change'
         },
         auth: {
             register_title: 'Create Account',
@@ -655,7 +656,8 @@ export const translations = {
             hero: 'Héroe',
             stats: 'Estadísticas',
             zoom: 'Zoom',
-            export: 'Exportar'
+            export: 'Exportar',
+            change: 'Cambiar'
         },
         auth: {
             register_title: 'Crear Cuenta',
