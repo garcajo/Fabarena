@@ -219,7 +219,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                         {versions.length > 1 && (
                             <div className="version-selector-container">
                                 <label htmlFor="version-select" className="version-label">
-                                    {t('card.versions') || 'Versions'}
+                                    Card Versions
                                 </label>
                                 <select
                                     id="version-select"
