@@ -474,6 +474,10 @@ export const translations = {
             list_unavailable: 'This list may have been deleted or is no longer shared.',
             cards: 'cards',
             empty_shared: 'This list has no cards yet'
+        },
+        footer: {
+            copyright: 'Flesh and Blood™ and all associated assets are property of',
+            rights: 'All rights reserved.'
         }
     },
     es: {
@@ -952,6 +956,10 @@ export const translations = {
             list_unavailable: 'Esta lista puede haber sido eliminada o ya no está compartida.',
             cards: 'cartas',
             empty_shared: 'Esta lista no tiene cartas'
+        },
+        footer: {
+            copyright: 'Flesh and Blood™ y todos los activos asociados son propiedad de',
+            rights: 'Todos los derechos reservados.'
         }
     }
 };

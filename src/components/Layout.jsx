@@ -2,6 +2,7 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
 import AdBanner from './AdBanner';
+import { useLanguage } from '../context/LanguageContext';
 import '../styles/Layout.css';
 
 /**
@@ -11,6 +12,7 @@ import '../styles/Layout.css';
  */
 const Layout = ({ children }) => {
     const location = useLocation();
+    const { t } = useLanguage();
 
     // Hide bottom banner on pages that have a top banner to avoid redundancy/clutter
     const hideBottomBanner = ['/decks', '/my-decks', '/cards', '/collection'].some(path => location.pathname.startsWith(path));
@@ -27,7 +29,7 @@ const Layout = ({ children }) => {
                     {!hideBottomBanner && <AdBanner position="bottom" />}
 
                     <p style={{ opacity: 0.7, fontSize: '0.85rem', marginTop: '1rem' }}>
-                        &copy; {new Date().getFullYear()} FabArena. Flesh and Blood™ and all associated assets are property of <a href="https://fabtcg.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>Legend Story Studios</a>. All rights reserved.
+                        &copy; {new Date().getFullYear()} FabArena. {t('footer.copyright')} <a href="https://fabtcg.com" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>Legend Story Studios</a>. {t('footer.rights')}
                     </p>
                 </div>
             </footer>
