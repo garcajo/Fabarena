@@ -484,8 +484,15 @@ const DeckBuilder = () => {
             try {
                 const searchParams = {
                     search: searchTerm,
-                    pageSize: 50
+                    pageSize: 200 // Increased buffer for better client-side filtering
                 };
+
+                // Filter by Hero traits at the server level to get relevant results
+                if (deckData.hero) {
+                    // Extract traits: e.g. "Draconic Ninja" -> ['draconic', 'ninja', 'generic']
+                    const traits = deckData.hero.clase.toLowerCase().split(/\s+/).filter(Boolean);
+                    searchParams.clase = [...traits, 'generic'];
+                }
 
                 // Silver Age format restriction: Only Common and Rare cards
                 if (deckData.format === 'silver') {

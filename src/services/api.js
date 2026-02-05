@@ -239,7 +239,7 @@ export const CardService = {
             pitch = '',
             costo = '',
             type = '',
-            includeWhiteBorder = false
+            includeWhiteBorder = true
         } = options;
 
         try {
@@ -570,11 +570,19 @@ export const CardService = {
             if (names.length < 5) console.log("[api.js] Names:", names); // inspect names if few
             if (data?.length === 0) console.warn("[api.js] WARNING: No cards found for names:", names);
 
-            // Filter sets if needed (white border)
-            const filtered = data.filter(c => !WHITE_BORDER_SETS.includes(c.set_code));
-            console.log(`[api.js] After WB filter: ${filtered.length}`);
+            // Returning all found cards (deduplicating by name client-side if multiple printings found)
+            const uniqueCards = [];
+            const seen = new Set();
+            (data || []).forEach(card => {
+                const key = `${card.name}|${card.pitch || ''}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueCards.push(card);
+                }
+            });
 
-            return { data: filtered, error: null };
+            console.log(`[api.js] After deduplication: ${uniqueCards.length}`);
+            return { data: uniqueCards, error: null };
         } catch (error) {
             return { data: null, error: error.message };
         }
