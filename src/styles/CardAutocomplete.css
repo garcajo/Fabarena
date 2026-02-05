@@ -3,8 +3,6 @@
 .card-autocomplete-container {
     position: relative;
     width: 100%;
-    z-index: 1000;
-    /* Ensure dropdown appears above other content */
 }
 
 .card-autocomplete-input-wrapper {
@@ -100,6 +98,8 @@
     border-radius: 8px;
     margin-top: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    /* Ensure dropdown appears above other content */
     max-height: 300px;
     overflow-y: auto;
     border-top: none;
