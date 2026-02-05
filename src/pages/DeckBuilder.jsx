@@ -1365,22 +1365,25 @@ const DeckBuilder = () => {
                             className="gem-export-btn"
                             onClick={handleGemExport}
                             style={{
-                                background: 'rgba(255, 255, 255, 0.05)',
-                                border: '1px solid rgba(255, 255, 255, 0.2)',
-                                color: 'var(--color-text-main)',
-                                padding: '0.5rem',
+                                background: 'rgba(59, 130, 246, 0.15)',
+                                border: '1px solid rgba(59, 130, 246, 0.3)',
+                                color: '#93c5fd',
+                                padding: '0.5rem 0.875rem',
                                 borderRadius: '8px',
                                 cursor: 'pointer',
-                                fontSize: '0.9rem',
+                                fontSize: '0.85rem',
+                                fontWeight: '600',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                width: '36px',
-                                height: '36px'
+                                gap: '0.5rem',
+                                height: '36px',
+                                transition: 'all 0.2s'
                             }}
                             title={t('deckBuilder.exportGem') || 'Export for GEM'}
                         >
-                            <FileText size={18} />
+                            <FileText size={16} />
+                            <span className="export-text">{t('common.export') || 'Export'}</span>
                         </button>
 
 

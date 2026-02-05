@@ -124,7 +124,8 @@ export const translations = {
             max: 'MAX',
             hero: 'Hero',
             stats: 'Stats',
-            zoom: 'Zoom'
+            zoom: 'Zoom',
+            export: 'Export'
         },
         auth: {
             register_title: 'Create Account',
@@ -248,7 +249,7 @@ export const translations = {
         },
         deckBuilder: {
             deckName: 'Deck Name',
-            deckNamePlaceholder: 'Epic Deck Name...',
+            deckNamePlaceholder: 'Choose your deck name...',
             setup: {
                 title: 'Begin Your Journey',
                 subtitle: 'Give your deck a name and choose your battle format.',
@@ -653,7 +654,8 @@ export const translations = {
             max: 'MAX',
             hero: 'Héroe',
             stats: 'Estadísticas',
-            zoom: 'Zoom'
+            zoom: 'Zoom',
+            export: 'Exportar'
         },
         auth: {
             register_title: 'Crear Cuenta',
@@ -768,7 +770,7 @@ export const translations = {
         },
         deckBuilder: {
             deckName: 'Nombre del Mazo',
-            deckNamePlaceholder: 'Nombre Épico del Mazo...',
+            deckNamePlaceholder: 'Elige el nombre de tu mazo...',
             setup: {
                 title: 'Comienza tu Viaje',
                 subtitle: 'Dale un nombre a tu mazo y elige el formato de batalla.',
