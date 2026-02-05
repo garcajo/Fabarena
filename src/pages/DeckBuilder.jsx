@@ -776,30 +776,49 @@ const DeckBuilder = () => {
     };
 
     const handleGemExport = () => {
-        let text = '';
+        let text = "";
 
-        // Flatten all sections into one list
-        // Format: Count Name (color)
+        // Metadata
+        if (deckData.name) text += `${deckData.name}\n`;
+        text += `Hero: ${deckData.hero?.name || 'Unknown Hero'}\n`;
+        text += `Format: ${deckData.format === 'cc' ? 'Classic Constructed' : 'Silver Age'}\n\n`;
 
         // 1. Weapons & Equipment
-        // We assume count 1 for equipment unless specified otherwise (usually is unique objects in array)
-        deckData.equipment.forEach(c => {
-            text += `1 ${c.name}\n`;
-        });
+        const weapons = deckData.equipment.filter(c =>
+            (c.tipo || c.card_type || '').toLowerCase().includes('weapon') ||
+            (c.tipo || c.card_type || '').toLowerCase().includes('arma')
+        );
+        const equipment = deckData.equipment.filter(c => !weapons.includes(c));
+
+        if (weapons.length > 0) {
+            text += "Weapons:\n";
+            weapons.forEach(c => text += `1 ${c.name}\n`);
+            text += "\n";
+        }
+
+        if (equipment.length > 0) {
+            text += "Equipment:\n";
+            equipment.forEach(c => text += `1 ${c.name}\n`);
+            text += "\n";
+        }
 
         // 2. Main Deck
-        deckData.mainDeck.forEach(item => {
-            const card = item.card;
-            let pColor = '';
-            if (card.pitch === 1) pColor = 'red';
-            else if (card.pitch === 2) pColor = 'yel';
-            else if (card.pitch === 3) pColor = 'blu';
-
-            text += `${item.count} ${card.name}${pColor ? ` (${pColor})` : ''}\n`;
-        });
+        if (deckData.mainDeck.length > 0) {
+            text += "Main Deck:\n";
+            deckData.mainDeck.forEach(item => {
+                const card = item.card;
+                let pColor = '';
+                if (card.pitch === 1) pColor = 'red';
+                else if (card.pitch === 2) pColor = 'yel';
+                else if (card.pitch === 3) pColor = 'blu';
+                text += `${item.count} ${card.name}${pColor ? ` (${pColor})` : ''}\n`;
+            });
+            text += "\n";
+        }
 
         // 3. Sideboard
         if (deckData.sideboard && deckData.sideboard.length > 0) {
+            text += "Sideboard:\n";
             deckData.sideboard.forEach(item => {
                 const card = item.card;
                 let pColor = '';
