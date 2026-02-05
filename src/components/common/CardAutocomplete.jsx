@@ -69,7 +69,7 @@ const CardAutocomplete = ({
                 uniqueCards.sort((a, b) => a.name.localeCompare(b.name));
             }
 
-            setSuggestions(uniqueCards.slice(0, 4)); // Top 4 unique results
+            setSuggestions(uniqueCards.slice(0, 3)); // Top 3 unique results
             setShowSuggestions(true);
         } catch (error) {
             console.error("Error fetching suggestions:", error);
