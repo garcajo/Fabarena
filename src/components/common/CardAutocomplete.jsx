@@ -65,21 +65,8 @@ const CardAutocomplete = ({
                     }
                 });
 
-                // Second pass: Smart sorting to prioritize "Starts with" or "Exact match"
-                const lowerTerm = term.toLowerCase();
-                uniqueCards.sort((a, b) => {
-                    const aName = a.name.toLowerCase();
-                    const bName = b.name.toLowerCase();
-
-                    const aStarts = aName.startsWith(lowerTerm);
-                    const bStarts = bName.startsWith(lowerTerm);
-
-                    if (aStarts && !bStarts) return -1;
-                    if (!aStarts && bStarts) return 1;
-
-                    // If both start with it or both don't, sort alphabetically/length
-                    return aName.length - bName.length || aName.localeCompare(bName);
-                });
+                // Second pass: Pure Alphabetical sorting for consistency
+                uniqueCards.sort((a, b) => a.name.localeCompare(b.name));
             }
 
             setSuggestions(uniqueCards.slice(0, 4)); // Top 4 unique results
