@@ -47,8 +47,6 @@
     max-width: 500px;
     display: flex;
     align-items: center;
-    overflow: visible;
-    z-index: 20;
 }
 
 .hero-search-icon {
@@ -305,65 +303,20 @@
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
-/* Hero Autocomplete Overrides */
-/* Hero Autocomplete Overrides */
-.hero-autocomplete-wrapper {
+
+/* Ensure the search container allows the dropdown to be visible */
+.hero-search {
+    position: relative;
     width: 100%;
-    /* Original Input Padding: 1.125rem 1.25rem 1.125rem 3.25rem */
-    /* We keep left padding for the absolute icon */
-    /* We increase right padding to accommodate the absolute Search button + internal clear X */
-    padding: 0.75rem 9rem 0.75rem 3.25rem !important;
-
-    /* Original Visuals */
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04)) !important;
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 999px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
-
-    height: auto !important;
-    min-height: 3.5rem;
-    /* ~56px to match original feel */
-    gap: 0.5rem !important;
+    max-width: 500px;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+    /* CRITICAL for dropdown */
+    z-index: 20;
 }
 
-.hero-autocomplete-wrapper:focus-within {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.08)) !important;
-    border-color: rgba(220, 38, 38, 0.6) !important;
-    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.15), 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-    transform: translateY(-2px);
-}
-
-.hero-autocomplete-input {
-    font-size: 1.1rem !important;
-    padding: 0 !important;
-    color: var(--text-primary) !important;
-    height: 100% !important;
-}
-
-[data-theme='light'] .hero-autocomplete-wrapper {
-    background-color: #ffffff !important;
-    background: #ffffff !important;
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-}
-
-[data-theme='light'] .hero-autocomplete-wrapper:focus-within {
-    border-color: var(--color-primary-red) !important;
-    box-shadow: 0 0 0 4px rgba(197, 34, 34, 0.1) !important;
-}
-
-[data-theme='light'] .hero-autocomplete-input {
-    color: #111 !important;
-}
-
-/* Ensure dropdown respects rounded corners or stays below */
-.hero-autocomplete-wrapper+.card-autocomplete-dropdown {
-    border-radius: 12px;
-    margin-top: 12px;
-    overflow: hidden;
-    background: rgba(20, 20, 20, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+/* Minimal adjustment for the autocomplete container to span full width correctly */
+.hero-search .card-autocomplete-container {
+    width: 100%;
 }

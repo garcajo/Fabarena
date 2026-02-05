@@ -29,6 +29,19 @@
     background: rgba(0, 0, 0, 0.4);
 }
 
+.card-autocomplete-input-wrapper.unstyled {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    height: auto !important;
+    box-shadow: none !important;
+}
+
+.card-autocomplete-input.unstyled {
+    padding: 0 !important;
+}
+
+
 .card-autocomplete-input-wrapper:hover {
     border-color: rgba(255, 255, 255, 0.25);
 }

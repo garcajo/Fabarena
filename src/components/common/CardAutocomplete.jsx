@@ -12,7 +12,8 @@ const CardAutocomplete = ({
     disabled,
     wrapperClassName = '',
     inputClassName = '',
-    showIcon = true
+    showIcon = true,
+    unstyled = false
 }) => {
     const { t } = useLanguage();
     const [inputValue, setInputValue] = useState(value || '');
@@ -128,8 +129,8 @@ const CardAutocomplete = ({
     };
 
     return (
-        <div className="card-autocomplete-container" ref={containerRef}>
-            <div className={`card-autocomplete-input-wrapper ${wrapperClassName}`}>
+        <div className={`card-autocomplete-container ${unstyled ? 'unstyled' : ''}`} ref={containerRef}>
+            <div className={`card-autocomplete-input-wrapper ${unstyled ? 'unstyled' : ''} ${wrapperClassName}`}>
                 {showIcon && <Search size={18} className="autocomplete-search-icon" />}
                 <input
                     type="text"
