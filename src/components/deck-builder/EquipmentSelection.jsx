@@ -5,12 +5,23 @@ import { useLanguage } from '../../context/LanguageContext';
 import { isCardLegalForHero } from '../../utils/deckValidation';
 import '../../styles/CardGrid.css';
 
+const KNOWN_TALENTS = ['Elemental', 'Ice', 'Earth', 'Lightning', 'Draconic', 'Light', 'Shadow', 'Mystic'];
+
 const EquipmentSelection = ({ hero, onSelect, onBack }) => {
     const [equipment, setEquipment] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [debugInfo, setDebugInfo] = useState({ fetched: 0, filtered: 0, first: '', last: '' });
+
+    // Filters State
+    const [parsedHero, setParsedHero] = useState({ class: '', talents: [], isGeneric: false });
+    const [activeFilters, setActiveFilters] = useState({
+        class: true,
+        talent: true,
+        generic: true
+    });
+
     const { t } = useLanguage();
 
     useEffect(() => {
@@ -59,6 +70,32 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
         fetchEquipment();
     }, [hero]);
 
+    // Parse Hero Class on mount/change
+    useEffect(() => {
+        if (!hero || !hero.clase) return;
+
+        const parts = hero.clase.split(/[\s\/]+/).filter(Boolean);
+        const talents = parts.filter(p => KNOWN_TALENTS.includes(p));
+        // Class is whatever is NOT a talent (and typically implies exclusion of 'Hero' if it exists, though usually clean)
+        // Adjust for multi-word classes if necessary, but FAB usually has "Talent Class" structure.
+        const classes = parts.filter(p => !KNOWN_TALENTS.includes(p) && p !== 'Hero');
+        // Taking the last one usually works for "Shadow Runeblade" -> Runeblade. "Draconic Ninja" -> Ninja.
+        const primaryClass = classes.length > 0 ? classes[classes.length - 1] : '';
+
+        setParsedHero({
+            class: primaryClass,
+            talents: talents,
+            isGeneric: false // Hero itself isn't generic usually
+        });
+    }, [hero]);
+
+    const toggleFilter = (type) => {
+        setActiveFilters(prev => ({
+            ...prev,
+            [type]: !prev[type]
+        }));
+    };
+
     // Sorting: Class-Specific > Talent-Specific > Generic, then by Name
     const sortedEquipment = [...equipment].sort((a, b) => {
         const aClase = (a.clase || '').toLowerCase();
@@ -84,7 +121,51 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
     const filteredEquipment = sortedEquipment.filter(card => {
         const matchesSearch = card.name.toLowerCase().includes(searchTerm.toLowerCase());
         const isLegal = isCardLegalForHero(card.clase, hero.clase);
-        return matchesSearch && isLegal;
+
+        if (!matchesSearch || !isLegal) return false;
+
+        // Filter Logic
+        const cardClassLower = (card.clase || '').toLowerCase();
+        const isGeneric = cardClassLower.includes('generic');
+
+        // 1. Generic Check
+        if (isGeneric) {
+            return activeFilters.generic;
+        }
+
+        // 2. Class Check
+        // If card matches the hero's primary class (e.g. Runeblade)
+        const matchesClass = parsedHero.class && cardClassLower.includes(parsedHero.class.toLowerCase());
+
+        // 3. Talent Check
+        // If card matches any of the hero's talents (e.g. Shadow)
+        const matchesTalent = parsedHero.talents.some(t => cardClassLower.includes(t.toLowerCase()));
+
+        // If card is purely class-based (e.g. "Runeblade Equipment") -> Controlled by class filter
+        // If card is purely talent-based (e.g. "Shadow Equipment") -> Controlled by talent filter
+        // If card is "Shadow Runeblade Equipment" -> It typically shows if EITHER relevant filter is on?
+        // Or should strictly follow categories?
+        // Let's go with:
+        // if it matches Class, check class filter.
+        // if it matches Talent, check talent filter.
+        // If it matches BOTH, show if AT LEAST ONE matches? Or require both?
+        // User asked for "un filtro que permita elegir la clase... y otro por talento".
+        // Let's assume inclusive OR for display if it matches multiple traits, 
+        // BUT usually users want to toggle "OFF" things.
+        // If I toggle OFF "Shadow", I expect Shadow cards to disappear.
+        // So if it matches Talent and TalentFilter is OFF -> Hide.
+        // If it matches Class and ClassFilter is OFF -> Hide.
+
+        // Strict Exclusion Logic:
+        if (matchesTalent && !activeFilters.talent) return false;
+        if (matchesClass && !activeFilters.class) return false;
+
+        // If it didn't match either (rare legal card?), show it? 
+        // or if it matched neither but passed legality? (e.g. special cases).
+        // Let's ensure at least one match logic if we are strictly filtering categories.
+        // But simply "If it IS X and X is disabled, hide it" is safer.
+
+        return true;
     });
 
     useEffect(() => {
@@ -141,6 +222,32 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
                     className="hero-search-input"
                     style={{ paddingLeft: '40px', width: '100%', boxSizing: 'border-box' }}
                 />
+            </div>
+
+            {/* Filter Bar */}
+            <div className="equipment-filter-bar" style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                {parsedHero.class && (
+                    <button
+                        className={`filter-btn ${activeFilters.class ? 'active' : ''}`}
+                        onClick={() => toggleFilter('class')}
+                    >
+                        {parsedHero.class}
+                    </button>
+                )}
+                {parsedHero.talents.length > 0 && (
+                    <button
+                        className={`filter-btn ${activeFilters.talent ? 'active' : ''}`}
+                        onClick={() => toggleFilter('talent')}
+                    >
+                        {parsedHero.talents.join(' / ')}
+                    </button>
+                )}
+                <button
+                    className={`filter-btn ${activeFilters.generic ? 'active' : ''}`}
+                    onClick={() => toggleFilter('generic')}
+                >
+                    Generic
+                </button>
             </div>
 
             {loading && <div className="loading-spinner">{t('common.loading')}</div>}
