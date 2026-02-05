@@ -121,7 +121,7 @@ const CardAutocomplete = ({ value, onChange, onSearch, placeholder, disabled }) 
     return (
         <div className="card-autocomplete-container" ref={containerRef}>
             <div className="card-autocomplete-input-wrapper">
-                <Search size={18} className="search-icon" />
+                <Search size={18} className="autocomplete-search-icon" />
                 <input
                     type="text"
                     value={inputValue}

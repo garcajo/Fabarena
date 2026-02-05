@@ -49,7 +49,7 @@
     color: var(--color-text-muted);
 }
 
-.search-icon {
+.autocomplete-search-icon {
     color: var(--color-text-muted);
     min-width: 18px;
 }
