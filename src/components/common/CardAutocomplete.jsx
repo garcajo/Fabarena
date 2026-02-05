@@ -13,7 +13,8 @@ const CardAutocomplete = ({
     wrapperClassName = '',
     inputClassName = '',
     showIcon = true,
-    unstyled = false
+    unstyled = false,
+    includeWhiteBorder = true
 }) => {
     const { t } = useLanguage();
     const [inputValue, setInputValue] = useState(value || '');
@@ -50,7 +51,8 @@ const CardAutocomplete = ({
             // Fetch a larger buffer to account for printings
             const response = await CardService.getCards({
                 search: term,
-                pageSize: 50
+                pageSize: 50,
+                includeWhiteBorder
             });
 
             const uniqueCards = [];

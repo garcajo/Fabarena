@@ -14,7 +14,7 @@ import '../styles/CardFilters.css';
  * @param {Function} props.onFilterChange - Callback al cambiar filtros
  * @param {boolean} props.isLoading - Indica si se están cargando datos
  */
-const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
+const CardFilters = ({ filters, onFilterChange, isLoading = false, includeWhiteBorder = true }) => {
     // console.log('Current Filters:', filters); // Reduce noise
     const { t } = useLanguage();
     // Estado local para el input de búsqueda
@@ -210,6 +210,7 @@ const CardFilters = ({ filters, onFilterChange, isLoading = false }) => {
                         onChange={(val) => setLocalSearch(val)}
                         onSearch={(val) => onFilterChange({ ...filters, search: val })}
                         disabled={isLoading}
+                        includeWhiteBorder={includeWhiteBorder}
                     />
                 </div>
 
