@@ -598,29 +598,38 @@
         width: 36px;
         height: 36px;
         z-index: 200;
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(12px);
     }
 
     .modal-body {
         flex-direction: column;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
+    /* CRITICAL: Image section must not collapse */
     .modal-image-section {
         width: 100%;
-        padding: 4rem 1rem 1.5rem 1rem;
-        min-height: auto;
+        padding: 4.5rem 1rem 1.5rem 1rem;
+        min-height: 45vh;
+        flex-shrink: 0;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .modal-card-image {
-        max-height: 50vh;
+        max-height: 40vh;
+        height: auto;
         width: auto;
-        max-width: 100%;
+        max-width: 90%;
         border-radius: 12px;
+        object-fit: contain;
     }
 
     .zoom-btn {
@@ -630,7 +639,7 @@
         height: 40px;
     }
 
-    /* CRITICAL FIX: Version selector for mobile - change to static positioning */
+    /* Version selector - static positioning below image */
     .version-selector-container {
         position: static;
         transform: none;
@@ -652,9 +661,11 @@
         padding-right: 30px;
     }
 
+    /* Details section - scrollable */
     .modal-details-section {
-        padding: 1.5rem 1rem;
+        padding: 1.5rem 1rem 2rem 1rem;
         overflow-y: visible;
+        flex-shrink: 1;
     }
 
     .modal-header-main {
@@ -664,10 +675,11 @@
     .modal-card-title {
         font-size: 1.75rem;
         line-height: 1.2;
+        word-break: break-word;
     }
 
     .modal-card-type {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .modal-stats-dashboard {
@@ -677,7 +689,7 @@
     }
 
     .dashboard-stat {
-        padding: 0.7rem;
+        padding: 0.7rem 0.5rem;
     }
 
     .stat-icon-wrapper {
@@ -690,7 +702,7 @@
     }
 
     .stat-value {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
     }
 
     .modal-text-content {
@@ -701,8 +713,8 @@
     }
 
     .text-scroll-area {
-        font-size: 1rem;
-        line-height: 1.65;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
 
     .signature-weapon-section {
@@ -720,11 +732,11 @@
     }
 
     .related-name {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     .related-meta {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
     }
 
     .modal-meta-grid {
@@ -735,7 +747,7 @@
 
     .cardmarket-button {
         padding: 1.1rem 1.4rem;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 
     .controls-buttons {
@@ -744,13 +756,13 @@
 
     .add-btn,
     .remove-btn-outline {
-        height: 50px;
-        font-size: 0.9rem;
+        height: 48px;
+        font-size: 0.85rem;
     }
 
     .add-wants-btn {
-        width: 50px;
-        height: 50px;
+        width: 48px;
+        height: 48px;
     }
 }
 
