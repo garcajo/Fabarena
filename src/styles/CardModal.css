@@ -464,6 +464,20 @@
     border-radius: 6px;
 }
 
+.related-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.25rem;
+}
+
+.related-meta {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 0.15rem;
+}
+
+
 /* Footer & Actions Area */
 .modal-actions-footer {
     margin-top: auto;
@@ -568,13 +582,25 @@
 /* Mobile Responsiveness Improvements */
 @media (max-width: 900px) {
     .modal-overlay {
-        padding: 1rem;
+        padding: 0;
+        align-items: flex-start;
     }
 
     .modal-content {
-        height: 95vh;
-        max-height: none;
-        border-radius: 16px;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        max-width: 100%;
+    }
+
+    .modal-close {
+        top: 1rem;
+        right: 1rem;
+        width: 36px;
+        height: 36px;
+        z-index: 200;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(12px);
     }
 
     .modal-body {
@@ -584,52 +610,250 @@
 
     .modal-image-section {
         width: 100%;
-        padding: 2rem;
+        padding: 1.5rem 1rem;
+        min-height: auto;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .modal-card-image {
-        max-height: 40vh;
+        max-height: 35vh;
+        border-radius: 12px;
+    }
+
+    .zoom-btn {
+        bottom: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Version selector adjustments for mobile */
+    .version-selector-container {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        transform: none;
+        margin-top: 1rem;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .version-dropdown {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 8px 10px;
     }
 
     .modal-details-section {
-        padding: 2rem;
+        padding: 1.5rem 1rem;
         overflow-y: visible;
     }
 
+    .modal-header-main {
+        margin-bottom: 1.5rem;
+    }
+
     .modal-card-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        line-height: 1.2;
+    }
+
+    .modal-card-type {
+        font-size: 0.9rem;
     }
 
     .modal-stats-dashboard {
         grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
     }
 
-    .version-selector {
-        position: relative;
-        top: 0;
-        left: 0;
+    .dashboard-stat {
+        padding: 0.6rem;
+    }
+
+    .stat-icon-wrapper {
+        width: 28px;
+        height: 28px;
+    }
+
+    .stat-label {
+        font-size: 0.55rem;
+    }
+
+    .stat-value {
+        font-size: 1.1rem;
+    }
+
+    .modal-text-content {
+        padding: 1rem;
         margin-bottom: 1.5rem;
-        max-width: 100%;
+        max-height: 250px;
+    }
+
+    .text-scroll-area {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .signature-weapon-section {
+        margin-bottom: 2rem;
+    }
+
+    .related-card-display {
+        flex-direction: row;
+        gap: 1rem;
+        padding: 0.75rem;
+    }
+
+    .related-card-display img {
+        width: 50px;
+    }
+
+    .related-name {
+        font-size: 0.9rem;
+    }
+
+    .related-meta {
+        font-size: 0.75rem;
+    }
+
+    .modal-meta-grid {
+        gap: 2rem;
+        padding-top: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .cardmarket-button {
+        padding: 1rem 1.25rem;
+        font-size: 0.9rem;
+    }
+
+    .controls-buttons {
+        flex-wrap: wrap;
+    }
+
+    .add-btn,
+    .remove-btn-outline {
+        height: 48px;
+        font-size: 0.85rem;
+    }
+
+    .add-wants-btn {
+        width: 48px;
+        height: 48px;
     }
 }
 
 @media (max-width: 480px) {
     .modal-overlay {
-        padding: 0.5rem;
+        padding: 0;
+    }
+
+    .modal-close {
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 32px;
+        height: 32px;
+    }
+
+    .modal-image-section {
+        padding: 1rem;
+    }
+
+    .modal-card-image {
+        max-height: 30vh;
+    }
+
+    .modal-details-section {
+        padding: 1rem;
+    }
+
+    .modal-card-title {
+        font-size: 1.5rem;
+    }
+
+    .modal-card-type {
+        font-size: 0.85rem;
     }
 
     .modal-stats-dashboard {
         grid-template-columns: 1fr;
+        gap: 0.5rem;
     }
 
-    .modal-details-section {
-        padding: 1.5rem;
+    .dashboard-stat {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem;
     }
 
-    .modal-card-title {
-        font-size: 1.75rem;
+    .stat-info {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.6rem;
+        margin-bottom: 0;
+    }
+
+    .stat-value {
+        font-size: 1.15rem;
+    }
+
+    .modal-text-content {
+        padding: 0.875rem;
+        margin-bottom: 1.25rem;
+        min-height: 120px;
+        max-height: 200px;
+    }
+
+    .text-scroll-area {
+        font-size: 0.9rem;
+        line-height: 1.55;
+    }
+
+    .modal-meta-grid {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .meta-label {
+        font-size: 0.6rem;
+    }
+
+    .meta-value {
+        font-size: 0.85rem;
+    }
+
+    .cardmarket-button {
+        padding: 0.875rem 1rem;
+        font-size: 0.85rem;
+    }
+
+    .market-disclaimer {
+        font-size: 0.65rem;
+    }
+
+    .controls-buttons {
+        gap: 0.5rem;
+    }
+
+    .add-btn,
+    .remove-btn-outline {
+        height: 44px;
+        font-size: 0.8rem;
+        border-radius: 12px;
+    }
+
+    .add-wants-btn {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
     }
 }
 
