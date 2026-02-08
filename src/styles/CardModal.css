@@ -594,13 +594,17 @@
     }
 
     .modal-close {
-        top: 1rem;
-        right: 1rem;
+        /* Revert to desktop style but positioned for mobile window */
+        top: 0.75rem;
+        right: 0.75rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.6);
         width: 36px;
         height: 36px;
+        border-radius: 50%;
         z-index: 200;
-        background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(12px);
+        backdrop-filter: blur(8px);
     }
 
     .modal-body {
@@ -612,7 +616,7 @@
     /* CRITICAL: Image section must not collapse */
     .modal-image-section {
         width: 100%;
-        padding: 3rem 1rem 1.5rem 1rem;
+        padding: 2.5rem 1rem 1rem 1rem;
         min-height: auto;
         flex-shrink: 0;
         border-right: none;
@@ -634,21 +638,24 @@
     }
 
     .zoom-btn {
+        position: absolute;
         bottom: 1rem;
         right: 1rem;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
+        background: rgba(0, 0, 0, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(4px);
     }
 
     /* Version selector - static positioning below image */
     .version-selector-container {
         position: static;
+        width: 100%;
+        max-width: 240px;
+        margin: 0.75rem auto 0 auto;
         transform: none;
-        margin: 1rem auto;
-        max-width: 280px;
-        width: 90%;
-        left: auto;
-        bottom: auto;
+        text-align: center;
     }
 
     .version-label {
