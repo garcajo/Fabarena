@@ -492,10 +492,41 @@
     transform: translateX(5px);
 }
 
-.related-card-display img {
+.related-image-wrapper {
+    position: relative;
+    cursor: zoom-in;
+    transition: transform 0.2s;
+    flex-shrink: 0;
     width: 60px;
     height: auto;
+}
+
+.related-image-wrapper img {
+    width: 100%;
+    height: auto;
     border-radius: 6px;
+    display: block;
+}
+
+.related-image-wrapper:hover {
+    transform: scale(1.05);
+}
+
+.mini-zoom-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: white;
+}
+
+.related-image-wrapper:hover .mini-zoom-overlay {
+    opacity: 1;
 }
 
 .related-name {

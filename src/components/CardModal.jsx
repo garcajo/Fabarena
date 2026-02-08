@@ -27,7 +27,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
     const [loadingVersions, setLoadingVersions] = useState(false);
     const [signatureWeapon, setSignatureWeapon] = useState(null);
     const [showAddToWants, setShowAddToWants] = useState(false);
-    const [showEnlarged, setShowEnlarged] = useState(false);
+    const [enlargedImage, setEnlargedImage] = useState(null);
 
     // Initial load: Ideally we would fetch the qty from an API
     // For now we start at 0 and just allow incrementing
@@ -134,11 +134,14 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
     // Handle ESC key to close
     useEffect(() => {
         const handleEsc = (e) => {
-            if (e.key === 'Escape') onClose();
+            if (e.key === 'Escape') {
+                if (enlargedImage) setEnlargedImage(null);
+                else onClose();
+            }
         };
         window.addEventListener('keydown', handleEsc);
         return () => window.removeEventListener('keydown', handleEsc);
-    }, [onClose]);
+    }, [onClose, enlargedImage]);
 
     // Prevent scroll on body when modal is open
     useEffect(() => {
@@ -209,7 +212,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                                 className="zoom-btn"
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    setShowEnlarged(true);
+                                    setEnlargedImage(card.imagen);
                                 }}
                                 title={t('common.zoom') || "Zoom"}
                             >
@@ -320,10 +323,19 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                                     {t('card.signature_weapon') || 'Signature Weapon'}
                                 </h3>
                                 <div className="related-card-display">
-                                    <img
-                                        src={signatureWeapon.imagen}
-                                        alt={signatureWeapon.name}
-                                    />
+                                    <div
+                                        className="related-image-wrapper"
+                                        onClick={() => setEnlargedImage(signatureWeapon.imagen)}
+                                        title={t('common.zoom') || 'Zoom'}
+                                    >
+                                        <img
+                                            src={signatureWeapon.imagen}
+                                            alt={signatureWeapon.name}
+                                        />
+                                        <div className="mini-zoom-overlay">
+                                            <ZoomIn size={14} />
+                                        </div>
+                                    </div>
                                     <div>
                                         <div className="related-name">{signatureWeapon.name}</div>
                                         <div className="related-meta">{signatureWeapon.tipo}</div>
@@ -427,20 +439,20 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
             )}
 
             {/* Enlarged Image Overlay */}
-            {showEnlarged && (
+            {enlargedImage && (
                 <div
                     className="enlarged-view-overlay"
-                    onClick={() => setShowEnlarged(false)}
+                    onClick={() => setEnlargedImage(null)}
                 >
                     <button
                         className="enlarged-close-btn"
-                        onClick={() => setShowEnlarged(false)}
+                        onClick={() => setEnlargedImage(null)}
                     >
                         <X size={32} />
                     </button>
                     <img
-                        src={card.imagen}
-                        alt={card.name}
+                        src={enlargedImage}
+                        alt="Enlarged view"
                         className="enlarged-image"
                         onClick={(e) => e.stopPropagation()}
                     />
