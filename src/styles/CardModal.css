@@ -595,23 +595,26 @@
 /* Mobile Responsiveness Improvements */
 @media (max-width: 900px) {
 
-    /* Overlay - full screen dark background */
+    /* Overlay - centered box with padding */
     .modal-overlay {
-        padding: 0;
-        align-items: flex-start;
+        padding: 12px;
+        align-items: center;
         justify-content: center;
     }
 
-    /* Modal content - full screen container */
+    /* Modal content - rounded box container */
     .modal-content {
-        height: 100%;
-        max-height: 100%;
-        border-radius: 0;
+        height: auto;
+        max-height: 94vh;
+        border-radius: 20px;
         width: 100%;
-        max-width: 100%;
-        margin: 0;
+        max-width: 400px;
+        /* Constrain width for phone-like box */
+        margin: 0 auto;
         position: relative;
-        overflow-x: hidden;
+        overflow: hidden;
+        /* Clips children to rounded corners */
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     }
 
     /* Close button - absolute positioned in top right */
