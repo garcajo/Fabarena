@@ -632,17 +632,16 @@
 
     .modal-image-section {
         width: 100%;
-        padding: 4rem 1.5rem 1.5rem 1.5rem;
+        padding: 4rem 1rem 1rem 1rem;
         min-height: auto;
         flex-shrink: 0;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
+        justify-content: flex-start;
+        gap: 1rem;
     }
 
     .image-main-wrapper {
@@ -651,15 +650,14 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        max-width: 280px;
         margin: 0 auto;
     }
 
     .modal-card-image {
-        max-height: 45vh;
+        max-height: 50vh;
         height: auto;
         width: auto;
-        max-width: 100%;
+        max-width: 70%;
         border-radius: 12px;
         object-fit: contain;
         display: block;
@@ -668,8 +666,8 @@
 
     .zoom-btn {
         position: absolute;
-        bottom: 0.75rem;
-        right: 0.75rem;
+        bottom: 0.5rem;
+        right: 15%;
         width: 44px;
         height: 44px;
         background: rgba(0, 0, 0, 0.8);
@@ -684,25 +682,30 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
-    /* Version selector - STATIC position, not overlapping card */
+    /* Version selector - Override base absolute positioning */
     .version-selector-container {
-        position: static;
-        width: 100%;
-        max-width: 280px;
-        margin: 0.5rem auto 0 auto;
+        position: static !important;
+        transform: none !important;
+        left: auto !important;
+        bottom: auto !important;
+        width: 80%;
+        max-width: 250px;
+        margin: 0 auto;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 14px;
         border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .version-label {
-        font-size: 0.6rem;
-        margin-bottom: 4px;
+        font-size: 0.65rem;
+        margin-bottom: 6px;
+        width: 100%;
+        text-align: center;
     }
 
     .version-dropdown {
@@ -710,6 +713,7 @@
         font-size: 0.85rem;
         padding: 10px 12px;
         padding-right: 30px;
+        text-align: center;
     }
 
     .modal-details-section {
@@ -721,6 +725,7 @@
         align-items: center;
         text-align: center;
     }
+
 
     .modal-header-main {
         margin-bottom: 1.5rem;
@@ -794,22 +799,23 @@
 
 @media (max-width: 480px) {
     .modal-overlay {
-        padding: 0.75rem;
+        padding: 0;
     }
 
     .modal-close {
-        top: 0.5rem;
-        right: 0.5rem;
-        width: 32px;
-        height: 32px;
+        top: 0.75rem;
+        right: 0.75rem;
+        width: 36px;
+        height: 36px;
     }
 
     .modal-image-section {
-        padding: 1.5rem 1rem 1rem 1rem;
+        padding: 3rem 1rem 1rem 1rem;
     }
 
     .modal-card-image {
-        max-height: 35vh;
+        max-height: 40vh;
+        max-width: 65%;
     }
 
     .modal-card-title {
