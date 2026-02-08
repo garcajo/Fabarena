@@ -234,7 +234,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                                 >
                                     {versions.map((v) => (
                                         <option key={v.id} value={v.id}>
-                                            {v.set_code} - {v.rareza} {v.pitch ? `(P${v.pitch})` : ''}
+                                            {v.set_code} - {getTranslatedRarity(v.rareza)} {v.pitch ? `(P${v.pitch})` : ''}
                                         </option>
                                     ))}
                                 </select>
@@ -254,7 +254,7 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
                             {card.costo !== undefined && card.costo !== null && (
                                 <div className="dashboard-stat">
                                     <span className="stat-icon-wrapper cost">
-                                        <Zap size={16} fill="currentColor" />
+                                        <Zap size={18} fill="currentColor" />
                                     </span>
                                     <div className="stat-info">
                                         <span className="stat-label">{t('card.cost')}</span>

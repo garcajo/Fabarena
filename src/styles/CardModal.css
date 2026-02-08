@@ -327,7 +327,7 @@
 }
 
 .stat-icon-wrapper.pitch {
-    padding: 4px;
+    padding: 0;
 }
 
 .stat-icon-wrapper.pitch.pitch-1 {
@@ -348,7 +348,10 @@
 .pitch-dots {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    height: 18px;
+    justify-content: center;
+    align-items: center;
 }
 
 .pitch-dot {
