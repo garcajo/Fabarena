@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Search, Plus, X, Save, ArrowLeft, MessageSquare, Beaker, BookOpen, Eye, Pencil, FileQuestion, Heart, Shield, Layers, ArrowRightLeft, HelpCircle, FileText } from 'lucide-react';
+import { Search, Plus, X, Save, ArrowLeft, MessageSquare, Beaker, BookOpen, Eye, Pencil, FileQuestion, Heart, Shield, Layers, ArrowRightLeft, HelpCircle, FileText, Download } from 'lucide-react';
 import { CardService, DeckService } from '../services/api';
 import { StorageService } from '../services/storage';
 import { useLanguage } from '../context/LanguageContext';
@@ -1407,22 +1407,19 @@ const DeckBuilder = () => {
                                 background: 'rgba(59, 130, 246, 0.15)',
                                 border: '1px solid rgba(59, 130, 246, 0.3)',
                                 color: '#93c5fd',
-                                padding: '0.5rem 0.875rem',
+                                padding: '0.5rem',
                                 borderRadius: '8px',
                                 cursor: 'pointer',
-                                fontSize: '0.85rem',
-                                fontWeight: '600',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                gap: '0.5rem',
+                                width: '36px',
                                 height: '36px',
                                 transition: 'all 0.2s'
                             }}
                             title={t('deckBuilder.exportGem') || 'Export for GEM'}
                         >
-                            <FileText size={16} />
-                            <span className="export-text">{t('common.export') || 'Export'}</span>
+                            <Download size={18} />
                         </button>
 
 
