@@ -6,16 +6,17 @@ export const HERO_SIGNATURES = {
     "Kassai of the Golden Sand": ["Cintari Saber"],
     "Boltyn": ["Raydn, Duskbane"],
     "Ser Boltyn, Breaker of Dawn": ["Raydn, Duskbane"],
-    "Olympia": ["Prized Fighter"], // Using specialization or common weapon? Olympia uses axes usually? Or maybe "Decimator"
+    "Olympia": ["Decimator Greataxe"],
+    "Olympia, Prized Fighter": ["Decimator Greataxe"],
 
     // Guardians
     "Bravo": ["Anothos"],
     "Bravo, Showstopper": ["Anothos"],
     "Oldhim": ["Winter's Wail"],
-    "Valda": ["Earthlore Bounty"], // Not a weapon. Hammer?
+    "Valda": ["Anothos"],
     "Victor Goldmane": ["Miller's Grindstone"],
-    "Betsy": ["Good Time Chime"],
-    "Yoji": ["Ironrot Helm"], // Wait, weapon?
+    "Betsy": ["Miller's Grindstone", "High Riser"],
+    "Yoji": ["Anothos"],
 
     // Brutes
     "Rhinar": ["Romping Club"],
@@ -39,12 +40,15 @@ export const HERO_SIGNATURES = {
     "Viserai": ["Nebula Blade"],
     "Chane": ["Galaxxi Black"],
     "Briar": ["Rosetta Thorn"],
-    "Vynnset": ["Flail of Agony"], // Or widespread annihilation? 
+    "Vynnset": ["Flail of Agony"],
+    "Florian": ["Rotwood Reaper"],
+    "Aurora": ["Starfall"],
 
     // Wizard
     "Kano": ["Crucible of Aetherweave"],
     "Iyslander": ["Waning Moon"],
-    "Oscilio": ["Voltic Bolt"], // ?
+    "Oscilio": ["Volzar, the Lightning Rod"],
+    "Verdance": ["Staff of Verdant Shoots"],
 
     // Mechanologist
     "Dash": ["Teklo Plasma Pistol"],
@@ -55,16 +59,17 @@ export const HERO_SIGNATURES = {
     // Illusionist
     "Prism": ["Luminaris"],
     "Dromai": ["Storm of Sandikai"],
-    "Enigma": ["Cosmos, Scroll of Ancestral Tapestry"], // ?
+    "Enigma": ["Cosmo, Scroll of Ancestral Tapestry"],
 
     // Assassin
     "Arakni": ["Spider's Bite"],
     "Uzuri": ["Spider's Bite"],
-    "Nuu": ["Beckon Apparition"], // ?
+    "Nuu": ["Beckoning Mistblade"],
 
     // Generic/Others
     "Kavdaen": ["Talishar, the Lost Prince"],
-    "Genis": ["Talishar, the Lost Prince"]
+    "Genis": ["Talishar, the Lost Prince"],
+    "Shiyana": ["Talishar, the Lost Prince"]
 };
 
 // Helper to normalize hero name to find signature
