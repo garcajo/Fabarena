@@ -805,8 +805,16 @@
 
     .text-scroll-area {
         font-size: 0.85rem;
-        line-height: 1.5;
-        text-align: center;
+        line-height: 1.6;
+        text-align: left;
+        /* Left alignment is better for reading rules and keeping punctuation inside */
+        white-space: pre-wrap;
+        /* Preserves card text line breaks */
+        overflow-wrap: break-word;
+        /* Ensures long words don't escape */
+        word-break: break-word;
+        padding: 4px;
+        color: rgba(255, 255, 255, 0.9);
     }
 
     /* Meta grid - set and rarity */
