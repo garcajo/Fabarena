@@ -196,24 +196,26 @@ const CardModal = ({ card: initialCard, onClose, onCollectionUpdate, children })
 
                 <div className="modal-body">
                     <div className="modal-image-section">
-                        {card.imagen ? (
-                            <img src={card.imagen} alt={card.name} className="modal-card-image" />
-                        ) : (
-                            <div className="card-placeholder large">
-                                <span>{card.name}</span>
-                            </div>
-                        )}
+                        <div className="image-main-wrapper">
+                            {card.imagen ? (
+                                <img src={card.imagen} alt={card.name} className="modal-card-image" />
+                            ) : (
+                                <div className="card-placeholder large">
+                                    <span>{card.name}</span>
+                                </div>
+                            )}
 
-                        <button
-                            className="zoom-btn"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setShowEnlarged(true);
-                            }}
-                            title={t('common.zoom') || "Zoom"}
-                        >
-                            <ZoomIn size={20} />
-                        </button>
+                            <button
+                                className="zoom-btn"
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setShowEnlarged(true);
+                                }}
+                                title={t('common.zoom') || "Zoom"}
+                            >
+                                <ZoomIn size={20} />
+                            </button>
+                        </div>
 
                         {/* Version/Set Selector Dropdown */}
                         {versions.length > 1 && (

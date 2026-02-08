@@ -104,6 +104,7 @@
 }
 
 .modal-card-image {
+    display: block;
     width: 100%;
     height: auto;
     max-height: 60vh;
@@ -117,11 +118,21 @@
     transform: scale(1.02) translateY(-5px);
 }
 
+/* Image Main Wrapper - Holds image + zoom btn */
+.image-main-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
+
 /* Zoom Button Overlay */
 .zoom-btn {
     position: absolute;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 1rem;
+    right: 1rem;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.1);
     color: white;
@@ -134,6 +145,7 @@
     cursor: pointer;
     transition: all 0.2s;
     backdrop-filter: blur(8px);
+    z-index: 5;
 }
 
 .zoom-btn:hover {
@@ -579,6 +591,7 @@
 }
 
 /* Mobile Responsiveness Improvements */
+/* Mobile Responsiveness Improvements */
 @media (max-width: 900px) {
     .modal-overlay {
         padding: 1.5rem;
@@ -594,7 +607,6 @@
     }
 
     .modal-close {
-        /* Revert to desktop style but positioned for mobile window */
         top: 0.75rem;
         right: 0.75rem;
         background: rgba(255, 255, 255, 0.05);
@@ -613,7 +625,6 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    /* CRITICAL: Image section must not collapse */
     .modal-image-section {
         width: 100%;
         padding: 2.5rem 1rem 1rem 1rem;
@@ -628,38 +639,49 @@
         justify-content: center;
     }
 
+    .image-main-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        width: fit-content;
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
     .modal-card-image {
         max-height: 40vh;
         height: auto;
         width: auto;
-        max-width: 90%;
+        max-width: 100%;
         border-radius: 12px;
         object-fit: contain;
     }
 
     .zoom-btn {
         position: absolute;
-        top: auto;
-        bottom: 15%;
-        /* Position relative to image height approximate */
-        right: 1rem;
-        width: 36px;
-        height: 36px;
-        background: rgba(0, 0, 0, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        bottom: 0.5rem;
+        right: 0.5rem;
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 50%;
         backdrop-filter: blur(4px);
         z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    /* Version selector - centered */
     .version-selector-container {
-        position: static;
-        width: auto;
-        min-width: 200px;
-        max-width: 90%;
-        margin: 1rem auto 0 auto;
-        transform: none;
+        width: 100%;
+        max-width: 280px;
+        margin: 1.5rem auto 0 auto;
         text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .version-label {
@@ -673,12 +695,10 @@
         padding-right: 30px;
     }
 
-    /* Details section - scrollable */
     .modal-details-section {
         padding: 1.5rem;
-        overflow-y: auto;
+        overflow-y: visible;
         flex-shrink: 1;
-        max-height: 50vh;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -687,6 +707,7 @@
 
     .modal-header-main {
         margin-bottom: 1.5rem;
+        width: 100%;
     }
 
     .modal-card-title {
@@ -710,19 +731,7 @@
 
     .dashboard-stat {
         padding: 0.7rem 0.5rem;
-    }
-
-    .stat-icon-wrapper {
-        width: 28px;
-        height: 28px;
-    }
-
-    .stat-label {
-        font-size: 0.55rem;
-    }
-
-    .stat-value {
-        font-size: 1.05rem;
+        min-width: 70px;
     }
 
     .modal-text-content {
@@ -730,6 +739,7 @@
         margin-bottom: 1.5rem;
         max-height: none;
         min-height: auto;
+        width: 100%;
     }
 
     .text-scroll-area {
@@ -737,32 +747,11 @@
         line-height: 1.6;
     }
 
-    .signature-weapon-section {
-        margin-bottom: 2rem;
-    }
-
-    .related-card-display {
-        flex-direction: row;
-        gap: 1rem;
-        padding: 0.85rem;
-    }
-
-    .related-card-display img {
-        width: 55px;
-    }
-
-    .related-name {
-        font-size: 0.9rem;
-    }
-
-    .related-meta {
-        font-size: 0.75rem;
-    }
-
     .modal-meta-grid {
         gap: 1.5rem;
         padding-top: 1.2rem;
         margin-bottom: 1.5rem;
+        display: flex;
         justify-content: center;
         width: 100%;
     }
@@ -770,21 +759,19 @@
     .cardmarket-button {
         padding: 1.1rem 1.4rem;
         font-size: 0.9rem;
+        width: 100%;
     }
 
     .controls-buttons {
         flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
     }
 
     .add-btn,
     .remove-btn-outline {
         height: 48px;
         font-size: 0.85rem;
-    }
-
-    .add-wants-btn {
-        width: 48px;
-        height: 48px;
     }
 }
 
@@ -794,108 +781,31 @@
     }
 
     .modal-close {
-        top: 0.75rem;
-        right: 0.75rem;
+        top: 0.5rem;
+        right: 0.5rem;
         width: 32px;
         height: 32px;
     }
 
     .modal-image-section {
-        padding: 1rem;
+        padding: 1.5rem 1rem 1rem 1rem;
     }
 
     .modal-card-image {
-        max-height: 30vh;
-    }
-
-    .modal-details-section {
-        padding: 1rem;
+        max-height: 35vh;
     }
 
     .modal-card-title {
         font-size: 1.5rem;
     }
 
-    .modal-card-type {
-        font-size: 0.85rem;
-    }
-
     .modal-stats-dashboard {
-        grid-template-columns: 1fr;
         gap: 0.5rem;
     }
 
     .dashboard-stat {
-        flex-direction: row;
-        justify-content: flex-start;
-        gap: 0.75rem;
-        padding: 0.75rem;
-    }
-
-    .stat-info {
-        flex-direction: row;
-        align-items: center;
-        gap: 0.5rem;
-    }
-
-    .stat-label {
-        font-size: 0.6rem;
-        margin-bottom: 0;
-    }
-
-    .stat-value {
-        font-size: 1.15rem;
-    }
-
-    .modal-text-content {
-        padding: 0.875rem;
-        margin-bottom: 1.25rem;
-        min-height: 120px;
-        max-height: 200px;
-    }
-
-    .text-scroll-area {
-        font-size: 0.9rem;
-        line-height: 1.55;
-    }
-
-    .modal-meta-grid {
-        gap: 1.5rem;
-        flex-wrap: wrap;
-    }
-
-    .meta-label {
-        font-size: 0.6rem;
-    }
-
-    .meta-value {
-        font-size: 0.85rem;
-    }
-
-    .cardmarket-button {
-        padding: 0.875rem 1rem;
-        font-size: 0.85rem;
-    }
-
-    .market-disclaimer {
-        font-size: 0.65rem;
-    }
-
-    .controls-buttons {
-        gap: 0.5rem;
-    }
-
-    .add-btn,
-    .remove-btn-outline {
-        height: 44px;
-        font-size: 0.8rem;
-        border-radius: 12px;
-    }
-
-    .add-wants-btn {
-        width: 44px;
-        height: 44px;
-        border-radius: 12px;
+        min-width: 60px;
+        flex: 1 1 40%;
     }
 }
 
@@ -971,7 +881,6 @@
     }
 }
 
-/* Ensure mobile compatibility for zoom */
 @media (max-width: 768px) {
     .enlarged-image {
         max-width: 95vw;
