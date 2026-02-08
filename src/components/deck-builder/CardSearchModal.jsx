@@ -214,6 +214,14 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                 const uniqueMap = new Map();
 
                 if (type === 'hero') {
+                    // Normalize search term for local check as well
+                    const searchLower = searchTerm.toLowerCase();
+
+                    processingResults = processingResults.filter(hero =>
+                        hero.name.toLowerCase().includes(searchLower) ||
+                        (hero.clase && hero.clase.toLowerCase().includes(searchLower))
+                    );
+
                     processingResults.forEach(card => {
                         const key = `${card.name}|${card.imagen}|${card.set_code}`;
                         if (!uniqueMap.has(key)) uniqueMap.set(key, card);

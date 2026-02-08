@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { Plus, Layers, Sword, Calendar, Trash2, FolderInput, X, Heart, MessageSquare, Eye } from 'lucide-react';
 import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
@@ -62,20 +62,28 @@ const DeckList = ({ mode }) => {
     // Folder filter state (only for 'mine' mode)
     const [selectedFolderId, setSelectedFolderId] = React.useState(null);
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const heroParam = searchParams.get('hero') || '';
+    const userParam = searchParams.get('username') || '';
+    const nameParam = searchParams.get('name') || '';
+    const formatParam = searchParams.get('format') || '';
+
     // Active filters for fetching
     const [filters, setFilters] = React.useState({
-        hero: '',
-        username: '',
-        format: '',
-        sort: 'newest'
+        hero: heroParam,
+        username: userParam,
+        name: nameParam,
+        format: formatParam,
+        sort: searchParams.get('sort') || 'newest'
     });
 
     // Temporary filters for input state (manual trigger)
     const [tempFilters, setTempFilters] = React.useState({
-        hero: '',
-        username: '',
-        format: '',
-        sort: 'newest'
+        hero: heroParam,
+        username: userParam,
+        name: nameParam,
+        format: formatParam,
+        sort: searchParams.get('sort') || 'newest'
     });
 
 
@@ -133,10 +141,32 @@ const DeckList = ({ mode }) => {
         loadDecks(filters);
     }, [mode, filters]);
 
+    // Sync with URL changes (e.g. searching from Navbar while already on Decks page)
+    React.useEffect(() => {
+        const newHero = searchParams.get('hero') || '';
+        const newUser = searchParams.get('username') || '';
+        const newName = searchParams.get('name') || '';
+        const newFormat = searchParams.get('format') || '';
+        const newSort = searchParams.get('sort') || 'newest';
+
+        const newFilters = {
+            hero: newHero,
+            username: newUser,
+            name: newName,
+            format: newFormat,
+            sort: newSort
+        };
+
+        setFilters(newFilters);
+        setTempFilters(newFilters);
+    }, [searchParams]);
+
     const handleInputChange = (key, value) => {
         setTempFilters(prev => ({ ...prev, [key]: value }));
-        if (key === 'hero') {
+        if (key === 'hero' && value.length > 0) {
             setShowHeroDropdown(true);
+        } else if (key === 'hero' && value.length === 0) {
+            setShowHeroDropdown(false);
         }
     };
 
@@ -148,6 +178,14 @@ const DeckList = ({ mode }) => {
     const handleSearch = () => {
         // Commit temp filters to active filters to trigger load
         setFilters(tempFilters);
+
+        // Update URL to match search (good for bookmarking/sharing)
+        const newParams = {};
+        if (tempFilters.hero) newParams.hero = tempFilters.hero;
+        if (tempFilters.username) newParams.username = tempFilters.username;
+        if (tempFilters.format) newParams.format = tempFilters.format;
+        if (tempFilters.sort !== 'newest') newParams.sort = tempFilters.sort;
+        setSearchParams(newParams);
     };
 
     const handleKeyDown = (e) => {
