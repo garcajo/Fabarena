@@ -4,6 +4,7 @@ import { usePreloadedData } from '../context/DataPreloadContext';
 import { CardService } from '../services/api';
 import { ShieldBan, AlertTriangle } from 'lucide-react';
 import CardModal from '../components/CardModal';
+import AdBanner from '../components/AdBanner';
 
 const BansPage = () => {
     const { t } = useLanguage();
@@ -78,6 +79,10 @@ const BansPage = () => {
                     <p style={{ color: 'var(--color-text-muted)' }}>
                         {t('bans.subtitle') || "Official list of banned and suspended cards."}
                     </p>
+                </div>
+
+                <div style={{ marginBottom: '2rem' }}>
+                    <AdBanner position="top" />
                 </div>
 
                 {/* Tabs */}

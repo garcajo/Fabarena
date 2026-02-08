@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { usePreloadedData } from '../context/DataPreloadContext';
 import CardGrid from '../components/CardGrid';
 import CardModal from '../components/CardModal';
+import AdBanner from '../components/AdBanner';
 import { useLanguage } from '../context/LanguageContext';
 
 const HeroesPage = () => {
@@ -94,6 +95,10 @@ const HeroesPage = () => {
                             {t('heroesPage.young')}
                         </button>
                     </div>
+                </div>
+
+                <div style={{ marginBottom: '2rem' }}>
+                    <AdBanner position="top" />
                 </div>
 
                 <CardGrid

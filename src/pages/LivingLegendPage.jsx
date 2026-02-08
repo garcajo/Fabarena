@@ -3,6 +3,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { usePreloadedData } from '../context/DataPreloadContext';
 import { CardService } from '../services/api';
 import { Trophy, Crown, Swords } from 'lucide-react';
+import AdBanner from '../components/AdBanner';
 
 const getClassColor = (className) => {
     switch (className?.toLowerCase()) {
@@ -79,6 +80,10 @@ const LivingLegendPage = () => {
                     <h1 style={{ fontSize: '2.5rem', marginBottom: '0.5rem', background: 'linear-gradient(to right, #ffd700, #ffaa00)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
                         {t('livingLegend.title')}
                     </h1>
+                </div>
+
+                <div style={{ marginBottom: '2rem' }}>
+                    <AdBanner position="top" />
                 </div>
 
                 {/* Explanation Section */}

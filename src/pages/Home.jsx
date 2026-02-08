@@ -8,6 +8,7 @@ const Home = () => {
         <div>
             <Hero />
             <div className="container">
+                <AdBanner position="top" />
                 <RecentCards />
             </div>
         </div>
