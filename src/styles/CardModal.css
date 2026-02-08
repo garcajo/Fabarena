@@ -110,6 +110,10 @@
     position: relative;
     border-right: 1px solid rgba(255, 255, 255, 0.05);
     overflow: hidden;
+
+    /* Sync with parent rounding to prevent pixel bleeding */
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
 }
 
 .modal-card-image {
@@ -669,6 +673,10 @@
         justify-content: center;
         gap: 16px;
         box-sizing: border-box;
+
+        /* Sync with parent rounding to prevent picos on mobile */
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
     }
 
     /* Image wrapper - centered with card inside */
