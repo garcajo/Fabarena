@@ -594,12 +594,15 @@
 
 /* Mobile Responsiveness Improvements */
 @media (max-width: 900px) {
+
+    /* Overlay - full screen dark background */
     .modal-overlay {
         padding: 0;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
     }
 
+    /* Modal content - full screen container */
     .modal-content {
         height: 100%;
         max-height: 100%;
@@ -608,103 +611,111 @@
         max-width: 100%;
         margin: 0;
         position: relative;
+        overflow-x: hidden;
     }
 
-    /* Close button - INSIDE the modal, top right */
+    /* Close button - absolute positioned in top right */
     .modal-close {
         position: absolute;
-        top: 0.75rem;
-        right: 0.75rem;
-        background: rgba(0, 0, 0, 0.7);
+        top: 12px;
+        right: 12px;
+        background: rgba(0, 0, 0, 0.8);
         border: 1px solid rgba(255, 255, 255, 0.3);
         color: white;
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        z-index: 100;
+        z-index: 200;
         backdrop-filter: blur(8px);
     }
 
+    /* Modal body - scrollable column layout */
     .modal-body {
         flex-direction: column;
         overflow-y: auto;
+        overflow-x: hidden;
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Image section - centered content */
+    /* ========== IMAGE SECTION ========== */
     .modal-image-section {
         width: 100%;
-        padding: 3.5rem 1rem 1rem 1rem;
+        padding: 60px 20px 20px 20px;
         min-height: auto;
         flex-shrink: 0;
         border-right: none;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 1rem;
+        gap: 16px;
+        box-sizing: border-box;
     }
 
-    /* Image wrapper - holds the card centered */
+    /* Image wrapper - centered with card inside */
     .image-main-wrapper {
         position: relative;
-        display: inline-flex;
+        display: flex;
         justify-content: center;
         align-items: center;
+        width: 100%;
+        max-width: 260px;
+        margin: 0 auto;
     }
 
+    /* Card image */
     .modal-card-image {
-        max-height: 45vh;
+        max-height: 42vh;
         height: auto;
-        width: auto;
-        max-width: 280px;
+        width: 100%;
+        max-width: 100%;
         border-radius: 12px;
         object-fit: contain;
         display: block;
     }
 
-    /* Zoom button - bottom right of the image */
+    /* Zoom button - inside the image wrapper, bottom right */
     .zoom-btn {
         position: absolute;
-        bottom: 0.5rem;
-        right: 0.5rem;
-        width: 40px;
-        height: 40px;
-        background: rgba(0, 0, 0, 0.8);
-        border: 2px solid rgba(255, 255, 255, 0.3);
+        bottom: 8px;
+        right: 8px;
+        width: 38px;
+        height: 38px;
+        background: rgba(0, 0, 0, 0.85);
+        border: 2px solid rgba(255, 255, 255, 0.4);
         color: white;
         border-radius: 50%;
         backdrop-filter: blur(8px);
-        z-index: 15;
+        z-index: 10;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
-    /* Version selector - static, centered below image */
+    /* Version selector - centered below image */
     .version-selector-container {
         position: static !important;
         transform: none !important;
         left: auto !important;
         bottom: auto !important;
-        width: auto;
-        min-width: 200px;
-        max-width: 280px;
+        width: 100%;
+        max-width: 260px;
         margin: 0 auto;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 8px 12px;
+        background: rgba(0, 0, 0, 0.6);
+        padding: 10px 14px;
         border-radius: 10px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        box-sizing: border-box;
     }
 
     .version-label {
         font-size: 0.6rem;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
         width: 100%;
         text-align: center;
     }
@@ -712,83 +723,107 @@
     .version-dropdown {
         width: 100%;
         font-size: 0.8rem;
-        padding: 8px 10px;
+        padding: 8px 12px;
         padding-right: 28px;
+        box-sizing: border-box;
     }
 
-    /* Details section - all centered */
+    /* ========== DETAILS SECTION ========== */
     .modal-details-section {
-        padding: 1.5rem;
+        padding: 20px;
         overflow-y: visible;
+        overflow-x: hidden;
         flex-shrink: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
         width: 100%;
+        box-sizing: border-box;
     }
 
+    /* Header - title and type */
     .modal-header-main {
-        margin-bottom: 1.5rem;
+        margin-bottom: 20px;
         width: 100%;
+        max-width: 320px;
         text-align: center;
     }
 
     .modal-card-title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         line-height: 1.2;
         word-break: break-word;
+        text-align: center;
     }
 
     .modal-card-type {
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        text-align: center;
     }
 
+    /* Stats dashboard */
     .modal-stats-dashboard {
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 1.25rem;
+        gap: 8px;
+        margin-bottom: 16px;
         width: 100%;
+        max-width: 320px;
     }
 
     .dashboard-stat {
-        padding: 0.6rem 0.5rem;
-        min-width: 65px;
+        padding: 8px 6px;
+        min-width: 60px;
+        flex: 0 1 auto;
     }
 
+    /* Text content area */
     .modal-text-content {
-        padding: 1rem;
-        margin-bottom: 1.25rem;
+        padding: 14px;
+        margin-bottom: 16px;
         max-height: none;
         min-height: auto;
         width: 100%;
+        max-width: 320px;
+        box-sizing: border-box;
     }
 
     .text-scroll-area {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         line-height: 1.5;
+        text-align: center;
     }
 
+    /* Meta grid - set and rarity */
     .modal-meta-grid {
-        gap: 1.5rem;
-        padding-top: 1rem;
-        margin-bottom: 1.25rem;
+        gap: 24px;
+        padding-top: 12px;
+        margin-bottom: 16px;
         display: flex;
         justify-content: center;
         width: 100%;
+        max-width: 320px;
     }
 
+    /* ========== ACTIONS FOOTER ========== */
     .modal-actions-footer {
         width: 100%;
-        max-width: 320px;
+        max-width: 300px;
         margin: 0 auto;
+        box-sizing: border-box;
     }
 
     .cardmarket-button {
-        padding: 1rem;
+        padding: 14px 16px;
         font-size: 0.85rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .market-disclaimer {
+        text-align: center;
         width: 100%;
     }
 
@@ -797,15 +832,33 @@
     }
 
     .controls-buttons {
-        flex-wrap: wrap;
+        display: flex;
+        flex-wrap: nowrap;
         justify-content: center;
+        gap: 8px;
         width: 100%;
     }
 
-    .add-btn,
-    .remove-btn-outline {
+    .add-btn {
+        flex: 1;
+        max-width: 140px;
         height: 44px;
-        font-size: 0.8rem;
+        font-size: 0.75rem;
+        padding: 0 10px;
+    }
+
+    .remove-btn-outline {
+        flex: 1;
+        max-width: 100px;
+        height: 44px;
+        font-size: 0.75rem;
+        padding: 0 8px;
+    }
+
+    .add-wants-btn {
+        width: 44px;
+        height: 44px;
+        flex-shrink: 0;
     }
 }
 
