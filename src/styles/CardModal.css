@@ -581,15 +581,16 @@
 /* Mobile Responsiveness Improvements */
 @media (max-width: 900px) {
     .modal-overlay {
-        padding: 0;
-        align-items: flex-start;
+        padding: 1.5rem;
+        align-items: center;
     }
 
     .modal-content {
-        height: 100vh;
-        max-height: 100vh;
-        border-radius: 0;
-        max-width: 100%;
+        height: auto;
+        max-height: 90vh;
+        border-radius: 20px;
+        max-width: 95%;
+        margin: auto;
     }
 
     .modal-close {
@@ -611,8 +612,8 @@
     /* CRITICAL: Image section must not collapse */
     .modal-image-section {
         width: 100%;
-        padding: 4.5rem 1rem 1.5rem 1rem;
-        min-height: 45vh;
+        padding: 3rem 1rem 1.5rem 1rem;
+        min-height: auto;
         flex-shrink: 0;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -643,9 +644,9 @@
     .version-selector-container {
         position: static;
         transform: none;
-        margin-top: 1rem;
-        max-width: 100%;
-        width: 100%;
+        margin: 1rem auto;
+        max-width: 280px;
+        width: 90%;
         left: auto;
         bottom: auto;
     }
@@ -664,8 +665,9 @@
     /* Details section - scrollable */
     .modal-details-section {
         padding: 1.5rem 1rem 2rem 1rem;
-        overflow-y: visible;
+        overflow-y: auto;
         flex-shrink: 1;
+        max-height: 50vh;
     }
 
     .modal-header-main {
@@ -768,7 +770,7 @@
 
 @media (max-width: 480px) {
     .modal-overlay {
-        padding: 0;
+        padding: 0.75rem;
     }
 
     .modal-close {
