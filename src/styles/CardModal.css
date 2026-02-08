@@ -795,6 +795,7 @@
         max-height: 250px;
         /* Internal scroll enabled */
         overflow-y: auto;
+        overflow-x: hidden;
         width: 100%;
         max-width: 320px;
         box-sizing: border-box;
