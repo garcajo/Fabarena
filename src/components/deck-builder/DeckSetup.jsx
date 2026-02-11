@@ -143,7 +143,7 @@ const DeckSetup = ({ onNext, initialData = {} }) => {
 
                         <div
                             className="format-card"
-                            onClick={() => handleFormatSelect('silver')}
+                            onClick={() => handleFormatSelect('sa')}
                         >
                             <div className="format-icon-wrapper">
                                 <Zap size={32} />

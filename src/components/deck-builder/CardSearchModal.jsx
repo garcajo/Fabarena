@@ -4,6 +4,7 @@ import { CardService } from '../../services/api';
 import { useLanguage } from '../../context/LanguageContext';
 import { isCardBanned } from '../../data/bannedCards';
 import { isCardLegalForHero } from '../../utils/deckValidation';
+import { getHeroTraits } from '../../utils/heroTalents';
 import '../../styles/CardSearchModal.css';
 
 
@@ -32,16 +33,25 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
     useEffect(() => {
         if (!heroClass || type !== 'equipment') return;
 
+        // Use getHeroTraits which already maps implicit essences/talents correctly
+        // We create a dummy hero object for getHeroTraits
+        const dummyHero = { name: '', clase: heroClass };
+        // If we have a better way to find the name (like if it was passed in), we should use it.
+        // But heroClass is often enough for the traits helper if it contains standard strings.
+        // Wait, getHeroTraits uses hero.name for the mapping!
+        // I should probably pass heroName to CardSearchModal too, but for now let's hope heroClass is enough.
+        // Actually, heroClass is what we have. Let's see if we can improve this.
+
+        const traits = getHeroTraits(dummyHero);
+
+        // Find the base class (last part that isn't a known talent)
         const parts = heroClass.split(/[\s\/]+/).filter(Boolean);
-        const talents = parts.filter(p => KNOWN_TALENTS.includes(p));
-        // Class is whatever is NOT a talent (and typically implies exclusion of 'Hero' if it exists, though usually clean)
         const classes = parts.filter(p => !KNOWN_TALENTS.includes(p) && p !== 'Hero');
-        // Taking the last one usually works for "Shadow Runeblade" -> Runeblade. "Draconic Ninja" -> Ninja.
         const primaryClass = classes.length > 0 ? classes[classes.length - 1] : '';
 
         setParsedHero({
             class: primaryClass,
-            talents: talents,
+            talents: traits.filter(t => KNOWN_TALENTS.map(kt => kt.toLowerCase()).includes(t.toLowerCase())),
             isGeneric: false
         });
     }, [heroClass, type]);
@@ -172,8 +182,9 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                     // If we have a hero class, pass it to the backend so we don't fetch 500 irrelevant cards
                     // and filter them out client-side (which might result in empty lists).
                     if (heroClass) {
-                        // "Royal Draconic Ninja" -> ['royal', 'draconic', 'ninja', 'generic']
-                        const traits = heroClass.toLowerCase().split(/\s+/).filter(Boolean);
+                        // Use the traits helper for server-side filtering
+                        // Note: dummyHero here too, but in DeckBuilder we should ideally pass the hero record
+                        const traits = getHeroTraits({ name: '', clase: heroClass });
                         params.clase = [...traits, 'generic'];
                     }
 
@@ -181,7 +192,7 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                 }
 
                 // Silver Age format restriction
-                if (format === 'silver') {
+                if (format === 'sa' || format === 'silver') {
                     params.rareza = ['Común', 'Rara', 'Common', 'Rare'];
                 }
 

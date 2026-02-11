@@ -187,7 +187,7 @@ const FormatSelection = ({ onSelect }) => {
                             </ul>
                         </div>
 
-                        <div className="format-card" onClick={() => onSelect('silver')}>
+                        <div className="format-card" onClick={() => onSelect('sa')}>
                             <div className="format-icon">⚡</div>
                             <h2>{t('deckBuilder.formats.sa.title') || defaultFormats.sa.title}</h2>
                             <p>{t('deckBuilder.formats.sa.description') || defaultFormats.sa.description}</p>

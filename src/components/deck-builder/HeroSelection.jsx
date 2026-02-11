@@ -57,7 +57,7 @@ const HeroSelection = ({ onSelect, onBack, format }) => {
                         let isFormatLegal = true;
                         if (format === 'cc' && isYoung) isFormatLegal = false;
                         if (format === 'cc' && isBannedLL) isFormatLegal = false;
-                        if (format === 'silver' && !isYoung) isFormatLegal = false;
+                        if ((format === 'sa' || format === 'silver') && !isYoung) isFormatLegal = false;
 
                         if (isFormatLegal) {
                             seen.add(heroName);

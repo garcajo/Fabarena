@@ -498,7 +498,7 @@ const DeckBuilder = () => {
                 }
 
                 // Silver Age format restriction: Only Common and Rare cards
-                if (deckData.format === 'silver') {
+                if (deckData.format === 'sa' || deckData.format === 'silver') {
                     searchParams.rareza = ['Común', 'Rara', 'Common', 'Rare'];
                 }
 
@@ -611,7 +611,7 @@ const DeckBuilder = () => {
             // So if I move Main -> Side: Remove (Total - 1), Add (Total - 1 + 1) = Total. No change.
             // If I move Maybe -> Main: Add (Total + 1).
 
-            const limit = currentData.format === 'silver' ? 52 : 80;
+            const limit = currentData.format === 'sa' ? 52 : 80;
             return totalActive < limit;
         }
 
@@ -632,7 +632,7 @@ const DeckBuilder = () => {
             // Check limit
             const targetKey = target === 'main' ? 'mainDeck' : target;
             if (!validateDeckLimit(deckData, card, targetKey)) {
-                const limit = deckData.format === 'silver' ? 52 : 80;
+                const limit = deckData.format === 'sa' ? 52 : 80;
                 setToastMessage(`${t('deckBuilder.limitReached')} (Max ${limit})`);
                 setToastType('error');
                 setShowToast(true);
@@ -866,7 +866,7 @@ const DeckBuilder = () => {
 
         if (!isSourceActive && isTargetActive) {
             if (!validateDeckLimit(deckData, card, targetKey)) {
-                const limit = deckData.format === 'sa' ? 55 : 80;
+                const limit = deckData.format === 'sa' ? 52 : 80;
                 setToastMessage(`${t('deckBuilder.limitReached')} (Max ${limit})`);
                 setToastType('error');
                 setShowToast(true);
@@ -950,7 +950,7 @@ const DeckBuilder = () => {
     const maybeboardCards = deckData.maybeboard.reduce((acc, curr) => acc + curr.count, 0);
     const equipmentCount = deckData.equipment.length;
     const tournamentTotal = totalCards + sideboardCards + equipmentCount;
-    const tournamentLimit = deckData.format === 'sa' ? 55 : 80;
+    const tournamentLimit = deckData.format === 'sa' ? 52 : 80;
 
     const [hoveredCard, setHoveredCard] = React.useState(null); // { image: string, side: 'left' | 'right' }
 
