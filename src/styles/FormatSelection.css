@@ -207,3 +207,35 @@
     z-index: 1000;
     padding: 1rem;
 }
+
+@media (max-width: 768px) {
+    .format-selection-container {
+        padding: 4rem 1rem;
+        justify-content: flex-start;
+    }
+
+    .format-title {
+        font-size: 2rem;
+        margin-top: 2rem;
+    }
+
+    .format-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .formats-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .format-card {
+        padding: 1.5rem;
+        min-height: auto;
+    }
+
+    .import-divider {
+        margin: 2rem 0;
+        width: 100%;
+    }
+}
