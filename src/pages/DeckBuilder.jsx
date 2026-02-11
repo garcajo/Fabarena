@@ -7,6 +7,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
 import { isCardBanned } from '../data/bannedCards';
 import { isCardLegalForHero } from '../utils/deckValidation';
+import { getHeroTraits } from '../utils/heroTalents';
 import FormatSelection from '../components/deck-builder/FormatSelection';
 import CardSearchModal from '../components/deck-builder/CardSearchModal';
 import CardVersionPicker from '../components/deck-builder/CardVersionPicker';
@@ -489,9 +490,11 @@ const DeckBuilder = () => {
 
                 // Filter by Hero traits at the server level to get relevant results
                 if (deckData.hero) {
-                    // Extract traits: e.g. "Draconic Ninja" -> ['draconic', 'ninja', 'generic']
-                    const traits = deckData.hero.clase.toLowerCase().split(/\s+/).filter(Boolean);
-                    searchParams.clase = [...traits, 'generic'];
+                    // Extract traits using our new helper which handles implicit Elemental essences (Earth, Ice, Lightning)
+                    const traits = getHeroTraits(deckData.hero);
+                    // Filter out 'hero' or generic terms if needed, but usually redundant as `clase` filter is fuzzy.
+                    // Important: Ensure 'generic' is included if not already (helper includes it).
+                    searchParams.clase = traits;
                 }
 
                 // Silver Age format restriction: Only Common and Rare cards
@@ -511,7 +514,12 @@ const DeckBuilder = () => {
 
                 (data || []).forEach(card => {
                     // 1. Strict Legality Check (especially for multi-trait like Draconic Ninja)
-                    if (deckData.hero && !isCardLegalForHero(card.clase, deckData.hero.clase)) {
+                    // We use the same expanded traits derived above for the search params
+                    // But we need to join them back to a string or ensure validation accepts array.
+                    // deckValidation.js expects string usually? Let's check or just join.
+                    // The helper returns array of lowercase strings. Validation splits strings.
+                    // So joining by space works perfectly.
+                    if (deckData.hero && !isCardLegalForHero(card.clase, traits.join(' '))) {
                         return;
                     }
 
@@ -603,7 +611,7 @@ const DeckBuilder = () => {
             // So if I move Main -> Side: Remove (Total - 1), Add (Total - 1 + 1) = Total. No change.
             // If I move Maybe -> Main: Add (Total + 1).
 
-            const limit = currentData.format === 'sa' ? 55 : 80;
+            const limit = currentData.format === 'silver' ? 52 : 80;
             return totalActive < limit;
         }
 
@@ -624,7 +632,7 @@ const DeckBuilder = () => {
             // Check limit
             const targetKey = target === 'main' ? 'mainDeck' : target;
             if (!validateDeckLimit(deckData, card, targetKey)) {
-                const limit = deckData.format === 'sa' ? 55 : 80;
+                const limit = deckData.format === 'silver' ? 52 : 80;
                 setToastMessage(`${t('deckBuilder.limitReached')} (Max ${limit})`);
                 setToastType('error');
                 setShowToast(true);
