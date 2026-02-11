@@ -5,6 +5,8 @@ import { useLanguage } from '../../context/LanguageContext';
 import { isCardLegalForHero } from '../../utils/deckValidation';
 import '../../styles/CardGrid.css';
 
+import { HERO_TALENTS } from '../../data/heroTalents';
+
 const KNOWN_TALENTS = ['Elemental', 'Ice', 'Earth', 'Lightning', 'Draconic', 'Light', 'Shadow', 'Mystic'];
 
 const EquipmentSelection = ({ hero, onSelect, onBack }) => {
@@ -32,6 +34,14 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
                     ? hero.clase.split(/[\s\/]+/).filter(Boolean)
                     : [];
 
+                // Add Implicit Talents from our mapping (e.g. Briar -> Earth, Lightning)
+                // This fixes missing cards where DB class is just "Elemental Runeblade"
+                const heroNameKey = Object.keys(HERO_TALENTS).find(key => hero.name.includes(key));
+                const implicitTalents = heroNameKey ? HERO_TALENTS[heroNameKey] : [];
+
+                // Combine explicit and implicit keywords for the query
+                const searchKeywords = [...new Set([...heroClassKeywords, ...implicitTalents, 'Generic'])];
+
                 // Broaden types to include Spanish translations just in case
                 const equipmentTypes = [
                     'Equipment', 'Weapon', 'Head', 'Chest', 'Arms', 'Legs', 'Off-Hand',
@@ -39,7 +49,7 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
                 ];
 
                 const { data, error } = await CardService.getCards({
-                    clase: [...heroClassKeywords, 'Generic'],
+                    clase: searchKeywords,
                     pageSize: 5000,
                     type: equipmentTypes,
                     includeWhiteBorder: false
@@ -75,7 +85,14 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
         if (!hero || !hero.clase) return;
 
         const parts = hero.clase.split(/[\s\/]+/).filter(Boolean);
-        const talents = parts.filter(p => KNOWN_TALENTS.includes(p));
+        let talents = parts.filter(p => KNOWN_TALENTS.includes(p));
+
+        // Add Implicit Talents to parsedHero state as well for button filters
+        const heroNameKey = Object.keys(HERO_TALENTS).find(key => hero.name.includes(key));
+        if (heroNameKey) {
+            talents = [...new Set([...talents, ...HERO_TALENTS[heroNameKey]])];
+        }
+
         // Class is whatever is NOT a talent (and typically implies exclusion of 'Hero' if it exists, though usually clean)
         // Adjust for multi-word classes if necessary, but FAB usually has "Talent Class" structure.
         const classes = parts.filter(p => !KNOWN_TALENTS.includes(p) && p !== 'Hero');
@@ -139,6 +156,7 @@ const EquipmentSelection = ({ hero, onSelect, onBack }) => {
 
         // 3. Talent Check
         // If card matches any of the hero's talents (e.g. Shadow)
+        // Use parsedHero.talents which now includes implicit talents (e.g. Earth/Lightning for Briar)
         const matchesTalent = parsedHero.talents.some(t => cardClassLower.includes(t.toLowerCase()));
 
         // If card is purely class-based (e.g. "Runeblade Equipment") -> Controlled by class filter

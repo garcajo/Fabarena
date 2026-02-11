@@ -335,7 +335,7 @@ const DeckList = ({ mode }) => {
                     options={[
                         { value: '', label: t('filters.format_any') || 'Any Format' },
                         { value: 'cc', label: t('filters.format_cc') || 'Classic Constructed' },
-                        { value: 'sa', label: t('filters.format_sa') || 'Silver Age' }
+                        { value: 'silver', label: t('filters.format_sa') || 'Silver Age' }
                     ]}
                     value={tempFilters.format}
                     onChange={(value) => handleInputChange('format', value)}
