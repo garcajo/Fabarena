@@ -1,0 +1,1394 @@
+[
+    {
+        "name": "Savage Claw",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN001.webp"
+    },
+    {
+        "name": "Buzzard Helm",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN002.webp"
+    },
+    {
+        "name": "Predatory Plating",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN003.webp"
+    },
+    {
+        "name": "Skera Strapping",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN004.webp"
+    },
+    {
+        "name": "Shamanic Shinbones",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN005.webp"
+    },
+    {
+        "name": "Reckless Arithmetic",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN006.webp"
+    },
+    {
+        "name": "Lay Down the Challenge",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN007.webp"
+    },
+    {
+        "name": "Rip Off the Top",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN008.webp"
+    },
+    {
+        "name": "Aggressive Pounce",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN009.webp"
+    },
+    {
+        "name": "Aggressive Pounce",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN010.webp"
+    },
+    {
+        "name": "Aggressive Pounce",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN011.webp"
+    },
+    {
+        "name": "Bear Hug",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN012.webp"
+    },
+    {
+        "name": "Bear Hug",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN013.webp"
+    },
+    {
+        "name": "Bear Hug",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN014.webp"
+    },
+    {
+        "name": "Shield Beater",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN015.webp"
+    },
+    {
+        "name": "Enclosed Firemind",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN016.webp"
+    },
+    {
+        "name": "Magmatic Carapace",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN017.webp"
+    },
+    {
+        "name": "Volcanic Vice",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN018.webp"
+    },
+    {
+        "name": "Basalt Boots",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN019.webp"
+    },
+    {
+        "name": "Seismic Shift",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN020.webp"
+    },
+    {
+        "name": "Sense Weakness",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN021.webp"
+    },
+    {
+        "name": "Valahai Riven",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN022.webp"
+    },
+    {
+        "name": "Distant Rumbling",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN023.webp"
+    },
+    {
+        "name": "Distant Rumbling",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN024.webp"
+    },
+    {
+        "name": "Distant Rumbling",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN025.webp"
+    },
+    {
+        "name": "Rites of Earthlore",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN026.webp"
+    },
+    {
+        "name": "Rites of Earthlore",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN027.webp"
+    },
+    {
+        "name": "Rites of Earthlore",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN028.webp"
+    },
+    {
+        "name": "Wind Cutter",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN029.webp"
+    },
+    {
+        "name": "Mask of the Swarming Claw",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN030.webp"
+    },
+    {
+        "name": "Double Cross Strap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN031.webp"
+    },
+    {
+        "name": "Dyed Silk Sleeves",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN032.webp"
+    },
+    {
+        "name": "Two Steps Forward",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN033.webp"
+    },
+    {
+        "name": "Gentle Breeze",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN034.webp"
+    },
+    {
+        "name": "Tigerine Reflex",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN035.webp"
+    },
+    {
+        "name": "Feign Vengeance",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN036.webp"
+    },
+    {
+        "name": "Become the Bottle",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN037.webp"
+    },
+    {
+        "name": "Become the Bottle",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN038.webp"
+    },
+    {
+        "name": "Become the Bottle",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN039.webp"
+    },
+    {
+        "name": "Become the Cup",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN040.webp"
+    },
+    {
+        "name": "Become the Cup",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN041.webp"
+    },
+    {
+        "name": "Become the Cup",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN042.webp"
+    },
+    {
+        "name": "Templar Spellbane",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN043.webp"
+    },
+    {
+        "name": "Helm of Unity",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN044.webp"
+    },
+    {
+        "name": "Plating of Unity",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN045.webp"
+    },
+    {
+        "name": "Gauntlets of Unity",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN046.webp"
+    },
+    {
+        "name": "Pillar of Unity",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN047.webp"
+    },
+    {
+        "name": "Swordmaster's Shine",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN048.webp"
+    },
+    {
+        "name": "Blunten",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN049.webp"
+    },
+    {
+        "name": "Rend Flesh",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN050.webp"
+    },
+    {
+        "name": "Display of Craftsmanship",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN051.webp"
+    },
+    {
+        "name": "Display of Craftsmanship",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN052.webp"
+    },
+    {
+        "name": "Display of Craftsmanship",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN053.webp"
+    },
+    {
+        "name": "Cut n' Carve",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN054.webp"
+    },
+    {
+        "name": "Cut n' Carve",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN055.webp"
+    },
+    {
+        "name": "Cut n' Carve",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN056.webp"
+    },
+    {
+        "name": "Synapse Sparkcap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN057.webp"
+    },
+    {
+        "name": "mBrio Base Vizier",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN058.webp"
+    },
+    {
+        "name": "mBrio Base Cortex",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN059.webp"
+    },
+    {
+        "name": "mBrio Base Digits",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN060.webp"
+    },
+    {
+        "name": "mBrio Base Walkers",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN061.webp"
+    },
+    {
+        "name": "Ghost Protocol: Architect",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN062.webp"
+    },
+    {
+        "name": "Ghost Protocol: Mainframe",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN063.webp"
+    },
+    {
+        "name": "Blast Rig",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN064.webp"
+    },
+    {
+        "name": "Speed Demon",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN065.webp"
+    },
+    {
+        "name": "Teklo Trebuchet 2000",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN066.webp"
+    },
+    {
+        "name": "Assembly Module",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN067.webp"
+    },
+    {
+        "name": "Evo Beta Base Head",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN068.webp"
+    },
+    {
+        "name": "Evo Beta Base Chest",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN069.webp"
+    },
+    {
+        "name": "Evo Beta Base Arms",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN070.webp"
+    },
+    {
+        "name": "Evo Beta Base Legs",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN071.webp"
+    },
+    {
+        "name": "Heavy Metal Hardcore",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN072.webp"
+    },
+    {
+        "name": "Heavy Metal Hardcore",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN073.webp"
+    },
+    {
+        "name": "Heavy Metal Hardcore",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN074.webp"
+    },
+    {
+        "name": "Heart Wrencher",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN075.webp"
+    },
+    {
+        "name": "Heart Wrencher",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN076.webp"
+    },
+    {
+        "name": "Heart Wrencher",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN077.webp"
+    },
+    {
+        "name": "Farflight Longbow",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN078.webp"
+    },
+    {
+        "name": "Concealed Nerve Gas",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN079.webp"
+    },
+    {
+        "name": "Concealed Pathogen",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN080.webp"
+    },
+    {
+        "name": "Concealed Sedative",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN081.webp"
+    },
+    {
+        "name": "Bolt'n Boots",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN082.webp"
+    },
+    {
+        "name": "Tiger Trap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN083.webp"
+    },
+    {
+        "name": "Rune Snare",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN084.webp"
+    },
+    {
+        "name": "Rainbow Goo Trap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN085.webp"
+    },
+    {
+        "name": "Courageous Crossing",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN086.webp"
+    },
+    {
+        "name": "Frail Swingline",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN086.webp"
+    },
+    {
+        "name": "Quickening Sand",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN088.webp"
+    },
+    {
+        "name": "Spellbane Trap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN089.webp"
+    },
+    {
+        "name": "Spellbane Trap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN090.webp"
+    },
+    {
+        "name": "Spellbane Trap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN091.webp"
+    },
+    {
+        "name": "Grimoire of Fellingsong",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN092.webp"
+    },
+    {
+        "name": "Helm of Might and Magic",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN093.webp"
+    },
+    {
+        "name": "Runebleed Robe",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN094.webp"
+    },
+    {
+        "name": "Beckoning Haunt",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN095.webp"
+    },
+    {
+        "name": "Blackstone Greaves",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN096.webp"
+    },
+    {
+        "name": "Doomsaying",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN097.webp"
+    },
+    {
+        "name": "Sigil of Gravespawning",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN098.webp"
+    },
+    {
+        "name": "Sigil of Silphidae",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN099.webp"
+    },
+    {
+        "name": "Runic Fellingsong",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN100.webp"
+    },
+    {
+        "name": "Runic Fellingsong",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN101.webp"
+    },
+    {
+        "name": "Runic Fellingsong",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN102.webp"
+    },
+    {
+        "name": "Weeping Battleground",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN103.webp"
+    },
+    {
+        "name": "Weeping Battleground",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN104.webp"
+    },
+    {
+        "name": "Weeping Battleground",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN105.webp"
+    },
+    {
+        "name": "Tempest Dancers",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN106.webp"
+    },
+    {
+        "name": "Shroud of the Fate Watcher",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN107.webp"
+    },
+    {
+        "name": "Robe of Resourcefulness",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN108.webp"
+    },
+    {
+        "name": "Gloves of Erasure",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN109.webp"
+    },
+    {
+        "name": "Aetherstorm Wellingtons",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN110.webp"
+    },
+    {
+        "name": "Glyph Destruction Nodes",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN111.webp"
+    },
+    {
+        "name": "Temporal Wobble",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN112.webp"
+    },
+    {
+        "name": "Glyph Power Spell",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN113.webp"
+    },
+    {
+        "name": "Painful Premonition",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN114.webp"
+    },
+    {
+        "name": "Painful Premonition",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN115.webp"
+    },
+    {
+        "name": "Painful Premonition",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN116.webp"
+    },
+    {
+        "name": "Future Sight",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN117.webp"
+    },
+    {
+        "name": "Future Sight",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN118.webp"
+    },
+    {
+        "name": "Future Sight",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN119.webp"
+    },
+    {
+        "name": "Sigil of Fate",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN120.webp"
+    },
+    {
+        "name": "Embody Greatness",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN121.webp"
+    },
+    {
+        "name": "Touch of Reality",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN122.webp"
+    },
+    {
+        "name": "Silken Shroud",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN123.webp"
+    },
+    {
+        "name": "Silken Shawl",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN124.webp"
+    },
+    {
+        "name": "Silken Symphony",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN125.webp"
+    },
+    {
+        "name": "Silken Slippers",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN126.webp"
+    },
+    {
+        "name": "Lunar Mirage",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN127.webp"
+    },
+    {
+        "name": "Mind Meets Might",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN128.webp"
+    },
+    {
+        "name": "Shimmering Mirage",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN129.webp"
+    },
+    {
+        "name": "Power of Make Believe",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN130.webp"
+    },
+    {
+        "name": "Power of Make Believe",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN131.webp"
+    },
+    {
+        "name": "Power of Make Believe",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN132.webp"
+    },
+    {
+        "name": "Shimmering Specter",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN133.webp"
+    },
+    {
+        "name": "Shimmering Specter",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN134.webp"
+    },
+    {
+        "name": "Shimmering Specter",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN135.webp"
+    },
+    {
+        "name": "Graven Gaslight",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN136.webp"
+    },
+    {
+        "name": "Graven Cowl",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN137.webp"
+    },
+    {
+        "name": "Graven Vestment",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN138.webp"
+    },
+    {
+        "name": "Graven Gloves",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN139.webp"
+    },
+    {
+        "name": "Graven Walkers",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN140.webp"
+    },
+    {
+        "name": "Lobotomy",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN141.webp"
+    },
+    {
+        "name": "Seeker Kunai",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN142.webp"
+    },
+    {
+        "name": "Mist Hunter",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN143.webp"
+    },
+    {
+        "name": "Excessive Bloodloss",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN144.webp"
+    },
+    {
+        "name": "Excessive Bloodloss",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN145.webp"
+    },
+    {
+        "name": "Excessive Bloodloss",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN146.webp"
+    },
+    {
+        "name": "Knife Through",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN147.webp"
+    },
+    {
+        "name": "Knife Through",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN148.webp"
+    },
+    {
+        "name": "Knife Through",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN149.webp"
+    },
+    {
+        "name": "Song of Larinkmorth White",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN150.webp"
+    },
+    {
+        "name": "Bone Puppetry",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN151.webp"
+    },
+    {
+        "name": "Carrion Crown",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN152.webp"
+    },
+    {
+        "name": "Mournful Casket",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN153.webp"
+    },
+    {
+        "name": "Reach Beyond the Grave",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN154.webp"
+    },
+    {
+        "name": "Scuttle Toes",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN155.webp"
+    },
+    {
+        "name": "Boo, Resident Spook",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN156.webp"
+    },
+    {
+        "name": "Bubba-Lubba, Run Aground",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN157.webp"
+    },
+    {
+        "name": "Beneath the Surface",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN158.webp"
+    },
+    {
+        "name": "Man Overboard",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN159.webp"
+    },
+    {
+        "name": "Man Overboard",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN160.webp"
+    },
+    {
+        "name": "Man Overboard",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN161.webp"
+    },
+    {
+        "name": "Tentacular Toll",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN162.webp"
+    },
+    {
+        "name": "Tentacular Toll",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN163.webp"
+    },
+    {
+        "name": "Tentacular Toll",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN164.webp"
+    },
+    {
+        "name": "Skywarden no.161803",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN165.webp"
+    },
+    {
+        "name": "Shallow Water Shark Harpoon",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN166.webp"
+    },
+    {
+        "name": "Gloves of Azure Waves",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN167.webp"
+    },
+    {
+        "name": "Trench of Watery Depths",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN168.webp"
+    },
+    {
+        "name": "Cheating Scoundrel",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN169.webp"
+    },
+    {
+        "name": "Break Open the Chests!",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN170.webp"
+    },
+    {
+        "name": "Lighten the Load",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN171.webp"
+    },
+    {
+        "name": "Lighten the Load",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN172.webp"
+    },
+    {
+        "name": "Lighten the Load",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN173.webp"
+    },
+    {
+        "name": "Submerge",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN174.webp"
+    },
+    {
+        "name": "Submerge",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN175.webp"
+    },
+    {
+        "name": "Submerge",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN176.webp"
+    },
+    {
+        "name": "Herald of Victoria",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN177.webp"
+    },
+    {
+        "name": "Roaring Beam",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN178.webp"
+    },
+    {
+        "name": "Solforge Gauntlet",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN179.webp"
+    },
+    {
+        "name": "Solray Plating",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN180.webp"
+    },
+    {
+        "name": "Blessing of Bellona",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN181.webp"
+    },
+    {
+        "name": "Blessing of Themis",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN182.webp"
+    },
+    {
+        "name": "Duty Bound Blitz",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN183.webp"
+    },
+    {
+        "name": "Duty Bound Blitz",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN184.webp"
+    },
+    {
+        "name": "Duty Bound Blitz",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN185.webp"
+    },
+    {
+        "name": "Soul Bond Belief",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN186.webp"
+    },
+    {
+        "name": "Soul Bond Belief",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN187.webp"
+    },
+    {
+        "name": "Soul Bond Belief",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN188.webp"
+    },
+    {
+        "name": "Pound of Flesh",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN189.webp"
+    },
+    {
+        "name": "Deep Recesses of Existence",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN190.webp"
+    },
+    {
+        "name": "Vestige of Flagellation",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN191.webp"
+    },
+    {
+        "name": "Embraforged Gauntlet",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN192.webp"
+    },
+    {
+        "name": "Embalm",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN193.webp"
+    },
+    {
+        "name": "Engulfing Shadows",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN194.webp"
+    },
+    {
+        "name": "Depths of Despair",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN195.webp"
+    },
+    {
+        "name": "Depths of Despair",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN196.webp"
+    },
+    {
+        "name": "Depths of Despair",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN197.webp"
+    },
+    {
+        "name": "Fasting Carcass",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN198.webp"
+    },
+    {
+        "name": "Fasting Carcass",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN199.webp"
+    },
+    {
+        "name": "Fasting Carcass",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN200.webp"
+    },
+    {
+        "name": "Seeds of Strength",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN201.webp"
+    },
+    {
+        "name": "Arc Bending",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN202.webp"
+    },
+    {
+        "name": "Verdant Tide",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN203.webp"
+    },
+    {
+        "name": "Voltic Veil",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN204.webp"
+    },
+    {
+        "name": "Elemental Strike",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN205.webp"
+    },
+    {
+        "name": "Colors of Aria",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN206.webp"
+    },
+    {
+        "name": "Frosthaven Sheath",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN207.webp"
+    },
+    {
+        "name": "Leaven Sheath",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN208.webp"
+    },
+    {
+        "name": "Stormwind Sheath",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN209.webp"
+    },
+    {
+        "name": "Laden with Earth",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN210.webp"
+    },
+    {
+        "name": "Laden with Frost",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN211.webp"
+    },
+    {
+        "name": "Laden with Lightning",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN212.webp"
+    },
+    {
+        "name": "Chorus of Rotwood",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN213.webp"
+    },
+    {
+        "name": "Sowing Thorns",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN214.webp"
+    },
+    {
+        "name": "Crown of Everbloom",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN215.webp"
+    },
+    {
+        "name": "Limbs of Lignum Vitae",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN216.webp"
+    },
+    {
+        "name": "Channel the Skybreaker",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN217.webp"
+    },
+    {
+        "name": "Doubling Season",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN218.webp"
+    },
+    {
+        "name": "Oath of Oak",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN219.webp"
+    },
+    {
+        "name": "Oath of Oak",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN220.webp"
+    },
+    {
+        "name": "Oath of Oak",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN221.webp"
+    },
+    {
+        "name": "Sprout Strength",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN222.webp"
+    },
+    {
+        "name": "Sprout Strength",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN223.webp"
+    },
+    {
+        "name": "Sprout Strength",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN224.webp"
+    },
+    {
+        "name": "Monolith of Galcia",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN225.webp"
+    },
+    {
+        "name": "Frost Spike",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN226.webp"
+    },
+    {
+        "name": "Crown of Frozen Thoughts",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN227.webp"
+    },
+    {
+        "name": "Shattering Grasp",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN228.webp"
+    },
+    {
+        "name": "Channel Iceloch Glaze",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN229.webp"
+    },
+    {
+        "name": "Channel Galcia's Cradle",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN230.webp"
+    },
+    {
+        "name": "Conquer the Icy Terrain",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN231.webp"
+    },
+    {
+        "name": "Conquer the Icy Terrain",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN232.webp"
+    },
+    {
+        "name": "Conquer the Icy Terrain",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN233.webp"
+    },
+    {
+        "name": "Put on Ice",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN234.webp"
+    },
+    {
+        "name": "Put on Ice",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN235.webp"
+    },
+    {
+        "name": "Put on Ice",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN236.webp"
+    },
+    {
+        "name": "Sigil of Voltaris",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN237.webp"
+    },
+    {
+        "name": "Strike Twice",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN238.webp"
+    },
+    {
+        "name": "Stormweaver's Aegis",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN239.webp"
+    },
+    {
+        "name": "Voltic Vanguard",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN240.webp"
+    },
+    {
+        "name": "Astravolt Elemental",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN241.webp"
+    },
+    {
+        "name": "Ion Charged",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN242.webp"
+    },
+    {
+        "name": "Overcharge",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN243.webp"
+    },
+    {
+        "name": "Overcharge",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN244.webp"
+    },
+    {
+        "name": "Overcharge",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN245.webp"
+    },
+    {
+        "name": "Cloud Cover",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN246.webp"
+    },
+    {
+        "name": "Cloud Cover",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN247.webp"
+    },
+    {
+        "name": "Cloud Cover",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN248.webp"
+    },
+    {
+        "name": "Haboob",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN249.webp"
+    },
+    {
+        "name": "Enflame the Firebrand",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN250.webp"
+    },
+    {
+        "name": "Smoldering Steel",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN251.webp"
+    },
+    {
+        "name": "Dynastic Diadem",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN252.webp"
+    },
+    {
+        "name": "Smoldering Scales",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN253.webp"
+    },
+    {
+        "name": "Art of the Phoenix: War",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN254.webp"
+    },
+    {
+        "name": "Fire that Burns Within",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN255.webp"
+    },
+    {
+        "name": "Four Feathers One Crown",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN256.webp"
+    },
+    {
+        "name": "Phoenix Bannerman: Head",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN257.webp"
+    },
+    {
+        "name": "Phoenix Bannerman: Chest",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN258.webp"
+    },
+    {
+        "name": "Phoenix Bannerman: Arms",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN259.webp"
+    },
+    {
+        "name": "Phoenix Bannerman: Legs",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN260.webp"
+    },
+    {
+        "name": "Phoenix Flame",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN261.webp"
+    },
+    {
+        "name": "Serpent's Kiss",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN262.webp"
+    },
+    {
+        "name": "Wax and Wane",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN263.webp"
+    },
+    {
+        "name": "Shapeless Form",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN264.webp"
+    },
+    {
+        "name": "Rippling Wave",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN265.webp"
+    },
+    {
+        "name": "Kimono of Layered Lessons",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN266.webp"
+    },
+    {
+        "name": "Whispering Mist",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN267.webp"
+    },
+    {
+        "name": "Recede to Mistform",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN268.webp"
+    },
+    {
+        "name": "Fluid Motion",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN269.webp"
+    },
+    {
+        "name": "Manifest Muscle",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN270.webp"
+    },
+    {
+        "name": "Mistborn Protector",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN271.webp"
+    },
+    {
+        "name": "Billowing Mist",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN272.webp"
+    },
+    {
+        "name": "Look Within",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN273.webp"
+    },
+    {
+        "name": "Spreading Mist",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN274.webp"
+    },
+    {
+        "name": "Havoc Wrap",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN275.webp"
+    },
+    {
+        "name": "Topsy Turvy",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN276.webp"
+    },
+    {
+        "name": "Tome of Pandemonium",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN277.webp"
+    },
+    {
+        "name": "Descend into Madness",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN278.webp"
+    },
+    {
+        "name": "Concoct Disorder",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN279.webp"
+    },
+    {
+        "name": "Concoct Disorder",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN280.webp"
+    },
+    {
+        "name": "Concoct Disorder",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN281.webp"
+    },
+    {
+        "name": "Hyper Inflation",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN282.webp"
+    },
+    {
+        "name": "Hyper Inflation",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN283.webp"
+    },
+    {
+        "name": "Hyper Inflation",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN284.webp"
+    },
+    {
+        "name": "Tough as a Rok",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN285.webp"
+    },
+    {
+        "name": "Energy of the Audience",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN286.webp"
+    },
+    {
+        "name": "Glory Plate",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN287.webp"
+    },
+    {
+        "name": "Comeback Kicks",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN288.webp"
+    },
+    {
+        "name": "By the Book",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN289.webp"
+    },
+    {
+        "name": "Emboldened by the Crowd",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN290.webp"
+    },
+    {
+        "name": "Hulk Up",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN291.webp"
+    },
+    {
+        "name": "Hulk Up",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN292.webp"
+    },
+    {
+        "name": "Hulk Up",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN293.webp"
+    },
+    {
+        "name": "Stadium Security",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN294.webp"
+    },
+    {
+        "name": "Stadium Security",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN295.webp"
+    },
+    {
+        "name": "Stadium Security",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN296.webp"
+    },
+    {
+        "name": "Chain Brutality",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN297.webp"
+    },
+    {
+        "name": "Walk in My Shoes",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN298.webp"
+    },
+    {
+        "name": "Two-Faced",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN299.webp"
+    },
+    {
+        "name": "Line Crossers",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN300.webp"
+    },
+    {
+        "name": "Leave 'Em Speechless",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN301.webp"
+    },
+    {
+        "name": "Snarky Prick",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN302.webp"
+    },
+    {
+        "name": "Insult to Injury",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN303.webp"
+    },
+    {
+        "name": "Insult to Injury",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN304.webp"
+    },
+    {
+        "name": "Insult to Injury",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN305.webp"
+    },
+    {
+        "name": "Bad Breath",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN306.webp"
+    },
+    {
+        "name": "Bad Breath",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN307.webp"
+    },
+    {
+        "name": "Bad Breath",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN308.webp"
+    },
+    {
+        "name": "Balance of Justice",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN309.webp"
+    },
+    {
+        "name": "Crown of Providence",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN310.webp"
+    },
+    {
+        "name": "Fyendal's Spring Tunic",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN311.webp"
+    },
+    {
+        "name": "Stonewall Gauntlet",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN312.webp"
+    },
+    {
+        "name": "Quickdodge Flexors",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN313.webp"
+    },
+    {
+        "name": "Helm of Safe Haven",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN314.webp"
+    },
+    {
+        "name": "Myrkhellir Helm",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN315.webp"
+    },
+    {
+        "name": "Burnished Bunkerplate",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN316.webp"
+    },
+    {
+        "name": "Unyielding Grip",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN317.webp"
+    },
+    {
+        "name": "Unflinching Foothold",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN318.webp"
+    },
+    {
+        "name": "Command and Conquer",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN319.webp"
+    },
+    {
+        "name": "Enlightened Strike",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN320.webp"
+    },
+    {
+        "name": "Shelter from the Storm",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN321.webp"
+    },
+    {
+        "name": "Rockyard Rodeo",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN322.webp"
+    },
+    {
+        "name": "High Current Currency",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN323.webp"
+    },
+    {
+        "name": "Clearwater Elixir",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN324.webp"
+    },
+    {
+        "name": "Restvine Elixir",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN325.webp"
+    },
+    {
+        "name": "Sapwood Elixir",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN326.webp"
+    },
+    {
+        "name": "Ransack and Raze",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN327.webp"
+    },
+    {
+        "name": "Destructive Tendencies",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN328.webp"
+    },
+    {
+        "name": "Pilfer the Tomb",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN329.webp"
+    },
+    {
+        "name": "Shatter Sorcery",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN330.webp"
+    },
+    {
+        "name": "Drag Down",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN331.webp"
+    },
+    {
+        "name": "Drag Down",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN332.webp"
+    },
+    {
+        "name": "Drag Down",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN333.webp"
+    },
+    {
+        "name": "Rhinar",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN334-CF.webp"
+    },
+    {
+        "name": "Benji, the Piercing Wind",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN335-CF.webp"
+    },
+    {
+        "name": "Kassai, Cintari Sellsword",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN336-CF.webp"
+    },
+    {
+        "name": "Dash, Database",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN337-CF.webp"
+    },
+    {
+        "name": "Dash",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN338-CF.webp"
+    },
+    {
+        "name": "Teklovossen",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN339-CF.webp"
+    },
+    {
+        "name": "Azalea",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN340-CF.webp"
+    },
+    {
+        "name": "Riptide",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN341-CF.webp"
+    },
+    {
+        "name": "Kano",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN342-CF.webp"
+    },
+    {
+        "name": "Prism",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN343-CF.webp"
+    },
+    {
+        "name": "Chane",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN344-CF.webp"
+    },
+    {
+        "name": "Oldhim",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN345-CF.webp"
+    },
+    {
+        "name": "Lexi",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN346-CF.webp"
+    },
+    {
+        "name": "Dromai",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN347-CF.webp"
+    },
+    {
+        "name": "Fai",
+        "imageUrl": "https://legendstory-production-s3-public.s3.amazonaws.com/media/cards/normal/PEN348-CF.webp"
+    }
+]
