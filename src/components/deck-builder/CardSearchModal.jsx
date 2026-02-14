@@ -10,7 +10,7 @@ import '../../styles/CardSearchModal.css';
 
 const KNOWN_TALENTS = ['Elemental', 'Ice', 'Earth', 'Lightning', 'Draconic', 'Light', 'Shadow', 'Mystic'];
 
-const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
+const CardSearchModal = ({ isOpen, type, hero, format, onSelect, onClose }) => {
     const { t } = useLanguage();
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
@@ -27,25 +27,18 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
     });
 
     // Debug: Log what type we're searching for
-    console.log('CardSearchModal - Type:', type, 'Hero Class:', heroClass);
+    console.log('CardSearchModal - Type:', type, 'Hero:', hero?.name);
 
     // Parse Hero Class on mount/change
     useEffect(() => {
-        if (!heroClass || type !== 'equipment') return;
+        if (!hero || type !== 'equipment') return;
 
         // Use getHeroTraits which already maps implicit essences/talents correctly
-        // We create a dummy hero object for getHeroTraits
-        const dummyHero = { name: '', clase: heroClass };
-        // If we have a better way to find the name (like if it was passed in), we should use it.
-        // But heroClass is often enough for the traits helper if it contains standard strings.
-        // Wait, getHeroTraits uses hero.name for the mapping!
-        // I should probably pass heroName to CardSearchModal too, but for now let's hope heroClass is enough.
-        // Actually, heroClass is what we have. Let's see if we can improve this.
-
-        const traits = getHeroTraits(dummyHero);
+        const traits = getHeroTraits(hero);
 
         // Find the base class (last part that isn't a known talent)
-        const parts = heroClass.split(/[\s\/]+/).filter(Boolean);
+        const heroClassStr = hero.clase || '';
+        const parts = heroClassStr.split(/[\s\/]+/).filter(Boolean);
         const classes = parts.filter(p => !KNOWN_TALENTS.includes(p) && p !== 'Hero');
         const primaryClass = classes.length > 0 ? classes[classes.length - 1] : '';
 
@@ -54,7 +47,7 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
             talents: traits.filter(t => KNOWN_TALENTS.map(kt => kt.toLowerCase()).includes(t.toLowerCase())),
             isGeneric: false
         });
-    }, [heroClass, type]);
+    }, [hero, type]);
 
     // Fetch Living Legend Hero list on mount
     useEffect(() => {
@@ -179,16 +172,14 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                     ];
 
                     // Server-side Class Filtering:
-                    // If we have a hero class, pass it to the backend so we don't fetch 500 irrelevant cards
-                    // and filter them out client-side (which might result in empty lists).
-                    if (heroClass) {
+                    // If we have a hero, pass it to the backend
+                    if (hero) {
                         // Use the traits helper for server-side filtering
-                        // Note: dummyHero here too, but in DeckBuilder we should ideally pass the hero record
-                        const traits = getHeroTraits({ name: '', clase: heroClass });
+                        const traits = getHeroTraits(hero);
                         params.clase = [...traits, 'generic'];
                     }
 
-                    console.log('🔍 Equipment filter params:', { heroClass, type: params.type, classFilter: params.clase });
+                    console.log('🔍 Equipment filter params:', { heroName: hero?.name, type: params.type, classFilter: params.clase });
                 }
 
                 // Silver Age format restriction
@@ -247,10 +238,10 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                     processingResults = Array.from(uniqueMap.values());
 
                     // Equipment Filter for Hero Class (Double check client side just in case)
-                    if (heroClass) {
+                    if (hero) {
                         processingResults = processingResults.filter(card => {
                             const cardClassVal = card.clase || 'Generic';
-                            return isCardLegalForHero(cardClassVal, heroClass);
+                            return isCardLegalForHero(cardClassVal, (hero.clase || 'Generic'));
                         });
 
                         // Sort logic
@@ -274,7 +265,7 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
 
         const delayDebounceFn = setTimeout(fetchCards, 300);
         return () => clearTimeout(delayDebounceFn);
-    }, [searchTerm, type, heroClass, format]);
+    }, [searchTerm, type, hero, format]);
 
     const renderTabs = () => {
         if (type !== 'equipment') return null;
@@ -369,7 +360,7 @@ const CardSearchModal = ({ type, heroClass, format, onSelect, onClose }) => {
                         let equipmentClass = 'Generic';
                         let isHeroEquipment = false;
 
-                        if (type === 'equipment' && heroClass && card.tipo) {
+                        if (type === 'equipment' && hero && card.tipo) {
                             const beforeEquipmentOrWeapon = card.tipo.split(/\s+(Equipment|Weapon)/i)[0].trim();
                             equipmentClass = beforeEquipmentOrWeapon;
                             isHeroEquipment = !['Generic', ''].includes(beforeEquipmentOrWeapon);

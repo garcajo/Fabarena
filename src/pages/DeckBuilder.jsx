@@ -488,10 +488,11 @@ const DeckBuilder = () => {
                     pageSize: 200 // Increased buffer for better client-side filtering
                 };
 
+                // Extract traits using our new helper which handles implicit Elemental essences (Earth, Ice, Lightning)
+                const traits = deckData.hero ? getHeroTraits(deckData.hero) : ['generic'];
+
                 // Filter by Hero traits at the server level to get relevant results
                 if (deckData.hero) {
-                    // Extract traits using our new helper which handles implicit Elemental essences (Earth, Ice, Lightning)
-                    const traits = getHeroTraits(deckData.hero);
                     // Filter out 'hero' or generic terms if needed, but usually redundant as `clase` filter is fuzzy.
                     // Important: Ensure 'generic' is included if not already (helper includes it).
                     searchParams.clase = traits;
@@ -2039,7 +2040,7 @@ const DeckBuilder = () => {
                             onClose={() => setShowModal(false)}
                             onSelect={handleSelectFromModal}
                             type={modalType}
-                            heroClass={deckData.hero?.clase} // Pass hero class string for filtering
+                            hero={deckData.hero}
                             format={deckData.format}
                         />
                     )
